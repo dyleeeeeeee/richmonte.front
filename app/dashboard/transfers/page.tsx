@@ -7,6 +7,7 @@ import DashboardLayout from "@/components/DashboardLayout";
 import { accountAPI, transactionAPI, Account } from "@/lib/api";
 import { Send, Calendar, Repeat, User, Building, ArrowRight } from "lucide-react";
 
+export const runtime = 'edge';
 export const dynamic = 'force-dynamic';
 
 export default function TransfersPage() {

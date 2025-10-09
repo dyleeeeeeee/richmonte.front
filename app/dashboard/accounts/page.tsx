@@ -7,6 +7,7 @@ import DashboardLayout from "@/components/DashboardLayout";
 import { accountAPI, Account } from "@/lib/api";
 import { Plus, ChevronRight, TrendingUp, Wallet } from "lucide-react";
 
+export const runtime = 'edge';
 export const dynamic = 'force-dynamic';
 
 export default function AccountsPage() {

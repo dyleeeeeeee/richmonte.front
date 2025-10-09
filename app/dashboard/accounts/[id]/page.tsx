@@ -7,6 +7,8 @@ import DashboardLayout from "@/components/DashboardLayout";
 import { accountAPI, transactionAPI, Transaction, Account } from "@/lib/api";
 import { ArrowUpRight, ArrowDownLeft, Download, Filter, Search } from "lucide-react";
 
+export const runtime = 'edge';
+
 export default function AccountDetailPage() {
   const params = useParams();
   const router = useRouter();
