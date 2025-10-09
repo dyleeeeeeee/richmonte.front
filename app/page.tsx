@@ -271,9 +271,9 @@ export default function Home() {
               Join the distinguished circle of Richemont clientele who expect nothing less than
               Swiss precision, Maison discretion, and unparalleled privilege.
             </p>
-            <button className="px-12 py-4 bg-gradient-to-r from-gold-600 to-gold-700 text-white rounded-full font-bold text-lg hover:from-gold-500 hover:to-gold-600 transition-all duration-300 transform hover:scale-105 shadow-lg shadow-gold-500/30">
+            <Link href="/register" className="inline-block px-12 py-4 bg-gradient-to-r from-gold-600 to-gold-700 text-white rounded-full font-bold text-lg hover:from-gold-500 hover:to-gold-600 transition-all duration-300 transform hover:scale-105 shadow-lg shadow-gold-500/30">
               Request Membership
-            </button>
+            </Link>
           </div>
         </ScrollSection>
       </main>

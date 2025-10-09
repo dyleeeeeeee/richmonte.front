@@ -28,22 +28,22 @@ export default function Footer() {
             <h4 className="font-semibold mb-4 text-gold-700">Services</h4>
             <ul className="space-y-2 text-sm text-neutral-600">
               <li>
-                <Link href="#" className="hover:text-gold-600 transition-colors">
+                <Link href="/#about" className="hover:text-gold-600 transition-colors">
                   Private Banking
                 </Link>
               </li>
               <li>
-                <Link href="#" className="hover:text-gold-600 transition-colors">
+                <Link href="/#about" className="hover:text-gold-600 transition-colors">
                   Wealth Management
                 </Link>
               </li>
               <li>
-                <Link href="#" className="hover:text-gold-600 transition-colors">
+                <Link href="/#cards" className="hover:text-gold-600 transition-colors">
                   Elite Cards
                 </Link>
               </li>
               <li>
-                <Link href="#" className="hover:text-gold-600 transition-colors">
+                <Link href="/#concierge" className="hover:text-gold-600 transition-colors">
                   Concierge Services
                 </Link>
               </li>
@@ -54,23 +54,28 @@ export default function Footer() {
             <h4 className="font-semibold mb-4 text-gold-700">Company</h4>
             <ul className="space-y-2 text-sm text-neutral-600">
               <li>
-                <Link href="#" className="hover:text-gold-600 transition-colors">
+                <Link href="/#about" className="hover:text-gold-600 transition-colors">
                   About Us
                 </Link>
               </li>
               <li>
-                <Link href="#" className="hover:text-gold-600 transition-colors">
+                <Link href="https://www.richemont.com/en/home/about/careers/" target="_blank" rel="noopener noreferrer" className="hover:text-gold-600 transition-colors">
                   Careers
                 </Link>
               </li>
               <li>
-                <Link href="#" className="hover:text-gold-600 transition-colors">
+                <Link href="/security" className="hover:text-gold-600 transition-colors">
                   Security
                 </Link>
               </li>
               <li>
-                <Link href="#" className="hover:text-gold-600 transition-colors">
+                <Link href="/privacy" className="hover:text-gold-600 transition-colors">
                   Privacy Policy
+                </Link>
+              </li>
+              <li>
+                <Link href="/terms" className="hover:text-gold-600 transition-colors">
+                  Terms of Service
                 </Link>
               </li>
             </ul>
@@ -80,14 +85,17 @@ export default function Footer() {
             <h4 className="font-semibold mb-4 text-gold-700">Contact</h4>
             <ul className="space-y-2 text-sm text-neutral-600">
               <li>contact@conciergebank.com</li>
-              <li>+1 (555) 123-4567</li>
+              <li>+41 22 123 4567</li>
               <li className="pt-4">
                 <div className="flex space-x-4">
-                  <a href="#" className="hover:text-gold-600 transition-colors">
+                  <a href="https://www.linkedin.com/company/richemont" target="_blank" rel="noopener noreferrer" className="hover:text-gold-600 transition-colors">
                     LinkedIn
                   </a>
-                  <a href="#" className="hover:text-gold-600 transition-colors">
+                  <a href="https://twitter.com/RichemontGroup" target="_blank" rel="noopener noreferrer" className="hover:text-gold-600 transition-colors">
                     Twitter
+                  </a>
+                  <a href="https://www.instagram.com/richemontgroup" target="_blank" rel="noopener noreferrer" className="hover:text-gold-600 transition-colors">
+                    Instagram
                   </a>
                 </div>
               </li>

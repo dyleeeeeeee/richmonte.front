@@ -176,15 +176,16 @@ export default function CanvasScene() {
         if (projected.scale > 0 && projected.x >= -50 && projected.x <= width + 50 && 
             projected.y >= -50 && projected.y <= height + 50) {
           // Small, uniform particle size like reference (1-2px dots)
-          const size = Math.max(0.8, 1.2 * projected.scale);
+          const size = Math.max(1, 1.5 * projected.scale);
           const alpha = projected.alpha * fadeAmount;
           
-          // White/light particles like reference image
-          const r = 255;
-          const g = 255;
-          const b = 255;
+          // Dark particles for light background (inverted from reference image)
+          // Using dark gray/charcoal for visibility on light background
+          const r = 40;
+          const g = 40;
+          const b = 40;
           
-          ctx.fillStyle = `rgba(${r}, ${g}, ${b}, ${alpha * 0.9})`;
+          ctx.fillStyle = `rgba(${r}, ${g}, ${b}, ${alpha * 0.7})`;
           ctx.beginPath();
           ctx.arc(projected.x, projected.y, size, 0, Math.PI * 2);
           ctx.fill();

@@ -56,9 +56,18 @@ export default function Navbar() {
           >
             Contact
           </Link>
-          <button className="px-6 py-2 bg-gradient-to-r from-gold-600 to-gold-700 text-white rounded-full font-semibold text-sm hover:from-gold-500 hover:to-gold-600 transition-colors shadow-md">
+          <Link
+            href="/dashboard"
+            className="text-sm font-medium text-neutral-700 hover:text-gold-600 transition-colors"
+          >
+            My Account
+          </Link>
+          <Link
+            href="/register"
+            className="px-6 py-2 bg-gradient-to-r from-gold-600 to-gold-700 text-white rounded-full font-semibold text-sm hover:from-gold-500 hover:to-gold-600 transition-colors shadow-md inline-block"
+          >
             Join Now
-          </button>
+          </Link>
         </div>
       </div>
     </nav>
