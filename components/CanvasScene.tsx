@@ -42,8 +42,8 @@ export default function CanvasScene() {
     // Detect mobile
     const isMobile = window.innerWidth < 768;
 
-    // Particle system configuration
-    const particleCount = isMobile ? 800 : 2500;
+    // Particle system configuration - increased for denser coverage like reference
+    const particleCount = isMobile ? 1500 : 5000;
     const radius = isMobile ? 150 : 250;
     const perspective = 800;
 
@@ -128,10 +128,10 @@ export default function CanvasScene() {
       // At scrollProgress = 1+: camera moves through sphere center
       const cameraZ = -600 + scrollProgress * 1200;
       
-      // Rotation slows as sphere expands
+      // Rotation slows as sphere expands (increased by 1.1x)
       const rotSpeed = Math.max(0, 1 - scrollProgress * 0.8);
-      rotation.current.x += 0.0008 * rotSpeed + mouseOffset.current.y * 0.3;
-      rotation.current.y += 0.0012 * rotSpeed + mouseOffset.current.x * 0.3;
+      rotation.current.x += 0.00088 * rotSpeed + mouseOffset.current.y * 0.3;
+      rotation.current.y += 0.00132 * rotSpeed + mouseOffset.current.x * 0.3;
 
       // Fade out when camera gets very close
       const fadeStart = 1.2;
@@ -175,36 +175,19 @@ export default function CanvasScene() {
         // Draw particle if visible
         if (projected.scale > 0 && projected.x >= -50 && projected.x <= width + 50 && 
             projected.y >= -50 && projected.y <= height + 50) {
-          const size = Math.max(1, 2.5 * projected.scale);
+          // Small, uniform particle size like reference (1-2px dots)
+          const size = Math.max(0.8, 1.2 * projected.scale);
           const alpha = projected.alpha * fadeAmount;
           
-          // Darker gold for light mode visibility - #D08C1D (Deep Amber)
-          const r = 208;
-          const g = 140;
-          const b = 29;
+          // White/light particles like reference image
+          const r = 255;
+          const g = 255;
+          const b = 255;
           
-          ctx.fillStyle = `rgba(${r}, ${g}, ${b}, ${alpha * 0.85})`;
+          ctx.fillStyle = `rgba(${r}, ${g}, ${b}, ${alpha * 0.9})`;
           ctx.beginPath();
           ctx.arc(projected.x, projected.y, size, 0, Math.PI * 2);
           ctx.fill();
-
-          // Glow for prominent particles - warmer gold tones
-          if (size > 1.5 && alpha > 0.5) {
-            const glow = ctx.createRadialGradient(
-              projected.x, projected.y, 0,
-              projected.x, projected.y, size * 5
-            );
-            glow.addColorStop(0, `rgba(235, 164, 32, ${alpha * 0.4})`);
-            glow.addColorStop(0.5, `rgba(242, 202, 39, ${alpha * 0.2})`);
-            glow.addColorStop(1, "rgba(255, 201, 7, 0)");
-            ctx.fillStyle = glow;
-            ctx.fillRect(
-              projected.x - size * 5,
-              projected.y - size * 5,
-              size * 10,
-              size * 10
-            );
-          }
         }
       });
 
