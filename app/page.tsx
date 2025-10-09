@@ -67,7 +67,7 @@ export default function Home() {
               </div>
             </h1>
             <p className="hero-tagline text-xl md:text-2xl text-neutral-600 max-w-2xl mx-auto">
-              Where Geneva's financial legacy meets the artistry of Maison Richemont
+              Where Geneva&apos;s financial legacy meets the artistry of Maison Richemont
             </p>
           </div>
         </section>
@@ -86,7 +86,7 @@ export default function Home() {
               <div className="grid md:grid-cols-2 gap-12 text-lg leading-relaxed">
                 <p className="text-neutral-700">
                   Born from the heritage of <span className="text-gold-700 font-semibold">Richemont Geneva</span>,
-                  Concierge Bank serves those who appreciate life's finest pursuits. We are the financial architects
+                  Concierge Bank serves those who appreciate life&apos;s finest pursuits. We are the financial architects
                   for clients of Cartier, Van Cleef & Arpels, and our distinguished Maisons.
                 </p>
                 <p className="text-neutral-700">

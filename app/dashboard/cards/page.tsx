@@ -73,7 +73,7 @@ export default function CardsPage() {
           <div className="flex items-center justify-between gap-4">
             <div className="flex-1 min-w-0">
               <h1 className="text-2xl sm:text-3xl font-serif font-bold mb-1 sm:mb-2">Your Cards</h1>
-              <p className="text-sm sm:text-base text-neutral-600">Maison Richemont's legacy of excellence</p>
+              <p className="text-sm sm:text-base text-neutral-600">Maison Richemont&apos;s legacy of excellence</p>
             </div>
             <button
               onClick={() => router.push("/dashboard/cards/apply")}
@@ -90,7 +90,7 @@ export default function CardsPage() {
               <CreditCardIcon className="w-16 h-16 text-gold-600 mx-auto mb-4" />
               <h3 className="text-xl font-semibold mb-2 text-neutral-900">Your Collection Awaits</h3>
               <p className="text-neutral-600 mb-6">
-                Discover payment instruments crafted with the precision of Richemont's Maisons. Each card, a masterpiece of privilege.
+                Discover payment instruments crafted with the precision of Richemont&apos;s Maisons. Each card, a masterpiece of privilege.
               </p>
               <button
                 onClick={() => router.push("/dashboard/cards/apply")}

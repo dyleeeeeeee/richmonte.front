@@ -4,6 +4,7 @@ import { useState, FormEvent } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { useAuth } from "@/contexts/AuthContext";
+import type { RegisterData } from "@/lib/api";
 
 export default function RegisterPage() {
   const [formData, setFormData] = useState({
@@ -40,13 +41,14 @@ export default function RegisterPage() {
     setLoading(true);
 
     try {
-      await register({
+      const registerPayload: Partial<RegisterData> = {
         email: formData.email,
         password: formData.password,
         full_name: formData.full_name,
         phone: formData.phone,
         preferred_brand: formData.preferred_brand,
-      });
+      };
+      await register(registerPayload as any);
       router.push("/dashboard");
     } catch (err) {
       setError(err instanceof Error ? err.message : "Registration failed");
