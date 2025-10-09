@@ -17,7 +17,10 @@ export default function Footer() {
               </span>
             </div>
             <p className="text-sm text-neutral-600">
-              Luxury Banking. Crafted by Motion.
+              A Richemont Financial Institution
+            </p>
+            <p className="text-xs text-neutral-500 mt-1">
+              Swiss Precision. Maison Excellence.
             </p>
           </div>
 
@@ -93,7 +96,8 @@ export default function Footer() {
         </div>
 
         <div className="mt-12 pt-8 border-t border-gold-300/30 text-center text-sm text-neutral-500">
-          <p>&copy; {new Date().getFullYear()} Concierge Bank. All rights reserved.</p>
+          <p>&copy; {new Date().getFullYear()} Concierge Bank. A Richemont Financial Institution. All rights reserved.</p>
+          <p className="text-xs mt-2 text-neutral-400">Geneva, Switzerland • Member of the Richemont Group</p>
         </div>
       </div>
     </footer>

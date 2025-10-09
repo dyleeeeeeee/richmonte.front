@@ -57,7 +57,7 @@ export default function DashboardPage() {
           {/* Header - Mobile Optimized */}
           <div className="px-1">
             <h1 className="text-2xl sm:text-3xl font-serif font-bold mb-1 sm:mb-2">Private Vault</h1>
-            <p className="text-sm sm:text-base text-neutral-600">Welcome to Concierge Bank, Geneva</p>
+            <p className="text-sm sm:text-base text-neutral-600">Concierge Bank • A Richemont Financial Institution</p>
           </div>
 
           {/* Total Balance Card - Mobile Optimized */}

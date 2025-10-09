@@ -1,5 +1,7 @@
 # 🏦 Concierge Bank - Implementation Complete
 
+**A Richemont Financial Institution | Swiss Precision Banking**
+
 ## ✅ Fully Implemented Features
 
 ### 1. Authentication System ✓

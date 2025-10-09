@@ -1,5 +1,7 @@
 # 🚀 Concierge Bank - Quick Start Guide
 
+**A Richemont Financial Institution**
+
 ## ✅ Dependencies Fixed
 
 All dependency issues resolved:

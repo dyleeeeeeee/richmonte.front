@@ -1,5 +1,7 @@
 # ✅ Concierge Bank - Complete Implementation
 
+**A Richemont Financial Institution**
+
 ## 🎉 All Features Fully Implemented
 
 **Production-ready banking platform with cinematic design and complete functionality**

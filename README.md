@@ -1,15 +1,17 @@
 # Concierge Bank — Cinematic Scroll Experience
 
+**A Richemont Financial Institution**
+
 **Luxury Banking. Crafted by Motion.**
 
-A mathematically-animated, scroll-driven banking platform that merges elegance and motion, inspired by the ilabsolutions.it design DNA.
+A mathematically-animated, scroll-driven banking platform that merges elegance and motion, inspired by the ilabsolutions.it design DNA. Built on the heritage of Richemont Geneva, serving clients who appreciate Swiss precision and Maison craftsmanship.
 
 ## 🌟 Features
 
 - **Living Particle Sphere Animation** - 3D canvas particle system using spherical coordinates and parametric functions
 - **Scroll-Synchronized Storytelling** - GSAP ScrollTrigger animations that respond to user scroll
 - **Smooth Scrolling** - Lenis smooth scroll with inertia physics
-- **Banking Functionality** - Connected to existing Richemont backend
+- **Banking Functionality** - Full-featured banking platform for Richemont clientele
 - **Responsive Design** - Optimized for all devices
 - **Type-Safe** - Built with TypeScript for reliability
 
@@ -23,11 +25,12 @@ A mathematically-animated, scroll-driven banking platform that merges elegance a
 - **Lenis** - Smooth scroll library
 - **HTML5 Canvas** - Procedural 3D particle animations
 
-### Backend
+### Backend (Richemont Financial Services)
 - **Location**: `C:\Users\User\Documents\Projects\sites\richemont\backend`
 - **Framework**: Quart (Python async)
 - **Database**: Supabase PostgreSQL
 - **Auth**: JWT with HttpOnly cookies
+- **Institution**: Concierge Bank, a Richemont subsidiary
 
 ## 📐 Mathematical Foundations
 
@@ -68,6 +71,8 @@ Ensure the Richemont backend is running:
 cd C:\Users\User\Documents\Projects\sites\richemont\backend
 python run.py
 ```
+
+The backend powers Concierge Bank's Swiss banking infrastructure.
 
 ## 📂 Project Structure
 
