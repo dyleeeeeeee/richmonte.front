@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect } from "react";
+import Link from "next/link";
 import CanvasScene from "@/components/CanvasScene";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";

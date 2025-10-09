@@ -57,7 +57,7 @@ export default function TermsPage() {
 				<h2 className="text-2xl font-bold text-neutral-900 mt-12 mb-4">Fees and Charges</h2>
 				<p className="text-neutral-700 leading-relaxed">
 					Account fees, transaction charges, and service costs are outlined in your account agreement
-					and fee schedule. We reserve the right to modify fees with 30 days' advance notice. Elite
+					and fee schedule. We reserve the right to modify fees with 30 days&apos; advance notice. Elite
 					card holders may receive fee waivers and preferential rates as detailed in their card benefits.
 				</p>
 
@@ -94,7 +94,7 @@ export default function TermsPage() {
 
 				<h2 className="text-2xl font-bold text-neutral-900 mt-12 mb-4">Account Termination</h2>
 				<p className="text-neutral-700 leading-relaxed">
-					Either party may terminate the banking relationship with 30 days' written notice. We reserve
+					Either party may terminate the banking relationship with 30 days&apos; written notice. We reserve
 					the right to immediately suspend or close accounts if:
 				</p>
 				<ul className="list-disc pl-6 space-y-2 text-neutral-700">

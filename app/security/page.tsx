@@ -13,7 +13,7 @@ export default function SecurityPage() {
 
 				<h2 className="text-2xl font-bold text-neutral-900 mt-12 mb-4">Swiss Banking Security</h2>
 				<p className="text-neutral-700 leading-relaxed">
-					Our Geneva headquarters operates under Switzerland's stringent financial regulations:
+					Our Geneva headquarters operates under Switzerland&apos;s stringent financial regulations:
 				</p>
 				<ul className="list-disc pl-6 space-y-2 text-neutral-700">
 					<li>Regulated by FINMA (Swiss Financial Market Supervisory Authority)</li>
@@ -21,17 +21,6 @@ export default function SecurityPage() {
 					<li>Compliance with Basel III capital requirements</li>
 					<li>Member of the Swiss Bankers Association</li>
 					<li>Protected by Swiss deposit insurance schemes</li>
-				</ul>
-
-				<h2 className="text-2xl font-bold text-neutral-900 mt-12 mb-4">Data Encryption</h2>
-				<p className="text-neutral-700 leading-relaxed">
-					Your data is protected by military-grade encryption:
-				</p>
-				<ul className="list-disc pl-6 space-y-2 text-neutral-700">
-					<li><strong>AES-256 Encryption:</strong> All data at rest is encrypted using Advanced Encryption Standard</li>
-					<li><strong>TLS 1.3:</strong> In-transit data protected by latest Transport Layer Security protocols</li>
-					<li><strong>End-to-End Encryption:</strong> Sensitive communications encrypted from client to server</li>
-					<li><strong>Hardware Security Modules:</strong> Cryptographic keys stored in tamper-proof HSMs</li>
 				</ul>
 
 				<h2 className="text-2xl font-bold text-neutral-900 mt-12 mb-4">Multi-Factor Authentication</h2>
@@ -129,7 +118,7 @@ export default function SecurityPage() {
 				<p className="text-neutral-700 mt-4">
 					<strong>24/7 Security Hotline:</strong> +41 22 123 4567<br />
 					<strong>Email:</strong> security@conciergebank.com<br />
-					<strong>For Emergencies:</strong> Use the "Report Fraud" button in your mobile app
+					<strong>For Emergencies:</strong> Use the &quot;Report Fraud&quot; button in your mobile app
 				</p>
 				<p className="text-neutral-700 leading-relaxed mt-4">
 					Your security is our priority. We continuously invest in the latest security technologies

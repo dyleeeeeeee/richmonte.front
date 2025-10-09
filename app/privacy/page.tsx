@@ -35,14 +35,14 @@ export default function PrivacyPage() {
 
 				<h2 className="text-2xl font-bold text-neutral-900 mt-12 mb-4">Swiss Banking Privacy Standards</h2>
 				<p className="text-neutral-700 leading-relaxed">
-					As a Geneva-based institution, we adhere to Switzerland's stringent privacy laws and banking
+					As a Geneva-based institution, we adhere to Switzerland&apos;s stringent privacy laws and banking
 					secrecy traditions. Your information is protected by:
 				</p>
 				<ul className="list-disc pl-6 space-y-2 text-neutral-700">
 					<li>Swiss Federal Data Protection Act (FADP) compliance</li>
 					<li>Banking secrecy provisions under Swiss law</li>
 					<li>Advanced encryption and security protocols</li>
-					<li>Richemont Group's data governance framework</li>
+					<li>Richemont Group&apos;s data governance framework</li>
 				</ul>
 
 				<h2 className="text-2xl font-bold text-neutral-900 mt-12 mb-4">Information Sharing</h2>
@@ -51,7 +51,7 @@ export default function PrivacyPage() {
 				</p>
 				<ul className="list-disc pl-6 space-y-2 text-neutral-700">
 					<li>Required by Swiss or international banking regulations</li>
-					<li>Necessary to provide services you've requested (e.g., partner Maisons for concierge services)</li>
+					<li>Necessary to provide services you&apos;ve requested (e.g., partner Maisons for concierge services)</li>
 					<li>With your explicit consent</li>
 					<li>To prevent fraud or protect our legal rights</li>
 				</ul>

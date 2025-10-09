@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useRef } from "react";
+import Image from "next/image";
 import ProtectedRoute from "@/components/ProtectedRoute";
 import DashboardLayout from "@/components/DashboardLayout";
 import { FileText, Upload, Package, Camera, Check, X } from "lucide-react";
@@ -116,9 +117,11 @@ export default function ChecksPage() {
                     </button>
                   ) : (
                     <div className="relative group">
-                      <img
+                      <Image
                         src={frontImage}
                         alt="Check front"
+                        width={800}
+                        height={450}
                         className="w-full aspect-[16/9] object-cover rounded-2xl border border-gold-500/30"
                       />
                       <button
@@ -168,9 +171,11 @@ export default function ChecksPage() {
                     </button>
                   ) : (
                     <div className="relative group">
-                      <img
+                      <Image
                         src={backImage}
                         alt="Check back"
+                        width={800}
+                        height={450}
                         className="w-full aspect-[16/9] object-cover rounded-2xl border border-gold-500/30"
                       />
                       <button
