@@ -2,6 +2,7 @@
 
 import { ReactNode } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { usePathname, useRouter } from "next/navigation";
 import { useAuth } from "@/contexts/AuthContext";
 import {
@@ -52,9 +53,15 @@ export default function DashboardLayout({ children }: { children: ReactNode }) {
         <div className="px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-16">
             {/* Logo */}
-            <Link href="/dashboard" className="flex items-center space-x-2">
-              <div className="w-10 h-10 rounded-full bg-gradient-to-br from-gold-400 to-gold-600 flex items-center justify-center">
-                <span className="text-dark-900 font-bold text-xl">C</span>
+            <Link href="/dashboard" className="flex items-center space-x-2 group">
+              <div className="relative w-10 h-10 transition-transform group-hover:scale-105">
+                <Image
+                  src="/logos/emblem.png"
+                  alt="Concierge Bank"
+                  fill
+                  className="object-contain"
+                  priority
+                />
               </div>
               <span className="font-serif text-xl font-bold hidden sm:block">
                 Concierge<span className="text-gold-500">Bank</span>

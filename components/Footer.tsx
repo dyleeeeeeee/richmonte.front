@@ -26,7 +26,7 @@ export default function Footer() {
                   className="object-contain"
                 />
               </div>
-              <span className="font-display text-xl font-normal text-neutral-900">
+              <span className="font-display text-xl font-semibold text-neutral-900">
                 Concierge<span className="text-gold-600">Bank</span>
               </span>
             </div>

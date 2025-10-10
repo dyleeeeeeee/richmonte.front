@@ -8,11 +8,11 @@ interface CreditCardProps {
   holder: string;
   expiryDate?: string;
   cvv?: string;
-  tier: "Gold" | "Platinum" | "Black";
+  tier: string;
   brand?: string;
   balance?: number;
   creditLimit?: number;
-  status: "active" | "locked";
+  status: string;
 }
 
 export default function CreditCard({

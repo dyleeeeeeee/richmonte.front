@@ -76,7 +76,12 @@ export default function ApplyCardPage() {
     // Simulate approval process
     setTimeout(async () => {
       try {
-        const response = await cardAPI.requestCard(selectedTier);
+        const selectedCard = CARD_TIERS.find(c => c.tier === selectedTier);
+        const response = await cardAPI.applyCard({
+          card_type: selectedTier,
+          card_brand: "Cartier",
+          credit_limit: selectedCard?.limit || 50000,
+        });
         if (response.data) {
           setApproved(true);
         } else {

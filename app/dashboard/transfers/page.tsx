@@ -4,7 +4,7 @@ import { useEffect, useState, FormEvent, useCallback } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import ProtectedRoute from "@/components/ProtectedRoute";
 import DashboardLayout from "@/components/DashboardLayout";
-import { accountAPI, transactionAPI, Account } from "@/lib/api";
+import { accountAPI, transferAPI, Account } from "@/lib/api";
 import { Send, Calendar, Repeat, User, Building, ArrowRight } from "lucide-react";
 
 export const runtime = 'edge';
@@ -50,24 +50,32 @@ export default function TransfersPage() {
 
   const loadHistory = useCallback(async () => {
     try {
-      const response = await transactionAPI.getTransactions();
-      if (response.data) {
-        setHistory(response.data.slice(0, 10));
+      // Load transactions from first account if available
+      if (accounts.length > 0) {
+        const response = await accountAPI.getAccountTransactions(accounts[0].id);
+        if (response.data) {
+          setHistory(response.data.slice(0, 10));
+        }
       }
     } catch (error) {
       console.error("Failed to load history:", error);
     }
-  }, []);
+  }, [accounts]);
 
   useEffect(() => {
     loadAccounts();
-    loadHistory();
     
     const fromAccount = searchParams.get("from");
     if (fromAccount) {
       setFormData((prev) => ({ ...prev, from_account: fromAccount }));
     }
-  }, [searchParams, loadAccounts, loadHistory]);
+  }, [searchParams, loadAccounts]);
+
+  useEffect(() => {
+    if (accounts.length > 0) {
+      loadHistory();
+    }
+  }, [accounts, loadHistory]);
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
@@ -94,7 +102,7 @@ export default function TransfersPage() {
         };
       }
 
-      const response = await transactionAPI.createTransfer(transferData);
+      const response = await transferAPI.createTransfer(transferData);
 
       if (response.data) {
         alert("Transfer completed successfully!");

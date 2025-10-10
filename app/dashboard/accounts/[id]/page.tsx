@@ -4,7 +4,7 @@ import { useEffect, useState, useCallback } from "react";
 import { useRouter, useParams } from "next/navigation";
 import ProtectedRoute from "@/components/ProtectedRoute";
 import DashboardLayout from "@/components/DashboardLayout";
-import { accountAPI, transactionAPI, Transaction, Account } from "@/lib/api";
+import { accountAPI, Transaction, Account } from "@/lib/api";
 import { ArrowUpRight, ArrowDownLeft, Download, Filter, Search } from "lucide-react";
 
 export const runtime = 'edge';
@@ -22,7 +22,7 @@ export default function AccountDetailPage() {
     try {
       const [accountsRes, transactionsRes] = await Promise.all([
         accountAPI.getAccounts(),
-        transactionAPI.getTransactions(params.id as string),
+        accountAPI.getAccountTransactions(params.id as string),
       ]);
 
       if (accountsRes.data) {

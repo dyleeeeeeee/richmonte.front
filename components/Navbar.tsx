@@ -36,7 +36,7 @@ export default function Navbar() {
               priority
             />
           </div>
-          <span className="font-display text-2xl md:text-3xl font-normal tracking-tight text-neutral-900">
+          <span className="font-display text-2xl md:text-3xl font-semibold tracking-tight text-neutral-900">
             Concierge<span className="text-gold-600">Bank</span>
           </span>
         </Link>
@@ -44,7 +44,7 @@ export default function Navbar() {
         {isHomePage ? (
           <Link
             href="/login"
-            className="text-base md:text-lg font-normal text-neutral-700 hover:text-gold-600 transition-all duration-300 hover:scale-105"
+            className="text-base md:text-lg font-medium text-neutral-700 hover:text-gold-600 transition-all duration-300 hover:scale-105"
           >
             My Account
           </Link>

@@ -99,11 +99,6 @@ export const authAPI = {
     return fetchAPI<User>("/api/auth/me");
   },
 
-  async refreshToken(): Promise<ApiResponse<void>> {
-    return fetchAPI<void>("/api/auth/refresh", {
-      method: "POST",
-    });
-  },
 };
 
 // ============================================================================
@@ -113,16 +108,18 @@ export const authAPI = {
 export interface Account {
   id: string;
   user_id: string;
-  account_type: string;
   account_number: string;
+  account_type: string;
   balance: number;
   currency: string;
+  status: string;
   created_at: string;
+  updated_at: string;
 }
 
 export interface CreateAccountData {
   account_type: string;
-  initial_deposit: number;
+  initial_deposit?: number;
 }
 
 export const accountAPI = {
@@ -131,10 +128,14 @@ export const accountAPI = {
   },
 
   async createAccount(data: CreateAccountData): Promise<ApiResponse<Account>> {
-    return fetchAPI<Account>("/api/accounts/create", {
+    return fetchAPI<Account>("/api/accounts", {
       method: "POST",
       body: JSON.stringify(data),
     });
+  },
+
+  async getAccountTransactions(accountId: string): Promise<ApiResponse<Transaction[]>> {
+    return fetchAPI<Transaction[]>(`/api/accounts/${accountId}/transactions`);
   },
 };
 
@@ -144,32 +145,32 @@ export const accountAPI = {
 
 export interface Transaction {
   id: string;
-  from_account: string;
-  to_account: string;
-  amount: number;
+  account_id: string;
   type: "credit" | "debit";
+  amount: number;
   description?: string;
   merchant?: string;
   category?: string;
-  timestamp: string;
   created_at: string;
-  status: string;
 }
 
 export interface TransferData {
   from_account_id: string;
-  to_account_id: string;
+  to_account_id?: string;
+  to_external?: {
+    account_number?: string;
+    routing_number?: string;
+    name?: string;
+    email?: string;
+    phone?: string;
+  };
   amount: number;
+  transfer_type?: string;
 }
 
-export const transactionAPI = {
-  async getTransactions(accountId?: string): Promise<ApiResponse<Transaction[]>> {
-    const query = accountId ? `?account_id=${accountId}` : "";
-    return fetchAPI<Transaction[]>(`/api/transactions${query}`);
-  },
-
-  async createTransfer(data: TransferData): Promise<ApiResponse<Transaction>> {
-    return fetchAPI<Transaction>("/api/transfer", {
+export const transferAPI = {
+  async createTransfer(data: TransferData): Promise<ApiResponse<any>> {
+    return fetchAPI<any>("/api/transfers", {
       method: "POST",
       body: JSON.stringify(data),
     });
@@ -183,15 +184,21 @@ export const transactionAPI = {
 export interface Card {
   id: string;
   user_id: string;
-  status: "active" | "locked";
-  tier: "Gold" | "Platinum" | "Black";
-  card_brand?: string;
   card_number: string;
+  card_type: string;
+  card_brand?: string;
   cvv?: string;
   expiry_date?: string;
-  balance?: number;
   credit_limit?: number;
+  balance?: number;
+  status: "active" | "locked" | "expired";
   created_at: string;
+}
+
+export interface CardApplicationData {
+  card_type: string;
+  card_brand?: string;
+  credit_limit?: number;
 }
 
 export const cardAPI = {
@@ -199,17 +206,17 @@ export const cardAPI = {
     return fetchAPI<Card[]>("/api/cards");
   },
 
-  async requestCard(tier: string): Promise<ApiResponse<Card>> {
-    return fetchAPI<Card>("/api/cards/request", {
+  async applyCard(data: CardApplicationData): Promise<ApiResponse<Card>> {
+    return fetchAPI<Card>("/api/cards/apply", {
       method: "POST",
-      body: JSON.stringify({ tier }),
+      body: JSON.stringify(data),
     });
   },
 
   async lockCard(cardId: string, locked: boolean): Promise<ApiResponse<void>> {
-    return fetchAPI<void>("/api/cards/lock", {
+    return fetchAPI<void>(`/api/cards/${cardId}/lock`, {
       method: "POST",
-      body: JSON.stringify({ card_id: cardId, locked }),
+      body: JSON.stringify({ locked }),
     });
   },
 };
@@ -246,6 +253,104 @@ export const conciergeAPI = {
 };
 
 // ============================================================================
+// Bill API
+// ============================================================================
+
+export interface Bill {
+  id: string;
+  user_id: string;
+  payee_name: string;
+  account_number?: string;
+  bill_type: string;
+  auto_pay: boolean;
+  created_at: string;
+}
+
+export interface BillPaymentData {
+  account_id: string;
+  amount: number;
+  payment_date?: string;
+}
+
+export interface BillPayment {
+  id: string;
+  user_id: string;
+  bill_id: string;
+  account_id: string;
+  amount: number;
+  payment_date: string;
+  status: string;
+  created_at: string;
+}
+
+export const billAPI = {
+  async getBills(): Promise<ApiResponse<Bill[]>> {
+    return fetchAPI<Bill[]>("/api/bills");
+  },
+
+  async addBill(data: { payee_name: string; account_number?: string; bill_type?: string; auto_pay?: boolean }): Promise<ApiResponse<Bill>> {
+    return fetchAPI<Bill>("/api/bills", {
+      method: "POST",
+      body: JSON.stringify(data),
+    });
+  },
+
+  async payBill(billId: string, data: BillPaymentData): Promise<ApiResponse<any>> {
+    return fetchAPI<any>(`/api/bills/${billId}/pay`, {
+      method: "POST",
+      body: JSON.stringify(data),
+    });
+  },
+};
+
+// ============================================================================
+// Check API
+// ============================================================================
+
+export interface Check {
+  id: string;
+  user_id: string;
+  account_id: string;
+  check_number?: string;
+  amount: number;
+  status: string;
+  created_at: string;
+}
+
+export interface CheckDepositData {
+  account_id: string;
+  amount: number;
+  check_number?: string;
+}
+
+export interface CheckOrderData {
+  account_id: string;
+  design?: string;
+  quantity?: number;
+  price?: number;
+}
+
+export const checkAPI = {
+  async getChecks(): Promise<ApiResponse<Check[]>> {
+    return fetchAPI<Check[]>("/api/checks");
+  },
+
+  async depositCheck(data: CheckDepositData): Promise<ApiResponse<Check>> {
+    return fetchAPI<Check>("/api/checks/deposit", {
+      method: "POST",
+      body: JSON.stringify(data),
+    });
+  },
+
+  async orderChecks(data: CheckOrderData): Promise<ApiResponse<any>> {
+    return fetchAPI<any>("/api/checks/order", {
+      method: "POST",
+      body: JSON.stringify(data),
+    });
+  },
+};
+
+// ============================================================================
 // Notification API
 // ============================================================================
 
@@ -261,11 +366,32 @@ export const notificationAPI = {
   async getNotifications(): Promise<ApiResponse<Notification[]>> {
     return fetchAPI<Notification[]>("/api/notifications");
   },
+};
 
-  async markAsRead(notificationId: string): Promise<ApiResponse<void>> {
-    return fetchAPI<void>("/api/notifications/read", {
-      method: "POST",
-      body: JSON.stringify({ notification_id: notificationId }),
+// ============================================================================
+// Settings API
+// ============================================================================
+
+export interface UserSettings {
+  id: string;
+  email: string;
+  full_name: string;
+  phone?: string;
+  address?: any;
+  photo_url?: string;
+  preferred_brand?: string;
+  notification_preferences?: any;
+}
+
+export const settingsAPI = {
+  async getSettings(): Promise<ApiResponse<UserSettings>> {
+    return fetchAPI<UserSettings>("/api/settings");
+  },
+
+  async updateSettings(data: Partial<UserSettings>): Promise<ApiResponse<UserSettings>> {
+    return fetchAPI<UserSettings>("/api/settings", {
+      method: "PUT",
+      body: JSON.stringify(data),
     });
   },
 };

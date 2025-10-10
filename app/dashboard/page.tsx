@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import ProtectedRoute from "@/components/ProtectedRoute";
 import DashboardLayout from "@/components/DashboardLayout";
-import { accountAPI, transactionAPI, cardAPI, Account, Transaction } from "@/lib/api";
+import { accountAPI, cardAPI, Account, Transaction } from "@/lib/api";
 import { ArrowUpRight, ArrowDownLeft, CreditCard, Send, Plus, TrendingUp } from "lucide-react";
 
 export default function DashboardPage() {
@@ -20,14 +20,20 @@ export default function DashboardPage() {
 
   const loadData = async () => {
     try {
-      const [accountsRes, transactionsRes, cardsRes] = await Promise.all([
+      const [accountsRes, cardsRes] = await Promise.all([
         accountAPI.getAccounts(),
-        transactionAPI.getTransactions(),
         cardAPI.getCards(),
       ]);
 
-      if (accountsRes.data) setAccounts(accountsRes.data);
-      if (transactionsRes.data) setTransactions(transactionsRes.data.slice(0, 5));
+      if (accountsRes.data) {
+        setAccounts(accountsRes.data);
+        
+        // Load transactions from first account if available
+        if (accountsRes.data.length > 0) {
+          const txRes = await accountAPI.getAccountTransactions(accountsRes.data[0].id);
+          if (txRes.data) setTransactions(txRes.data.slice(0, 5));
+        }
+      }
       if (cardsRes.data) setCards(cardsRes.data);
     } catch (error) {
       console.error("Failed to load dashboard data:", error);

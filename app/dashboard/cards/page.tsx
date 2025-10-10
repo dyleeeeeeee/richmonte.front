@@ -109,7 +109,7 @@ export default function CardsPage() {
                     holder="Cardholder Name"
                     expiryDate={card.expiry_date}
                     cvv={card.cvv}
-                    tier={card.tier}
+                    tier={card.card_type}
                     brand={card.card_brand}
                     balance={card.balance}
                     creditLimit={card.credit_limit}
