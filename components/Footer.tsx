@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 
 export default function Footer() {
   return (
@@ -9,15 +10,20 @@ export default function Footer() {
         <div className="grid grid-cols-1 md:grid-cols-4 gap-12">
           <div className="space-y-4">
             <div className="flex items-center space-x-2">
-              <div className="w-10 h-10 rounded-full bg-gradient-to-br from-gold-500 to-gold-700 flex items-center justify-center">
-                <span className="text-white font-bold text-xl">C</span>
+              <div className="relative w-10 h-10">
+                <Image
+                  src="/logos/emblem.png"
+                  alt="Concierge Bank"
+                  fill
+                  className="object-contain"
+                />
               </div>
-              <span className="font-display text-xl font-bold text-neutral-900">
+              <span className="font-display text-xl font-normal text-neutral-900">
                 Concierge<span className="text-gold-600">Bank</span>
               </span>
             </div>
             <p className="text-sm text-neutral-600">
-              A Richemont Financial Institution
+              a subsidiary of Compagnie Financière Richemont SA
             </p>
             <p className="text-xs text-neutral-500 mt-1">
               Swiss Precision. Maison Excellence.
@@ -104,8 +110,8 @@ export default function Footer() {
         </div>
 
         <div className="mt-12 pt-8 border-t border-gold-300/30 text-center text-sm text-neutral-500">
-          <p>&copy; {new Date().getFullYear()} Concierge Bank. A Richemont Financial Institution. All rights reserved.</p>
-          <p className="text-xs mt-2 text-neutral-400">Geneva, Switzerland • Member of the Richemont Group</p>
+          <p>&copy; {new Date().getFullYear()} Concierge Bank. A subsidiary of Compagnie Financière Richemont SA. All rights reserved.</p>
+          <p className="text-xs mt-2 text-neutral-400">Geneva, Switzerland</p>
         </div>
       </div>
     </footer>

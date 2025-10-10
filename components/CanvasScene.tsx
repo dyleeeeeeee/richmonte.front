@@ -185,7 +185,7 @@ export default function CanvasScene() {
           const g = 40;
           const b = 40;
           
-          ctx.fillStyle = `rgba(${r}, ${g}, ${b}, ${alpha * 0.7})`;
+          ctx.fillStyle = `rgba(${r}, ${g}, ${b}, ${alpha * 0.3})`;
           ctx.beginPath();
           ctx.arc(projected.x, projected.y, size, 0, Math.PI * 2);
           ctx.fill();

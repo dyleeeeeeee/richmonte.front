@@ -43,8 +43,9 @@ const config: Config = {
         },
       },
       fontFamily: {
-        sans: ["var(--font-inter)", "sans-serif"],
-        display: ["var(--font-outfit)", "sans-serif"],
+        gruppo: ["var(--font-gruppo)", "sans-serif"],
+        sans: ["var(--font-gruppo)", "sans-serif"],
+        display: ["var(--font-gruppo)", "sans-serif"],
       },
       borderRadius: {
         lg: "var(--radius)",
