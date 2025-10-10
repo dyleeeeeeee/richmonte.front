@@ -1,0 +1,19 @@
+# Open Graph Image Generation
+
+To create the perfect OG image:
+
+1. Use Figma/Canva/Photoshop
+2. Dimensions: 1200 × 630 pixels
+3. Design elements:
+   - Background: Elegant gradient (gold to cream)
+   - Logo: Your banner.png centered
+   - Text: "Private Swiss Banking"
+   - Subtitle: "Compagnie Financière Richemont SA"
+   - Minimal, luxury aesthetic
+
+4. Export as: opengraph-image.png
+5. Place in: app/opengraph-image.png
+
+Next.js will automatically use this for OG tags!
+
+Quick template online: https://www.opengraph.xyz/

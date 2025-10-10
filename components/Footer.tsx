@@ -2,11 +2,19 @@
 
 import Link from "next/link";
 import Image from "next/image";
+import TrustBadges from "./TrustBadges";
 
 export default function Footer() {
   return (
     <footer className="relative z-10 bg-gradient-to-b from-light-100 to-light-200 border-t border-gold-300/30">
       <div className="container mx-auto px-6 py-16">
+        {/* Trust Badges */}
+        <div className="mb-12 pb-12 border-b border-gold-300/30">
+          <h3 className="text-center text-sm font-medium text-neutral-600 mb-6">
+            Regulatory Compliance & Trust
+          </h3>
+          <TrustBadges variant="compact" />
+        </div>
         <div className="grid grid-cols-1 md:grid-cols-4 gap-12">
           <div className="space-y-4">
             <div className="flex items-center space-x-2">
@@ -109,9 +117,19 @@ export default function Footer() {
           </div>
         </div>
 
-        <div className="mt-12 pt-8 border-t border-gold-300/30 text-center text-sm text-neutral-500">
-          <p>&copy; {new Date().getFullYear()} Concierge Bank. A subsidiary of Compagnie Financière Richemont SA. All rights reserved.</p>
-          <p className="text-xs mt-2 text-neutral-400">Geneva, Switzerland</p>
+        <div className="mt-12 pt-8 border-t border-gold-300/30 text-center">
+          <div className="text-xs text-neutral-500 mb-4 max-w-4xl mx-auto leading-relaxed">
+            <p className="mb-2">
+              Concierge Bank is a subsidiary of Compagnie Financière Richemont SA. Regulated by FINMA (Swiss Financial Market Supervisory Authority). 
+              US operations covered by FDIC insurance up to applicable limits. Member of the Swiss Bankers Association.
+            </p>
+            <p className="text-[10px] text-neutral-400">
+              Investment products and services are not FDIC insured, are not guaranteed by the bank, and may lose value. 
+              Basel III compliant. PCI DSS Level 1 certified.
+            </p>
+          </div>
+          <p className="text-sm text-neutral-500">&copy; {new Date().getFullYear()} Concierge Bank. A subsidiary of Compagnie Financière Richemont SA. All rights reserved.</p>
+          <p className="text-xs mt-2 text-neutral-400">Geneva, Switzerland • Regulated Financial Institution</p>
         </div>
       </div>
     </footer>

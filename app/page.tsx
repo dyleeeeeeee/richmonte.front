@@ -7,6 +7,7 @@ import CanvasScene from "@/components/CanvasScene";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import ScrollSection from "@/components/ScrollSection";
+import TrustBadges from "@/components/TrustBadges";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 
@@ -102,9 +103,15 @@ export default function Home() {
                 </div>
               </div>
               
-              <h2 className="text-center gradient-text text-3xl md:text-4xl lg:text-5xl font-normal tracking-tight">
+              <h2 className="text-center gradient-text text-3xl md:text-4xl lg:text-5xl font-normal tracking-tight mb-8">
                 a subsidiary of Compagnie Financière Richemont SA
               </h2>
+              
+              {/* Trust Badges */}
+              <div className="py-8 mb-8">
+                <TrustBadges variant="compact" />
+              </div>
+              
               <div className="grid md:grid-cols-2 gap-12 md:gap-16 text-lg md:text-xl leading-relaxed">
                 <p className="text-neutral-700 leading-loose">
                   Born from the heritage of <span className="text-gold-700 font-medium">Compagnie Financière Richemont SA</span>,

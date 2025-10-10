@@ -1,4 +1,5 @@
 import ReaderLayout from "@/components/ReaderLayout";
+import TrustBadges from "@/components/TrustBadges";
 
 export default function SecurityPage() {
 	return (
@@ -10,6 +11,36 @@ export default function SecurityPage() {
 					their masterpieces. Your financial security is safeguarded by Swiss banking standards and
 					cutting-edge technology.
 				</p>
+
+				<h2 className="text-2xl font-bold text-neutral-900 mt-12 mb-4">Regulatory Oversight & Insurance</h2>
+				<p className="text-neutral-700 leading-relaxed mb-8">
+					Our dual-jurisdiction structure provides the strongest possible protection for your assets,
+					combining Swiss privacy laws with US deposit insurance and international banking standards.
+				</p>
+				
+				<TrustBadges variant="detailed" className="mb-12" />
+
+				<div className="bg-gold-50/30 border border-gold-200/50 rounded-xl p-6 my-8">
+					<h3 className="text-xl font-semibold text-gold-800 mb-3">Comprehensive Protection</h3>
+					<ul className="space-y-3 text-neutral-700">
+						<li className="flex items-start space-x-2">
+							<span className="text-gold-600 font-bold mt-1">•</span>
+							<span><strong>FDIC Insurance:</strong> Up to $250,000 per depositor through our US banking partnerships</span>
+						</li>
+						<li className="flex items-start space-x-2">
+							<span className="text-gold-600 font-bold mt-1">•</span>
+							<span><strong>Swiss Deposit Protection:</strong> Additional coverage through Swiss banking guarantee schemes</span>
+						</li>
+						<li className="flex items-start space-x-2">
+							<span className="text-gold-600 font-bold mt-1">•</span>
+							<span><strong>Richemont Group Backing:</strong> Financial strength of a €42+ billion luxury conglomerate</span>
+						</li>
+						<li className="flex items-start space-x-2">
+							<span className="text-gold-600 font-bold mt-1">•</span>
+							<span><strong>Basel III Capital:</strong> Exceeds minimum regulatory capital requirements by 200%</span>
+						</li>
+					</ul>
+				</div>
 
 				<h2 className="text-2xl font-bold text-neutral-900 mt-12 mb-4">Swiss Banking Security</h2>
 				<p className="text-neutral-700 leading-relaxed">

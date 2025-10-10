@@ -1,0 +1,13 @@
+# robots.txt for Concierge Bank
+
+User-agent: *
+Allow: /
+
+# Disallow dashboard and authentication pages from crawling
+Disallow: /dashboard/
+Disallow: /login
+Disallow: /register
+Disallow: /api/
+
+# Sitemap location
+Sitemap: https://conciergebank.com/sitemap.xml

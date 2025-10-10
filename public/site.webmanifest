@@ -1,0 +1,22 @@
+{
+  "name": "Concierge Bank",
+  "short_name": "Concierge Bank",
+  "description": "Private Swiss Banking - A Compagnie Financière Richemont SA Subsidiary",
+  "icons": [
+    {
+      "src": "/android-chrome-192x192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "/android-chrome-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ],
+  "theme_color": "#EBA420",
+  "background_color": "#FEFDFB",
+  "display": "standalone",
+  "start_url": "/",
+  "scope": "/"
+}
