@@ -1,6 +1,6 @@
 "use client";
 
-import { ReactNode } from "react";
+import { ReactNode, useEffect, useRef } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { usePathname, useRouter } from "next/navigation";
@@ -16,6 +16,11 @@ import {
   X,
   Wallet,
   Receipt,
+  Bell,
+  Search,
+  ChevronDown,
+  User,
+  HelpCircle,
 } from "lucide-react";
 import { useState } from "react";
 
@@ -40,6 +45,23 @@ export default function DashboardLayout({ children }: { children: ReactNode }) {
   const router = useRouter();
   const { user, logout } = useAuth();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [userMenuOpen, setUserMenuOpen] = useState(false);
+  const [notificationCount] = useState(3); // TODO: Connect to actual notifications
+  const userMenuRef = useRef<HTMLDivElement>(null);
+
+  // Close user menu when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (userMenuRef.current && !userMenuRef.current.contains(event.target as Node)) {
+        setUserMenuOpen(false);
+      }
+    };
+
+    if (userMenuOpen) {
+      document.addEventListener('mousedown', handleClickOutside);
+      return () => document.removeEventListener('mousedown', handleClickOutside);
+    }
+  }, [userMenuOpen]);
 
   const handleLogout = async () => {
     await logout();
@@ -49,58 +71,162 @@ export default function DashboardLayout({ children }: { children: ReactNode }) {
   return (
     <div className="min-h-screen bg-dark-900">
       {/* Top Navigation Bar */}
-      <nav className="fixed top-0 left-0 right-0 z-50 bg-dark-800/95 backdrop-blur-md border-b border-gold-500/20">
+      <nav className="fixed top-0 left-0 right-0 z-50 bg-dark-800/98 backdrop-blur-xl border-b border-gold-500/20 shadow-lg shadow-black/20">
         <div className="px-4 sm:px-6 lg:px-8">
-          <div className="flex items-center justify-between h-16">
+          <div className="flex items-center justify-between h-16 md:h-18">
             {/* Logo */}
-            <Link href="/dashboard" className="flex items-center space-x-2 group">
-              <div className="relative w-10 h-10 transition-transform group-hover:scale-105">
+            <Link href="/dashboard" className="flex items-center space-x-3 group relative">
+              <div className="relative w-10 h-10 transition-all duration-300 group-hover:scale-110 group-hover:rotate-[5deg]">
                 <Image
                   src="/logos/emblem.png"
                   alt="Concierge Bank"
                   fill
-                  className="object-contain"
+                  className="object-contain drop-shadow-lg"
                   priority
                 />
               </div>
-              <span className="font-serif text-xl font-bold hidden sm:block">
-                Concierge<span className="text-gold-500">Bank</span>
-              </span>
+              <div className="hidden sm:block">
+                <span className="font-serif text-xl font-bold transition-all duration-200">
+                  Concierge<span className="text-gold-500 group-hover:text-gold-400">Bank</span>
+                </span>
+                <div className="h-0.5 w-0 bg-gradient-to-r from-gold-500 to-transparent group-hover:w-full transition-all duration-300"></div>
+              </div>
             </Link>
 
             {/* Desktop Navigation */}
             <div className="hidden md:flex items-center space-x-1">
-              {navItems.map((item) => (
-                <Link
-                  key={item.href}
-                  href={item.href}
-                  className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
-                    pathname === item.href
-                      ? "bg-gold-500 text-dark-900"
-                      : "text-gray-300 hover:bg-dark-700"
-                  }`}
-                >
-                  {item.name}
-                </Link>
-              ))}
+              {navItems.map((item) => {
+                const isActive = pathname === item.href || pathname?.startsWith(item.href + '/');
+                return (
+                  <Link
+                    key={item.href}
+                    href={item.href}
+                    className={`relative px-4 py-2.5 rounded-xl text-sm font-semibold transition-all duration-200 group ${
+                      isActive
+                        ? "bg-gradient-to-br from-gold-500 to-gold-600 text-dark-900 shadow-lg shadow-gold-500/20"
+                        : "text-gray-300 hover:bg-dark-700/60 hover:text-white"
+                    }`}
+                  >
+                    <span className="relative z-10">{item.name}</span>
+                    {isActive && (
+                      <div className="absolute inset-0 bg-white/10 rounded-xl animate-pulse"></div>
+                    )}
+                    {!isActive && (
+                      <div className="absolute inset-0 bg-gradient-to-br from-gold-500/0 to-gold-600/0 group-hover:from-gold-500/10 group-hover:to-gold-600/10 rounded-xl transition-all duration-200"></div>
+                    )}
+                  </Link>
+                );
+              })}
             </div>
 
-            {/* User Menu */}
-            <div className="flex items-center space-x-4">
-              <div className="hidden sm:block text-right">
-                <p className="text-sm font-medium">{user?.full_name}</p>
-                <p className="text-xs text-gray-400">{user?.email}</p>
-              </div>
+            {/* Right Section: Search, Notifications, User Menu */}
+            <div className="flex items-center space-x-2 sm:space-x-3">
+              {/* Search Button (Desktop) */}
               <button
-                onClick={handleLogout}
-                className="p-2 rounded-lg text-gray-400 hover:bg-dark-700 hover:text-gold-500 transition-colors"
-                title="Logout"
+                className="hidden lg:flex items-center space-x-2 px-3 py-2 bg-dark-700/40 hover:bg-dark-700/60 border border-gold-500/10 hover:border-gold-500/30 rounded-lg transition-all duration-200 group"
+                onClick={() => {/* TODO: Implement command palette */}}
+                title="Search (⌘K)"
               >
-                <LogOut size={20} />
+                <Search size={16} className="text-gray-400 group-hover:text-gold-500 transition-colors" />
+                <span className="text-xs text-gray-400 group-hover:text-gray-300">Search...</span>
+                <kbd className="hidden xl:inline-block px-1.5 py-0.5 text-[10px] font-mono bg-dark-900 border border-gold-500/20 rounded text-gray-500">⌘K</kbd>
               </button>
+
+              {/* Quick Search Icon (Tablet) */}
+              <button
+                className="lg:hidden p-2 rounded-lg text-gray-400 hover:bg-dark-700/60 hover:text-gold-500 transition-all duration-200"
+                title="Search"
+              >
+                <Search size={20} />
+              </button>
+
+              {/* Notifications */}
+              <button
+                className="relative p-2 rounded-lg text-gray-400 hover:bg-dark-700/60 hover:text-gold-500 transition-all duration-200 group"
+                onClick={() => router.push('/dashboard/notifications')}
+                title="Notifications"
+              >
+                <Bell size={20} className="group-hover:animate-wiggle" />
+                {notificationCount > 0 && (
+                  <span className="absolute -top-1 -right-1 flex h-5 w-5 items-center justify-center">
+                    <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-gold-500 opacity-75"></span>
+                    <span className="relative inline-flex h-4 w-4 rounded-full bg-gold-500 text-[10px] font-bold text-dark-900 items-center justify-center">
+                      {notificationCount}
+                    </span>
+                  </span>
+                )}
+              </button>
+
+              {/* Help */}
+              <button
+                className="hidden sm:block p-2 rounded-lg text-gray-400 hover:bg-dark-700/60 hover:text-gold-500 transition-all duration-200"
+                title="Help & Support"
+              >
+                <HelpCircle size={20} />
+              </button>
+
+              {/* User Profile Dropdown */}
+              <div ref={userMenuRef} className="hidden sm:block relative">
+                <button
+                  onClick={() => setUserMenuOpen(!userMenuOpen)}
+                  className="flex items-center space-x-2 px-3 py-2 rounded-xl bg-dark-700/40 hover:bg-dark-700/60 border border-gold-500/10 hover:border-gold-500/30 transition-all duration-200 group"
+                >
+                  <div className="w-8 h-8 rounded-full bg-gradient-to-br from-gold-500 to-gold-600 flex items-center justify-center text-dark-900 font-bold text-sm shadow-lg">
+                    {user?.full_name?.charAt(0) || 'U'}
+                  </div>
+                  <div className="hidden lg:block text-left">
+                    <p className="text-sm font-semibold text-white leading-tight">{user?.full_name}</p>
+                    <p className="text-xs text-gray-400 leading-tight">{user?.preferred_brand || 'Member'}</p>
+                  </div>
+                  <ChevronDown size={16} className={`text-gray-400 transition-transform duration-200 ${userMenuOpen ? 'rotate-180' : ''}`} />
+                </button>
+
+                {/* Dropdown Menu */}
+                {userMenuOpen && (
+                  <div className="absolute right-0 mt-2 w-56 bg-dark-800 border border-gold-500/20 rounded-xl shadow-2xl shadow-black/40 overflow-hidden z-50">
+                    <div className="p-3 border-b border-gold-500/10 bg-dark-700/30">
+                      <p className="text-sm font-semibold text-white">{user?.full_name}</p>
+                      <p className="text-xs text-gray-400 truncate">{user?.email}</p>
+                    </div>
+                    <div className="py-2">
+                      <Link
+                        href="/dashboard/settings"
+                        className="flex items-center space-x-3 px-4 py-2.5 text-sm text-gray-300 hover:bg-dark-700/60 hover:text-white transition-colors"
+                        onClick={() => setUserMenuOpen(false)}
+                      >
+                        <Settings size={16} />
+                        <span>Settings</span>
+                      </Link>
+                      <Link
+                        href="/dashboard/profile"
+                        className="flex items-center space-x-3 px-4 py-2.5 text-sm text-gray-300 hover:bg-dark-700/60 hover:text-white transition-colors"
+                        onClick={() => setUserMenuOpen(false)}
+                      >
+                        <User size={16} />
+                        <span>Profile</span>
+                      </Link>
+                    </div>
+                    <div className="border-t border-gold-500/10">
+                      <button
+                        onClick={() => {
+                          setUserMenuOpen(false);
+                          handleLogout();
+                        }}
+                        className="flex items-center space-x-3 px-4 py-2.5 text-sm text-red-400 hover:bg-red-500/10 hover:text-red-300 transition-colors w-full"
+                      >
+                        <LogOut size={16} />
+                        <span>Logout</span>
+                      </button>
+                    </div>
+                  </div>
+                )}
+              </div>
+
+              {/* Mobile Menu Toggle */}
               <button
                 onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-                className="md:hidden p-2 rounded-lg text-gray-400 hover:bg-dark-700 transition-colors"
+                className="md:hidden p-2 rounded-lg text-gray-400 hover:bg-dark-700/60 transition-all duration-200"
+                aria-label="Toggle menu"
               >
                 {mobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
               </button>
@@ -110,23 +236,82 @@ export default function DashboardLayout({ children }: { children: ReactNode }) {
 
         {/* Mobile Menu */}
         {mobileMenuOpen && (
-          <div className="md:hidden border-t border-gold-500/20 bg-dark-800">
-            <div className="px-4 py-4 space-y-2">
-              {navItems.map((item) => (
-                <Link
-                  key={item.href}
-                  href={item.href}
-                  onClick={() => setMobileMenuOpen(false)}
-                  className={`flex items-center space-x-3 px-4 py-3 rounded-lg text-sm font-medium transition-colors ${
-                    pathname === item.href
-                      ? "bg-gold-500 text-dark-900"
-                      : "text-gray-300 hover:bg-dark-700"
-                  }`}
-                >
-                  {item.icon}
-                  <span>{item.name}</span>
-                </Link>
-              ))}
+          <div className="md:hidden border-t border-gold-500/20 bg-dark-800/95 backdrop-blur-lg animate-in slide-in-from-top duration-200">
+            {/* Mobile User Info */}
+            <div className="px-4 py-4 border-b border-gold-500/10 bg-dark-700/30">
+              <div className="flex items-center space-x-3">
+                <div className="w-12 h-12 rounded-full bg-gradient-to-br from-gold-500 to-gold-600 flex items-center justify-center text-dark-900 font-bold text-lg shadow-lg">
+                  {user?.full_name?.charAt(0) || 'U'}
+                </div>
+                <div className="flex-1 min-w-0">
+                  <p className="text-sm font-semibold text-white truncate">{user?.full_name}</p>
+                  <p className="text-xs text-gray-400 truncate">{user?.email}</p>
+                  <p className="text-xs text-gold-500 mt-0.5">{user?.preferred_brand || 'Member'}</p>
+                </div>
+              </div>
+            </div>
+
+            {/* Mobile Navigation */}
+            <div className="px-4 py-4 space-y-1">
+              {navItems.map((item) => {
+                const isActive = pathname === item.href || pathname?.startsWith(item.href + '/');
+                return (
+                  <Link
+                    key={item.href}
+                    href={item.href}
+                    onClick={() => setMobileMenuOpen(false)}
+                    className={`flex items-center space-x-3 px-4 py-3 rounded-xl text-sm font-semibold transition-all duration-200 ${
+                      isActive
+                        ? "bg-gradient-to-br from-gold-500 to-gold-600 text-dark-900 shadow-lg"
+                        : "text-gray-300 hover:bg-dark-700/60 hover:text-white active:scale-95"
+                    }`}
+                  >
+                    <div className={isActive ? "" : "text-gray-400"}>{item.icon}</div>
+                    <span>{item.name}</span>
+                  </Link>
+                );
+              })}
+            </div>
+
+            {/* Mobile Quick Actions */}
+            <div className="px-4 py-3 border-t border-gold-500/10 space-y-1">
+              <button
+                onClick={() => {
+                  setMobileMenuOpen(false);
+                  router.push('/dashboard/notifications');
+                }}
+                className="flex items-center justify-between w-full px-4 py-2.5 rounded-lg text-sm text-gray-300 hover:bg-dark-700/60 hover:text-white transition-colors"
+              >
+                <div className="flex items-center space-x-3">
+                  <Bell size={18} />
+                  <span>Notifications</span>
+                </div>
+                {notificationCount > 0 && (
+                  <span className="px-2 py-0.5 bg-gold-500 text-dark-900 text-xs font-bold rounded-full">
+                    {notificationCount}
+                  </span>
+                )}
+              </button>
+              <button
+                className="flex items-center space-x-3 w-full px-4 py-2.5 rounded-lg text-sm text-gray-300 hover:bg-dark-700/60 hover:text-white transition-colors"
+              >
+                <HelpCircle size={18} />
+                <span>Help & Support</span>
+              </button>
+            </div>
+
+            {/* Mobile Logout */}
+            <div className="px-4 py-3 border-t border-gold-500/10">
+              <button
+                onClick={() => {
+                  setMobileMenuOpen(false);
+                  handleLogout();
+                }}
+                className="flex items-center space-x-3 w-full px-4 py-2.5 rounded-lg text-sm text-red-400 hover:bg-red-500/10 hover:text-red-300 transition-colors"
+              >
+                <LogOut size={18} />
+                <span>Logout</span>
+              </button>
             </div>
           </div>
         )}

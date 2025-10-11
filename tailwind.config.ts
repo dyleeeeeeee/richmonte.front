@@ -41,6 +41,11 @@ const config: Config = {
           800: "#262626",
           900: "#1a1a1a",
         },
+        dark: {
+          700: "#2a2a2a",
+          800: "#1f1f1f",
+          900: "#0a0a0a",
+        },
       },
       fontFamily: {
         gruppo: ["var(--font-gruppo)", "sans-serif"],
@@ -51,6 +56,25 @@ const config: Config = {
         lg: "var(--radius)",
         md: "calc(var(--radius) - 2px)",
         sm: "calc(var(--radius) - 4px)",
+      },
+      keyframes: {
+        wiggle: {
+          '0%, 100%': { transform: 'rotate(-3deg)' },
+          '50%': { transform: 'rotate(3deg)' },
+        },
+        'slide-in-from-top': {
+          '0%': { transform: 'translateY(-10px)', opacity: '0' },
+          '100%': { transform: 'translateY(0)', opacity: '1' },
+        },
+        'fade-in': {
+          '0%': { opacity: '0' },
+          '100%': { opacity: '1' },
+        },
+      },
+      animation: {
+        wiggle: 'wiggle 0.5s ease-in-out',
+        'slide-in-from-top': 'slide-in-from-top 0.2s ease-out',
+        'fade-in': 'fade-in 0.15s ease-in',
       },
     },
   },

@@ -128,25 +128,37 @@ Each section uses GSAP ScrollTrigger with:
 The frontend connects to these backend endpoints:
 
 ### Authentication
-- `POST /api/auth/login` - User login
 - `POST /api/auth/register` - New user registration
+- `POST /api/auth/login` - User login
 - `POST /api/auth/logout` - User logout
-- `GET /api/auth/me` - Get current user
+- `GET /api/auth/me` - Get current user profile
 
 ### Banking
 - `GET /api/accounts` - List user accounts
-- `POST /api/accounts/create` - Create new account
-- `GET /api/transactions` - Transaction history
-- `POST /api/transfer` - Execute fund transfer
+- `POST /api/accounts` - Create new account
+- `GET /api/accounts/:id/transactions` - Transaction history for specific account
+
+### Transfers
+- `POST /api/transfers` - Execute fund transfer (internal/external/p2p)
 
 ### Cards
 - `GET /api/cards` - User's cards
-- `POST /api/cards/request` - Request new elite card
-- `POST /api/cards/lock` - Lock/unlock card
+- `POST /api/cards/apply` - Apply for new elite card
+- `POST /api/cards/:id/lock` - Lock/unlock card
 
-### Concierge
-- `POST /api/concierge/chat` - AI concierge chat
-- `POST /api/concierge/request` - Human concierge request
+### Bills
+- `GET /api/bills` - List saved bill payees
+- `POST /api/bills` - Add bill payee
+- `POST /api/bills/:id/pay` - Pay bill
+
+### Checks
+- `GET /api/checks` - List checks
+- `POST /api/checks/deposit` - Deposit check
+- `POST /api/checks/order` - Order checkbook
+
+### Settings & Notifications
+- `GET /api/settings` - Get user settings
+- `PUT /api/settings` - Update user settings
 - `GET /api/notifications` - User notifications
 
 ## 🛠️ Development Commands

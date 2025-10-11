@@ -3,6 +3,7 @@
 import { useState, FormEvent } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
+import Image from "next/image";
 import { useAuth } from "@/contexts/AuthContext";
 import type { RegisterData } from "@/lib/api";
 
@@ -61,12 +62,18 @@ export default function RegisterPage() {
     <div className="min-h-screen flex items-center justify-center bg-dark-900 px-4 py-12">
       <div className="w-full max-w-md">
         <div className="text-center mb-8">
-          <Link href="/" className="inline-flex items-center space-x-2 mb-6">
-            <div className="w-12 h-12 rounded-full bg-gradient-to-br from-gold-400 to-gold-600 flex items-center justify-center">
-              <span className="text-dark-900 font-bold text-2xl">C</span>
+          <Link href="/" className="inline-flex items-center space-x-3 mb-6 group">
+            <div className="relative w-12 h-12 transition-transform group-hover:scale-110">
+              <Image
+                src="/logos/emblem.png"
+                alt="Concierge Bank"
+                fill
+                className="object-contain drop-shadow-lg"
+                priority
+              />
             </div>
             <span className="font-serif text-3xl font-bold">
-              Concierge<span className="text-gold-500">Bank</span>
+              Concierge<span className="text-gold-500 group-hover:text-gold-400 transition-colors">Bank</span>
             </span>
           </Link>
           <h1 className="text-3xl font-serif font-bold mb-2">Request Membership</h1>
