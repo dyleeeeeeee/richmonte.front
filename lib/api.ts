@@ -356,6 +356,8 @@ export const checkAPI = {
 export interface Notification {
   id: string;
   user_id: string;
+  type: string;
+  title: string;
   message: string;
   read: boolean;
   created_at: string;
@@ -365,12 +367,23 @@ export const notificationAPI = {
   async getNotifications(): Promise<ApiResponse<Notification[]>> {
     return fetchAPI<Notification[]>("/api/notifications");
   },
+  
+  async markAsRead(notificationId: string): Promise<ApiResponse<void>> {
+    return fetchAPI<void>(`/api/notifications/${notificationId}/read`, {
+      method: "PUT",
+    });
+  },
+  
+  async markAllAsRead(): Promise<ApiResponse<void>> {
+    return fetchAPI<void>("/api/notifications/mark-all-read", {
+      method: "PUT",
+    });
+  },
 };
 
 // ============================================================================
 // Settings API
 // ============================================================================
-
 export interface UserSettings {
   id: string;
   email: string;
