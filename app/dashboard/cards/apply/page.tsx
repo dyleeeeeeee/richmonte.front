@@ -103,29 +103,29 @@ export default function ApplyCardPage() {
             <div className="w-20 h-20 bg-green-500/20 rounded-full flex items-center justify-center mx-auto mb-6">
               <Check className="text-green-500" size={40} />
             </div>
-            <h1 className="text-4xl font-serif font-bold mb-4">Congratulations!</h1>
-            <p className="text-xl text-gray-300 mb-8">
+            <h1 className="text-4xl font-work-sans font-bold mb-4">Congratulations!</h1>
+            <p className="text-xl text-gray-300 mb-8 font-gruppo">
               Your {selectedTier} Card application has been approved
             </p>
             <div className="bg-dark-800/30 border border-gold-500/10 rounded-xl p-8 mb-8">
-              <p className="text-gray-400 mb-4">
+              <p className="text-gray-400 mb-4 font-gruppo">
                 Your new {selectedTier} Card is being prepared and will arrive within 5-7 business days.
                 You&apos;ll receive a confirmation email shortly with tracking information.
               </p>
-              <p className="text-sm text-gray-500">
+              <p className="text-sm text-gray-500 font-gruppo">
                 Your card will be activated automatically upon first use.
               </p>
             </div>
             <div className="flex space-x-4 justify-center">
               <button
                 onClick={() => router.push("/dashboard/cards")}
-                className="px-8 py-3 bg-gold-500 text-dark-900 rounded-lg font-semibold hover:bg-gold-400 transition-colors"
+                className="px-8 py-3 bg-gold-500 text-dark-900 rounded-lg font-work-sans font-semibold hover:bg-gold-400 transition-colors"
               >
                 View My Cards
               </button>
               <button
                 onClick={() => router.push("/dashboard")}
-                className="px-8 py-3 bg-dark-700 text-gray-300 rounded-lg font-semibold hover:bg-dark-600 transition-colors"
+                className="px-8 py-3 bg-dark-700 text-gray-300 rounded-lg font-work-sans font-semibold hover:bg-dark-600 transition-colors"
               >
                 Back to Dashboard
               </button>
@@ -141,8 +141,8 @@ export default function ApplyCardPage() {
       <DashboardLayout>
         <div className="max-w-4xl mx-auto space-y-8">
           <div>
-            <h1 className="text-3xl font-serif font-bold mb-2">Apply for Concierge Bank Card</h1>
-            <p className="text-gray-400">Complete your application in 3 simple steps</p>
+            <h1 className="text-3xl font-work-sans font-bold mb-2">Apply for Concierge Bank Card</h1>
+            <p className="text-gray-400 font-gruppo">Complete your application in 3 simple steps</p>
           </div>
 
           {/* Progress Steps */}
@@ -150,7 +150,7 @@ export default function ApplyCardPage() {
             {[1, 2, 3].map((s) => (
               <div key={s} className="flex items-center">
                 <div
-                  className={`w-10 h-10 rounded-full flex items-center justify-center font-semibold transition-colors ${
+                  className={`w-10 h-10 rounded-full flex items-center justify-center font-work-sans font-semibold transition-colors ${
                     step >= s
                       ? "bg-gold-500 text-dark-900"
                       : "bg-dark-800 text-gray-400 border border-gold-500/20"
@@ -173,7 +173,7 @@ export default function ApplyCardPage() {
             {/* Step 1: Choose Card */}
             {step === 1 && (
               <div className="space-y-6">
-                <h2 className="text-2xl font-semibold">Choose Your Card</h2>
+                <h2 className="text-2xl font-work-sans font-semibold">Choose Your Card</h2>
                 <div className="grid md:grid-cols-3 gap-6">
                   {CARD_TIERS.map((card) => (
                     <div
@@ -186,14 +186,14 @@ export default function ApplyCardPage() {
                       }`}
                     >
                       <div className="flex items-center justify-between mb-4">
-                        <h3 className="text-xl font-bold">{card.tier}</h3>
+                        <h3 className="text-xl font-work-sans font-bold">{card.tier}</h3>
                         {selectedTier === card.tier && (
                           <Check className="text-gold-500" size={24} />
                         )}
                       </div>
-                      <p className="text-3xl font-bold mb-2">{card.cashback}%</p>
-                      <p className="text-sm text-gray-400 mb-4">Cashback</p>
-                      <p className="text-sm text-gray-400 mb-4">
+                      <p className="text-3xl font-work-sans font-bold mb-2">{card.cashback}%</p>
+                      <p className="text-sm text-gray-400 mb-4 font-gruppo">Cashback</p>
+                      <p className="text-sm text-gray-400 mb-4 font-gruppo">
                         {card.limit === 0
                           ? "No preset limit"
                           : `$${card.limit.toLocaleString()} limit`}
@@ -206,7 +206,7 @@ export default function ApplyCardPage() {
                           </p>
                         ))}
                       </div>
-                      <p className="text-sm font-semibold">
+                      <p className="text-sm font-work-sans font-semibold">
                         {card.fee === 0 ? "No annual fee" : `$${card.fee}/year`}
                       </p>
                     </div>
@@ -218,10 +218,10 @@ export default function ApplyCardPage() {
             {/* Step 2: Employment Info */}
             {step === 2 && (
               <div className="space-y-6">
-                <h2 className="text-2xl font-semibold">Employment Information</h2>
+                <h2 className="text-2xl font-work-sans font-semibold">Employment Information</h2>
                 <div className="grid md:grid-cols-2 gap-6">
                   <div>
-                    <label className="block text-sm font-medium mb-2">Employment Status</label>
+                    <label className="block text-sm font-work-sans font-medium mb-2">Employment Status</label>
                     <select
                       value={formData.employment_status}
                       onChange={(e) =>
@@ -239,7 +239,7 @@ export default function ApplyCardPage() {
                   </div>
 
                   <div>
-                    <label className="block text-sm font-medium mb-2">Employer</label>
+                    <label className="block text-sm font-work-sans font-medium mb-2">Employer</label>
                     <input
                       type="text"
                       value={formData.employer}
@@ -251,7 +251,7 @@ export default function ApplyCardPage() {
                   </div>
 
                   <div>
-                    <label className="block text-sm font-medium mb-2">Annual Income</label>
+                    <label className="block text-sm font-work-sans font-medium mb-2">Annual Income</label>
                     <div className="relative">
                       <DollarSign className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" size={20} />
                       <input
@@ -268,7 +268,7 @@ export default function ApplyCardPage() {
                   </div>
 
                   <div>
-                    <label className="block text-sm font-medium mb-2">Housing Status</label>
+                    <label className="block text-sm font-work-sans font-medium mb-2">Housing Status</label>
                     <select
                       value={formData.housing_status}
                       onChange={(e) =>
@@ -286,7 +286,7 @@ export default function ApplyCardPage() {
 
                   {formData.housing_status === "rent" && (
                     <div>
-                      <label className="block text-sm font-medium mb-2">Monthly Rent/Mortgage</label>
+                      <label className="block text-sm font-work-sans font-medium mb-2">Monthly Rent/Mortgage</label>
                       <div className="relative">
                         <DollarSign className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" size={20} />
                         <input
@@ -308,30 +308,30 @@ export default function ApplyCardPage() {
             {/* Step 3: Review & Submit */}
             {step === 3 && (
               <div className="space-y-6">
-                <h2 className="text-2xl font-semibold">Review Your Application</h2>
+                <h2 className="text-2xl font-work-sans font-semibold">Review Your Application</h2>
                 <div className="bg-dark-800/30 border border-gold-500/10 rounded-xl p-6 space-y-4">
                   <div className="flex justify-between">
                     <span className="text-gray-400">Card Type</span>
-                    <span className="font-semibold">{selectedTier} Card</span>
+                    <span className="font-work-sans font-semibold">{selectedTier} Card</span>
                   </div>
                   <div className="flex justify-between">
                     <span className="text-gray-400">Employment</span>
-                    <span className="font-semibold">{formData.employment_status}</span>
+                    <span className="font-work-sans font-semibold">{formData.employment_status}</span>
                   </div>
                   <div className="flex justify-between">
                     <span className="text-gray-400">Employer</span>
-                    <span className="font-semibold">{formData.employer}</span>
+                    <span className="font-work-sans font-semibold">{formData.employer}</span>
                   </div>
                   <div className="flex justify-between">
                     <span className="text-gray-400">Annual Income</span>
-                    <span className="font-semibold">${parseInt(formData.annual_income).toLocaleString()}</span>
+                    <span className="font-work-sans font-semibold">${parseInt(formData.annual_income).toLocaleString()}</span>
                   </div>
                 </div>
 
                 <div className="bg-gold-500/10 border border-gold-500/30 rounded-xl p-6">
                   <Shield className="text-gold-500 mb-3" size={32} />
-                  <h3 className="font-semibold mb-2">Instant Decision</h3>
-                  <p className="text-sm text-gray-300">
+                  <h3 className="font-work-sans font-semibold mb-2">Instant Decision</h3>
+                  <p className="text-sm text-gray-300 font-gruppo">
                     We&apos;ll process your application immediately and provide an instant decision. Your information is encrypted and secure.
                   </p>
                 </div>
@@ -344,7 +344,7 @@ export default function ApplyCardPage() {
                 <button
                   type="button"
                   onClick={() => setStep(step - 1)}
-                  className="flex items-center space-x-2 px-6 py-3 bg-dark-700 text-gray-300 rounded-lg font-semibold hover:bg-dark-600 transition-colors"
+                  className="flex items-center space-x-2 px-6 py-3 bg-dark-700 text-gray-300 rounded-lg font-work-sans font-semibold hover:bg-dark-600 transition-colors"
                 >
                   <ChevronLeft size={20} />
                   <span>Back</span>
@@ -353,7 +353,7 @@ export default function ApplyCardPage() {
               <button
                 type="submit"
                 disabled={submitting}
-                className={`flex items-center space-x-2 px-8 py-3 bg-gradient-to-r from-gold-500 to-gold-600 text-dark-900 rounded-lg font-bold hover:from-gold-400 hover:to-gold-500 transition-all disabled:opacity-50 ${
+                className={`flex items-center space-x-2 px-8 py-3 bg-gradient-to-r from-gold-500 to-gold-600 text-dark-900 rounded-lg font-work-sans font-bold hover:from-gold-400 hover:to-gold-500 transition-all disabled:opacity-50 ${
                   step === 1 ? "ml-auto" : ""
                 }`}
               >

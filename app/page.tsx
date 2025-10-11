@@ -71,13 +71,13 @@ export default function Home() {
           <div className="text-center space-y-12 max-w-5xl mx-auto">
             <h1 className="overflow-hidden">
               <div className="flex flex-col items-center space-y-3">
-                <span className="hero-word gradient-text glow-gold text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-semibold tracking-tight">Swiss</span>
-                <span className="hero-word gradient-text glow-gold text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-semibold tracking-tight">Heritage.</span>
-                <span className="hero-word gradient-text glow-gold text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-semibold tracking-tight">Richemont</span>
-                <span className="hero-word gradient-text glow-gold text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-semibold tracking-tight">Excellence.</span>
+                <span className="hero-word gradient-text glow-gold text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-work-sans font-bold tracking-tight">Swiss</span>
+                <span className="hero-word gradient-text glow-gold text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-work-sans font-bold tracking-tight">Heritage.</span>
+                <span className="hero-word gradient-text glow-gold text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-work-sans font-bold tracking-tight">Richemont</span>
+                <span className="hero-word gradient-text glow-gold text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-work-sans font-bold tracking-tight">Excellence.</span>
               </div>
             </h1>
-            <p className="hero-tagline text-lg sm:text-xl md:text-2xl text-neutral-600 max-w-3xl mx-auto leading-relaxed font-medium">
+            <p className="hero-tagline text-lg sm:text-xl md:text-2xl text-neutral-600 max-w-3xl mx-auto leading-relaxed font-gruppo">
               Where Geneva&apos;s financial legacy meets the artistry of Maison Richemont
             </p>
           </div>
@@ -103,7 +103,7 @@ export default function Home() {
                 </div>
               </div>
               
-              <h2 className="text-center gradient-text text-3xl md:text-4xl lg:text-5xl font-semibold tracking-tight mb-8">
+              <h2 className="text-center gradient-text text-3xl md:text-4xl lg:text-5xl font-work-sans font-bold tracking-tight mb-8">
                 a subsidiary of Compagnie Financière Richemont SA
               </h2>
               
@@ -113,12 +113,12 @@ export default function Home() {
               </div>
               
               <div className="grid md:grid-cols-2 gap-12 md:gap-16 text-lg md:text-xl leading-relaxed">
-                <p className="text-neutral-700 leading-loose font-medium">
-                  Born from the heritage of <span className="text-gold-700 font-bold">Compagnie Financière Richemont SA</span>,
+                <p className="text-neutral-700 leading-loose font-gruppo">
+                  Born from the heritage of <span className="text-gold-700 font-work-sans font-bold">Compagnie Financière Richemont SA</span>,
                   Concierge Bank serves those who appreciate life&apos;s finest pursuits. We are the financial architects
                   for clients of Cartier, Van Cleef & Arpels, and our distinguished Maisons.
                 </p>
-                <p className="text-neutral-700 leading-loose font-medium">
+                <p className="text-neutral-700 leading-loose font-gruppo">
                   With Swiss precision and Maison craftsmanship, we curate wealth experiences
                   as meticulously as our sister houses craft their masterpieces. This is private banking
                   for the connoisseur—discreet, refined, uncompromising.
@@ -135,7 +135,7 @@ export default function Home() {
           id="cards"
         >
           <div className="container mx-auto px-6 sm:px-8">
-            <h2 className="text-center gradient-text mb-20 text-4xl md:text-5xl lg:text-6xl font-semibold tracking-tight">The Maison Collection</h2>
+            <h2 className="text-center gradient-text mb-20 text-4xl md:text-5xl lg:text-6xl font-work-sans font-bold tracking-tight">The Maison Collection</h2>
             <div className="grid md:grid-cols-3 gap-8 md:gap-10 max-w-6xl mx-auto">
               {[
                 {
@@ -160,15 +160,15 @@ export default function Home() {
                 >
                   <div className="absolute inset-0 bg-gradient-to-br from-gold-100/0 to-gold-200/60 opacity-0 group-hover:opacity-100 transition-opacity duration-500 rounded-3xl" />
                   <div className="relative z-10 space-y-6">
-                    <h3 className="text-4xl md:text-5xl font-bold mb-3 text-gold-700">
+                    <h3 className="text-4xl md:text-5xl font-work-sans font-extrabold mb-3 text-gold-700">
                       {card.name}
                     </h3>
-                    <p className="text-3xl md:text-4xl font-semibold text-neutral-800">{card.limit}</p>
+                    <p className="text-3xl md:text-4xl font-work-sans font-bold text-neutral-800">{card.limit}</p>
                     <ul className="space-y-4 pt-4">
                       {card.features.map((feature, i) => (
                         <li key={i} className="flex items-start space-x-3">
-                          <span className="text-gold-600 text-xl mt-0.5 font-bold">•</span>
-                          <span className="text-neutral-700 text-base md:text-lg leading-relaxed font-medium">{feature}</span>
+                          <span className="text-gold-600 text-xl mt-0.5 font-work-sans font-bold">•</span>
+                          <span className="text-neutral-700 text-base md:text-lg leading-relaxed font-gruppo">{feature}</span>
                         </li>
                       ))}
                     </ul>
@@ -182,7 +182,7 @@ export default function Home() {
         {/* Concierge Features Section */}
         <ScrollSection className="section-padding" animationType="fade" id="concierge">
           <div className="container mx-auto px-6 sm:px-8 max-w-6xl">
-            <h2 className="text-center gradient-text mb-20 text-4xl md:text-5xl lg:text-6xl font-semibold tracking-tight">Swiss Banking Excellence</h2>
+            <h2 className="text-center gradient-text mb-20 text-4xl md:text-5xl lg:text-6xl font-work-sans font-bold tracking-tight">Swiss Banking Excellence</h2>
             <div className="grid md:grid-cols-2 gap-10 md:gap-12">
               {[
                 {
@@ -210,10 +210,10 @@ export default function Home() {
                   key={idx}
                   className="p-10 bg-white/60 backdrop-blur-sm border-2 border-gold-200/60 rounded-2xl hover:border-gold-400/80 transition-all duration-300 shadow-md hover:shadow-lg hover:-translate-y-1 cursor-pointer"
                 >
-                  <h3 className="text-2xl md:text-3xl font-bold mb-6 text-gold-700">
+                  <h3 className="text-2xl md:text-3xl font-work-sans font-bold mb-6 text-gold-700">
                     {feature.title}
                   </h3>
-                  <p className="text-neutral-700 text-base md:text-lg leading-loose font-medium">{feature.description}</p>
+                  <p className="text-neutral-700 text-base md:text-lg leading-loose font-gruppo">{feature.description}</p>
                 </div>
               ))}
             </div>
@@ -226,53 +226,53 @@ export default function Home() {
           animationType="slide"
         >
           <div className="container mx-auto px-6 sm:px-8 max-w-6xl">
-            <h2 className="text-center gradient-text mb-20 text-4xl md:text-5xl lg:text-6xl font-semibold tracking-tight">Services</h2>
+            <h2 className="text-center gradient-text mb-20 text-4xl md:text-5xl lg:text-6xl font-work-sans font-bold tracking-tight">Services</h2>
             <div className="grid md:grid-cols-2 gap-16 md:gap-20">
               <div>
                 <div className="space-y-12">
                   <div>
-                    <h3 className="text-2xl md:text-3xl font-bold mb-5 text-gold-700">
+                    <h3 className="text-2xl md:text-3xl font-work-sans font-bold mb-5 text-gold-700">
                       Private Banking
                     </h3>
                     <ul className="space-y-3 text-neutral-600">
                       <li className="flex items-start space-x-3">
-                        <span className="text-gold-600 text-lg mt-1 font-bold">•</span>
-                        <span className="text-base md:text-lg font-medium">Bespoke Portfolio Curation</span>
+                        <span className="text-gold-600 text-lg mt-1 font-work-sans font-bold">•</span>
+                        <span className="text-base md:text-lg font-gruppo">Bespoke Portfolio Curation</span>
                       </li>
                       <li className="flex items-start space-x-3">
-                        <span className="text-gold-600 text-lg mt-1 font-bold">•</span>
-                        <span className="text-base md:text-lg font-medium">Swiss Investment Strategy</span>
+                        <span className="text-gold-600 text-lg mt-1 font-work-sans font-bold">•</span>
+                        <span className="text-base md:text-lg font-gruppo">Swiss Investment Strategy</span>
                       </li>
                       <li className="flex items-start space-x-3">
-                        <span className="text-gold-600 text-lg mt-1 font-bold">•</span>
-                        <span className="text-base md:text-lg font-medium">Geneva Tax Structuring</span>
+                        <span className="text-gold-600 text-lg mt-1 font-work-sans font-bold">•</span>
+                        <span className="text-base md:text-lg font-gruppo">Geneva Tax Structuring</span>
                       </li>
                       <li className="flex items-start space-x-3">
-                        <span className="text-gold-600 text-lg mt-1 font-bold">•</span>
-                        <span className="text-base md:text-lg font-medium">Legacy & Succession</span>
+                        <span className="text-gold-600 text-lg mt-1 font-work-sans font-bold">•</span>
+                        <span className="text-base md:text-lg font-gruppo">Legacy & Succession</span>
                       </li>
                     </ul>
                   </div>
                   <div>
-                    <h3 className="text-2xl md:text-3xl font-bold mb-5 text-gold-700">
+                    <h3 className="text-2xl md:text-3xl font-work-sans font-bold mb-5 text-gold-700">
                       Wealth Curation
                     </h3>
                     <ul className="space-y-3 text-neutral-600">
                       <li className="flex items-start space-x-3">
-                        <span className="text-gold-600 text-lg mt-1 font-bold">•</span>
-                        <span className="text-base md:text-lg font-medium">Fine Art & Collectibles</span>
+                        <span className="text-gold-600 text-lg mt-1 font-work-sans font-bold">•</span>
+                        <span className="text-base md:text-lg font-gruppo">Fine Art & Collectibles</span>
                       </li>
                       <li className="flex items-start space-x-3">
-                        <span className="text-gold-600 text-lg mt-1 font-bold">•</span>
-                        <span className="text-base md:text-lg font-medium">Exclusive Market Access</span>
+                        <span className="text-gold-600 text-lg mt-1 font-work-sans font-bold">•</span>
+                        <span className="text-base md:text-lg font-gruppo">Exclusive Market Access</span>
                       </li>
                       <li className="flex items-start space-x-3">
-                        <span className="text-gold-600 text-lg mt-1 font-bold">•</span>
-                        <span className="text-base md:text-lg font-medium">Risk Preservation</span>
+                        <span className="text-gold-600 text-lg mt-1 font-work-sans font-bold">•</span>
+                        <span className="text-base md:text-lg font-gruppo">Risk Preservation</span>
                       </li>
                       <li className="flex items-start space-x-3">
-                        <span className="text-gold-600 text-lg mt-1 font-bold">•</span>
-                        <span className="text-base md:text-lg font-medium">Confidential Reporting</span>
+                        <span className="text-gold-600 text-lg mt-1 font-work-sans font-bold">•</span>
+                        <span className="text-base md:text-lg font-gruppo">Confidential Reporting</span>
                       </li>
                     </ul>
                   </div>
@@ -339,16 +339,16 @@ export default function Home() {
           <div className="container mx-auto px-6 sm:px-8 text-center max-w-4xl">
             <h2 className="gradient-text glow-gold mb-12">
               <div className="flex flex-col items-center space-y-3">
-                <span className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-semibold tracking-tight">Begin</span>
-                <span className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-semibold tracking-tight">Your</span>
-                <span className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-semibold tracking-tight">Journey</span>
+                <span className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-work-sans font-bold tracking-tight">Begin</span>
+                <span className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-work-sans font-bold tracking-tight">Your</span>
+                <span className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-work-sans font-bold tracking-tight">Journey</span>
               </div>
             </h2>
-            <p className="text-lg sm:text-xl md:text-2xl text-neutral-600 mb-16 max-w-3xl mx-auto leading-relaxed font-medium">
+            <p className="text-lg sm:text-xl md:text-2xl text-neutral-600 mb-16 max-w-3xl mx-auto leading-relaxed font-gruppo">
               Join the distinguished circle of Richemont clientele who expect nothing less than
               Swiss precision, Maison discretion, and unparalleled privilege.
             </p>
-            <Link href="/register" className="inline-block px-14 py-5 bg-gradient-to-r from-gold-600 to-gold-700 text-white rounded-full font-bold text-xl hover:from-gold-500 hover:to-gold-600 transition-all duration-300 transform hover:scale-105 shadow-xl shadow-gold-500/30 hover:shadow-2xl">
+            <Link href="/register" className="inline-block px-14 py-5 bg-gradient-to-r from-gold-600 to-gold-700 text-white rounded-full font-work-sans font-extrabold text-xl hover:from-gold-500 hover:to-gold-600 transition-all duration-300 transform hover:scale-105 shadow-xl shadow-gold-500/30 hover:shadow-2xl">
               Request Membership
             </Link>
           </div>

@@ -43,12 +43,12 @@ export default function LoginPage() {
                 priority
               />
             </div>
-            <span className="font-serif text-3xl font-bold">
+            <span className="font-work-sans text-3xl font-extrabold">
               Concierge<span className="text-gold-500 group-hover:text-gold-400 transition-colors">Bank</span>
             </span>
           </Link>
-          <h1 className="text-3xl font-serif font-bold mb-2">Welcome Back</h1>
-          <p className="text-gray-400">Access your private vault</p>
+          <h1 className="text-3xl font-work-sans font-bold mb-2">Welcome Back</h1>
+          <p className="text-gray-400 font-gruppo">Access your private vault</p>
         </div>
 
         <div className="bg-dark-800/50 backdrop-blur-sm border border-gold-500/20 rounded-2xl p-8">
@@ -60,7 +60,7 @@ export default function LoginPage() {
             )}
 
             <div>
-              <label htmlFor="email" className="block text-sm font-medium mb-2">
+              <label htmlFor="email" className="block text-sm font-work-sans font-semibold mb-2">
                 Email Address
               </label>
               <input
@@ -75,7 +75,7 @@ export default function LoginPage() {
             </div>
 
             <div>
-              <label htmlFor="password" className="block text-sm font-medium mb-2">
+              <label htmlFor="password" className="block text-sm font-work-sans font-semibold mb-2">
                 Password
               </label>
               <input
@@ -95,9 +95,9 @@ export default function LoginPage() {
                   type="checkbox"
                   className="w-4 h-4 bg-dark-900 border-gold-500/20 rounded focus:ring-2 focus:ring-gold-500"
                 />
-                <span className="text-gray-400">Remember me</span>
+                <span className="text-gray-400 font-gruppo">Remember me</span>
               </label>
-              <Link href="/forgot-password" className="text-gold-500 hover:text-gold-400 transition-colors">
+              <Link href="/forgot-password" className="text-gold-500 hover:text-gold-400 transition-colors font-gruppo">
                 Forgot password?
               </Link>
             </div>
@@ -105,23 +105,23 @@ export default function LoginPage() {
             <button
               type="submit"
               disabled={loading}
-              className="w-full px-6 py-3 bg-gradient-to-r from-gold-500 to-gold-600 text-dark-900 rounded-lg font-semibold hover:from-gold-400 hover:to-gold-500 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
+              className="w-full px-6 py-3 bg-gradient-to-r from-gold-500 to-gold-600 text-dark-900 rounded-lg font-work-sans font-bold hover:from-gold-400 hover:to-gold-500 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
             >
               {loading ? "Signing in..." : "Sign In"}
             </button>
           </form>
 
-          <div className="mt-6 text-center text-sm text-gray-400">
+          <div className="mt-6 text-center text-sm text-gray-400 font-gruppo">
             Don&apos;t have an account?{" "}
-            <Link href="/register" className="text-gold-500 hover:text-gold-400 font-semibold transition-colors">
+            <Link href="/register" className="text-gold-500 hover:text-gold-400 font-work-sans font-semibold transition-colors">
               Register now
             </Link>
           </div>
         </div>
 
-        <p className="text-center text-xs text-gray-500 mt-6">
+        <p className="text-center text-xs text-gray-500 mt-6 font-gruppo">
           By signing in, you agree to our{" "}
-          <Link href="/terms" className="text-gold-500 hover:underline">
+          <Link href="/terms" className="text-gold-500 hover:underline font-gruppo">
             Terms of Service
           </Link>{" "}
           and{" "}

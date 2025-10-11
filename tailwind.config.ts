@@ -49,8 +49,9 @@ const config: Config = {
       },
       fontFamily: {
         gruppo: ["var(--font-gruppo)", "sans-serif"],
-        sans: ["var(--font-gruppo)", "sans-serif"],
-        display: ["var(--font-gruppo)", "sans-serif"],
+        'work-sans': ["var(--font-work-sans)", "sans-serif"],
+        sans: ["var(--font-work-sans)", "sans-serif"],
+        display: ["var(--font-work-sans)", "sans-serif"],
       },
       borderRadius: {
         lg: "var(--radius)",

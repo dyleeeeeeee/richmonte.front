@@ -1,0 +1,15 @@
+/* TEAM */
+Team: Concierge Bank Development Team
+Site: https://conciergebank.com
+Location: New York, USA
+
+/* SITE */
+Last update: 2025/10/11
+Standards: HTML5, CSS3, JavaScript ES6+
+Components: React, Next.js 14, TypeScript
+Software: Visual Studio Code, Git
+
+/* THANKS */
+Built with precision and excellence
+Inspired by Swiss banking heritage
+Powered by American innovation

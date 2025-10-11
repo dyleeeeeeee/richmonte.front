@@ -1,13 +1,49 @@
-# robots.txt for Concierge Bank
+# robots.txt for Concierge Bank - SEO Optimized
 
+# Allow all good bots
 User-agent: *
 Allow: /
+Crawl-delay: 0
+
+# Allow Google bots
+User-agent: Googlebot
+Allow: /
+Crawl-delay: 0
+
+# Allow Bing
+User-agent: Bingbot
+Allow: /
+
+# Block bad bots
+User-agent: AhrefsBot
+Disallow: /
+
+User-agent: SemrushBot
+Disallow: /
 
 # Disallow dashboard and authentication pages from crawling
 Disallow: /dashboard/
 Disallow: /login
 Disallow: /register
 Disallow: /api/
+Disallow: /*?*action=*
+Disallow: /*?*filter=*
 
-# Sitemap location
+# Allow public pages
+Allow: /$
+Allow: /about
+Allow: /services
+Allow: /wealth-management
+Allow: /private-banking
+Allow: /cards
+Allow: /accounts
+Allow: /security
+Allow: /privacy
+Allow: /terms
+
+# Sitemap locations
 Sitemap: https://conciergebank.com/sitemap.xml
+Sitemap: https://conciergebank.com/sitemap-images.xml
+
+# Host preference
+Host: https://conciergebank.com

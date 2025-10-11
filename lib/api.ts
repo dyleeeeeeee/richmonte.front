@@ -64,14 +64,13 @@ export interface LoginCredentials {
   email: string;
   password: string;
 }
-
 export interface RegisterData {
   email: string;
   password: string;
   full_name: string;
   phone?: string;
-  address?: string;
   preferred_brand?: string;
+  recaptcha_token?: string; // Anti-bot verification token
 }
 
 export const authAPI = {

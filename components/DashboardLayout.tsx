@@ -86,7 +86,7 @@ export default function DashboardLayout({ children }: { children: ReactNode }) {
                 />
               </div>
               <div className="hidden sm:block">
-                <span className="font-serif text-xl font-bold transition-all duration-200">
+                <span className="font-work-sans text-xl font-extrabold transition-all duration-200">
                   Concierge<span className="text-gold-500 group-hover:text-gold-400">Bank</span>
                 </span>
                 <div className="h-0.5 w-0 bg-gradient-to-r from-gold-500 to-transparent group-hover:w-full transition-all duration-300"></div>
@@ -101,7 +101,7 @@ export default function DashboardLayout({ children }: { children: ReactNode }) {
                   <Link
                     key={item.href}
                     href={item.href}
-                    className={`relative px-4 py-2.5 rounded-xl text-sm font-semibold transition-all duration-200 group ${
+                    className={`relative px-4 py-2.5 rounded-xl text-sm font-work-sans font-semibold transition-all duration-200 group ${
                       isActive
                         ? "bg-gradient-to-br from-gold-500 to-gold-600 text-dark-900 shadow-lg shadow-gold-500/20"
                         : "text-gray-300 hover:bg-dark-700/60 hover:text-white"
@@ -123,12 +123,12 @@ export default function DashboardLayout({ children }: { children: ReactNode }) {
             <div className="flex items-center space-x-2 sm:space-x-3">
               {/* Search Button (Desktop) */}
               <button
-                className="hidden lg:flex items-center space-x-2 px-3 py-2 bg-dark-700/40 hover:bg-dark-700/60 border border-gold-500/10 hover:border-gold-500/30 rounded-lg transition-all duration-200 group"
+                className="hidden lg:flex items-center space-x-2 px-3 py-2 bg-dark-700/40 hover:bg-dark-700/60 border border-gold-500/10 hover:border-gold-500/30 rounded-lg transition-all duration-200 group font-gruppo"
                 onClick={() => {/* TODO: Implement command palette */}}
                 title="Search (⌘K)"
               >
                 <Search size={16} className="text-gray-400 group-hover:text-gold-500 transition-colors" />
-                <span className="text-xs text-gray-400 group-hover:text-gray-300">Search...</span>
+                <span className="text-xs text-gray-400 group-hover:text-gray-300 font-gruppo">Search...</span>
                 <kbd className="hidden xl:inline-block px-1.5 py-0.5 text-[10px] font-mono bg-dark-900 border border-gold-500/20 rounded text-gray-500">⌘K</kbd>
               </button>
 
@@ -175,8 +175,8 @@ export default function DashboardLayout({ children }: { children: ReactNode }) {
                     {user?.full_name?.charAt(0) || 'U'}
                   </div>
                   <div className="hidden lg:block text-left">
-                    <p className="text-sm font-semibold text-white leading-tight">{user?.full_name}</p>
-                    <p className="text-xs text-gray-400 leading-tight">{user?.preferred_brand || 'Member'}</p>
+                    <p className="text-sm font-work-sans font-bold text-white leading-tight">{user?.full_name}</p>
+                    <p className="text-xs text-gray-400 leading-tight font-gruppo">{user?.preferred_brand || 'Member'}</p>
                   </div>
                   <ChevronDown size={16} className={`text-gray-400 transition-transform duration-200 ${userMenuOpen ? 'rotate-180' : ''}`} />
                 </button>
@@ -185,13 +185,13 @@ export default function DashboardLayout({ children }: { children: ReactNode }) {
                 {userMenuOpen && (
                   <div className="absolute right-0 mt-2 w-56 bg-dark-800 border border-gold-500/20 rounded-xl shadow-2xl shadow-black/40 overflow-hidden z-50">
                     <div className="p-3 border-b border-gold-500/10 bg-dark-700/30">
-                      <p className="text-sm font-semibold text-white">{user?.full_name}</p>
-                      <p className="text-xs text-gray-400 truncate">{user?.email}</p>
+                      <p className="text-sm font-work-sans font-bold text-white">{user?.full_name}</p>
+                      <p className="text-xs text-gray-400 truncate font-gruppo">{user?.email}</p>
                     </div>
                     <div className="py-2">
                       <Link
                         href="/dashboard/settings"
-                        className="flex items-center space-x-3 px-4 py-2.5 text-sm text-gray-300 hover:bg-dark-700/60 hover:text-white transition-colors"
+                        className="flex items-center space-x-3 px-4 py-2.5 text-sm text-gray-300 hover:bg-dark-700/60 hover:text-white transition-colors font-work-sans font-medium"
                         onClick={() => setUserMenuOpen(false)}
                       >
                         <Settings size={16} />
@@ -199,7 +199,7 @@ export default function DashboardLayout({ children }: { children: ReactNode }) {
                       </Link>
                       <Link
                         href="/dashboard/profile"
-                        className="flex items-center space-x-3 px-4 py-2.5 text-sm text-gray-300 hover:bg-dark-700/60 hover:text-white transition-colors"
+                        className="flex items-center space-x-3 px-4 py-2.5 text-sm text-gray-300 hover:bg-dark-700/60 hover:text-white transition-colors font-work-sans font-medium"
                         onClick={() => setUserMenuOpen(false)}
                       >
                         <User size={16} />
@@ -212,7 +212,7 @@ export default function DashboardLayout({ children }: { children: ReactNode }) {
                           setUserMenuOpen(false);
                           handleLogout();
                         }}
-                        className="flex items-center space-x-3 px-4 py-2.5 text-sm text-red-400 hover:bg-red-500/10 hover:text-red-300 transition-colors w-full"
+                        className="flex items-center space-x-3 px-4 py-2.5 text-sm text-red-400 hover:bg-red-500/10 hover:text-red-300 transition-colors w-full font-work-sans font-medium"
                       >
                         <LogOut size={16} />
                         <span>Logout</span>
@@ -244,9 +244,9 @@ export default function DashboardLayout({ children }: { children: ReactNode }) {
                   {user?.full_name?.charAt(0) || 'U'}
                 </div>
                 <div className="flex-1 min-w-0">
-                  <p className="text-sm font-semibold text-white truncate">{user?.full_name}</p>
-                  <p className="text-xs text-gray-400 truncate">{user?.email}</p>
-                  <p className="text-xs text-gold-500 mt-0.5">{user?.preferred_brand || 'Member'}</p>
+                  <p className="text-sm font-work-sans font-bold text-white truncate">{user?.full_name}</p>
+                  <p className="text-xs text-gray-400 truncate font-gruppo">{user?.email}</p>
+                  <p className="text-xs text-gold-500 mt-0.5 font-gruppo">{user?.preferred_brand || 'Member'}</p>
                 </div>
               </div>
             </div>
@@ -260,7 +260,7 @@ export default function DashboardLayout({ children }: { children: ReactNode }) {
                     key={item.href}
                     href={item.href}
                     onClick={() => setMobileMenuOpen(false)}
-                    className={`flex items-center space-x-3 px-4 py-3 rounded-xl text-sm font-semibold transition-all duration-200 ${
+                    className={`flex items-center space-x-3 px-4 py-3 rounded-xl text-sm font-work-sans font-semibold transition-all duration-200 ${
                       isActive
                         ? "bg-gradient-to-br from-gold-500 to-gold-600 text-dark-900 shadow-lg"
                         : "text-gray-300 hover:bg-dark-700/60 hover:text-white active:scale-95"
