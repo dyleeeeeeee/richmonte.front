@@ -4,6 +4,7 @@
 
 :root {
   --radius: 0.5rem;
+  color-scheme: light only;
 }
 
 * {
@@ -14,12 +15,14 @@
 
 html {
   scroll-behavior: smooth;
+  color-scheme: light only;
 }
 
 body {
   background: #FEFDFB;
   color: #1a1a1a;
   overflow-x: hidden;
+  color-scheme: light only;
 }
 
 @layer utilities {

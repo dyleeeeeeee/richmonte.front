@@ -35,6 +35,7 @@ export default function RootLayout({
         <meta name="robots" content="index, follow" />
         <meta name="language" content="English" />
         <meta name="revisit-after" content="7 days" />
+        <meta name="color-scheme" content="light only" />
         <meta name="theme-color" content="#EBA420" />
         
         {/* Favicon */}
