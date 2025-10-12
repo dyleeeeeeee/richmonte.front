@@ -78,10 +78,11 @@ export default function CreditCard({
       >
         {/* Flip Container */}
         <div
-          className={`relative w-full h-full transition-transform duration-700 ease-out`}
+          className={`relative w-full h-full`}
           style={{
             transformStyle: "preserve-3d",
             transform: isFlipped ? "rotateY(180deg)" : "rotateY(0deg)",
+            transition: "transform 0.7s cubic-bezier(0.16, 1, 0.3, 1)",
           }}
         >
           {/* FRONT OF CARD */}
@@ -234,7 +235,7 @@ export default function CreditCard({
 
       {/* Card Info Below */}
       {(balance !== undefined || creditLimit !== undefined) && (
-        <div className="mt-4 bg-white/60 backdrop-blur-sm border border-gold-200/60 rounded-xl p-4 shadow-sm">
+        <div className="mt-4 glass rounded-xl p-4 shadow-md transition-smooth hover-lift">
           {balance !== undefined && (
             <div className="flex items-center justify-between mb-2">
               <span className="text-sm text-neutral-600">Balance</span>

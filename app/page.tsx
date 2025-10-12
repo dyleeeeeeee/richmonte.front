@@ -156,7 +156,7 @@ export default function Home() {
               ].map((card, idx) => (
                 <div
                   key={idx}
-                  className="group relative p-10 bg-white/70 backdrop-blur-sm border-2 border-gold-300/40 rounded-3xl hover:border-gold-500/80 transition-all duration-500 hover:transform hover:-translate-y-3 shadow-lg hover:shadow-2xl cursor-pointer"
+                  className="group relative p-10 glass border-2 border-gold-300/40 rounded-3xl hover:border-gold-500/80 transition-smooth hover:transform hover:-translate-y-3 shadow-lg hover:shadow-2xl cursor-pointer hover-lift hover-glow"
                 >
                   <div className="absolute inset-0 bg-gradient-to-br from-gold-100/0 to-gold-200/60 opacity-0 group-hover:opacity-100 transition-opacity duration-500 rounded-3xl" />
                   <div className="relative z-10 space-y-6">
@@ -208,7 +208,7 @@ export default function Home() {
               ].map((feature, idx) => (
                 <div
                   key={idx}
-                  className="p-10 bg-white/60 backdrop-blur-sm border-2 border-gold-200/60 rounded-2xl hover:border-gold-400/80 transition-all duration-300 shadow-md hover:shadow-lg hover:-translate-y-1 cursor-pointer"
+                  className="p-10 glass border-2 border-gold-200/60 rounded-2xl hover:border-gold-400/80 transition-smooth shadow-md hover:shadow-lg hover:-translate-y-1 cursor-pointer hover-lift"
                 >
                   <h3 className="text-2xl md:text-3xl font-work-sans font-bold mb-6 text-gold-700">
                     {feature.title}

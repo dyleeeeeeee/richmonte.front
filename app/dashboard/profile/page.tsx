@@ -49,7 +49,7 @@ export default function ProfilePage() {
           {/* Profile Card - Animated Glassmorphism */}
           <motion.div 
             variants={glassRevealVariants}
-            className="bg-white/40 backdrop-blur-xl border border-neutral-200/60 rounded-2xl p-8 shadow-xl shadow-neutral-900/5"
+            className="glass rounded-2xl p-8 shadow-xl shadow-neutral-900/5"
           >
             {/* Avatar Section */}
             <div className="flex items-start space-x-6 mb-8 pb-8 border-b border-neutral-200/60">
@@ -74,7 +74,7 @@ export default function ProfilePage() {
             {/* Information Grid */}
             <div className="grid md:grid-cols-2 gap-6">
               {/* Email */}
-              <div className="p-4 bg-white/60 backdrop-blur-sm rounded-xl border border-neutral-200/60">
+              <div className="p-4 glass rounded-xl transition-smooth hover-lift">
                 <div className="flex items-center space-x-3 mb-2">
                   <div className="w-10 h-10 rounded-full bg-gradient-to-br from-blue-500 to-blue-600 flex items-center justify-center">
                     <Mail size={18} className="text-white" />
@@ -87,7 +87,7 @@ export default function ProfilePage() {
               </div>
 
               {/* Phone */}
-              <div className="p-4 bg-white/60 backdrop-blur-sm rounded-xl border border-neutral-200/60">
+              <div className="p-4 glass rounded-xl transition-smooth hover-lift">
                 <div className="flex items-center space-x-3 mb-2">
                   <div className="w-10 h-10 rounded-full bg-gradient-to-br from-green-500 to-green-600 flex items-center justify-center">
                     <Phone size={18} className="text-white" />
@@ -100,7 +100,7 @@ export default function ProfilePage() {
               </div>
 
               {/* Preferred Brand */}
-              <div className="p-4 bg-white/60 backdrop-blur-sm rounded-xl border border-neutral-200/60">
+              <div className="p-4 glass rounded-xl transition-smooth hover-lift">
                 <div className="flex items-center space-x-3 mb-2">
                   <div className="w-10 h-10 rounded-full bg-gradient-to-br from-purple-500 to-purple-600 flex items-center justify-center">
                     <Star size={18} className="text-white" />
@@ -113,7 +113,7 @@ export default function ProfilePage() {
               </div>
 
               {/* Member Since */}
-              <div className="p-4 bg-white/60 backdrop-blur-sm rounded-xl border border-neutral-200/60">
+              <div className="p-4 glass rounded-xl transition-smooth hover-lift">
                 <div className="flex items-center space-x-3 mb-2">
                   <div className="w-10 h-10 rounded-full bg-gradient-to-br from-gold-500 to-gold-600 flex items-center justify-center">
                     <Calendar size={18} className="text-white" />
