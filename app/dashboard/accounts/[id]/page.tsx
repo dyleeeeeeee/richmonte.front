@@ -166,17 +166,17 @@ export default function AccountDetailPage() {
                 placeholder="Search transactions..."
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
-                className="w-full pl-10 pr-4 py-3 bg-dark-800/50 border border-gold-500/20 rounded-lg focus:outline-none focus:border-gold-500"
+                className="w-full pl-10 pr-4 py-3 bg-dark-800/50 border border-gold-500/20 rounded-lg focus:outline-none focus:border-gold-500 text-white placeholder:text-gray-500"
               />
             </div>
             <select
               value={filterType}
               onChange={(e) => setFilterType(e.target.value)}
-              className="px-4 py-3 bg-dark-800/50 border border-gold-500/20 rounded-lg focus:outline-none focus:border-gold-500"
+              className="px-4 py-3 bg-dark-800/50 border border-gold-500/20 rounded-lg focus:outline-none focus:border-gold-500 text-white"
             >
-              <option value="all">All Transactions</option>
-              <option value="credit">Credits Only</option>
-              <option value="debit">Debits Only</option>
+              <option value="all" className="text-white">All Transactions</option>
+              <option value="credit" className="text-white">Credits Only</option>
+              <option value="debit" className="text-white">Debits Only</option>
             </select>
           </div>
 

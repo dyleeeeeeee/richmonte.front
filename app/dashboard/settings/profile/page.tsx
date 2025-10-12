@@ -65,7 +65,7 @@ export default function ProfileSettingsPage() {
                   type="text"
                   value={formData.full_name}
                   onChange={(e) => setFormData({ ...formData, full_name: e.target.value })}
-                  className="w-full px-4 py-3 bg-dark-900 border border-gold-500/20 rounded-lg focus:outline-none focus:border-gold-500"
+                  className="w-full px-4 py-3 bg-dark-900 border border-gold-500/20 rounded-lg focus:outline-none focus:border-gold-500 text-white placeholder:text-gray-500"
                 />
               </div>
 
@@ -75,7 +75,7 @@ export default function ProfileSettingsPage() {
                   type="tel"
                   value={formData.phone}
                   onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
-                  className="w-full px-4 py-3 bg-dark-900 border border-gold-500/20 rounded-lg focus:outline-none focus:border-gold-500"
+                  className="w-full px-4 py-3 bg-dark-900 border border-gold-500/20 rounded-lg focus:outline-none focus:border-gold-500 text-white placeholder:text-gray-500"
                 />
               </div>
 
@@ -85,7 +85,7 @@ export default function ProfileSettingsPage() {
                   value={formData.address}
                   onChange={(e) => setFormData({ ...formData, address: e.target.value })}
                   rows={3}
-                  className="w-full px-4 py-3 bg-dark-900 border border-gold-500/20 rounded-lg focus:outline-none focus:border-gold-500"
+                  className="w-full px-4 py-3 bg-dark-900 border border-gold-500/20 rounded-lg focus:outline-none focus:border-gold-500 text-white placeholder:text-gray-500"
                 />
               </div>
 
@@ -94,14 +94,14 @@ export default function ProfileSettingsPage() {
                 <select
                   value={formData.preferred_brand}
                   onChange={(e) => setFormData({ ...formData, preferred_brand: e.target.value })}
-                  className="w-full px-4 py-3 bg-dark-900 border border-gold-500/20 rounded-lg focus:outline-none focus:border-gold-500"
+                  className="w-full px-4 py-3 bg-dark-900 border border-gold-500/20 rounded-lg focus:outline-none focus:border-gold-500 text-white"
                 >
-                  <option value="Cartier">Cartier</option>
-                  <option value="Van Cleef & Arpels">Van Cleef & Arpels</option>
-                  <option value="Montblanc">Montblanc</option>
-                  <option value="Jaeger-LeCoultre">Jaeger-LeCoultre</option>
-                  <option value="IWC Schaffhausen">IWC Schaffhausen</option>
-                  <option value="Panerai">Panerai</option>
+                  <option value="Cartier" className="text-white">Cartier</option>
+                  <option value="Van Cleef & Arpels" className="text-white">Van Cleef & Arpels</option>
+                  <option value="Montblanc" className="text-white">Montblanc</option>
+                  <option value="Jaeger-LeCoultre" className="text-white">Jaeger-LeCoultre</option>
+                  <option value="IWC Schaffhausen" className="text-white">IWC Schaffhausen</option>
+                  <option value="Panerai" className="text-white">Panerai</option>
                 </select>
               </div>
 

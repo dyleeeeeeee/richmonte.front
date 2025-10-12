@@ -186,11 +186,11 @@ export default function AccountsPage() {
                   <select
                     value={newAccountType}
                     onChange={(e) => setNewAccountType(e.target.value)}
-                    className="w-full px-4 py-3 bg-dark-900 border border-gold-500/20 rounded-lg focus:outline-none focus:border-gold-500 transition-colors"
+                    className="w-full px-4 py-3 bg-dark-900 border border-gold-500/20 rounded-lg focus:outline-none focus:border-gold-500 transition-colors text-white"
                   >
-                    <option value="Checking">Checking Account</option>
-                    <option value="Savings">Savings Account</option>
-                    <option value="Investment">Investment Account</option>
+                    <option value="Checking" className="text-white">Checking Account</option>
+                    <option value="Savings" className="text-white">Savings Account</option>
+                    <option value="Investment" className="text-white">Investment Account</option>
                   </select>
                 </div>
 
@@ -203,7 +203,7 @@ export default function AccountsPage() {
                     min="0"
                     step="0.01"
                     placeholder="0.00"
-                    className="w-full px-4 py-3 bg-dark-900 border border-gold-500/20 rounded-lg focus:outline-none focus:border-gold-500 transition-colors"
+                    className="w-full px-4 py-3 bg-dark-900 border border-gold-500/20 rounded-lg focus:outline-none focus:border-gold-500 transition-colors text-white placeholder:text-gray-500"
                   />
                 </div>
 

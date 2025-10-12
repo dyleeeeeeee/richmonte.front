@@ -228,13 +228,13 @@ export default function ApplyCardPage() {
                         setFormData({ ...formData, employment_status: e.target.value })
                       }
                       required
-                      className="w-full px-4 py-3 bg-dark-900 border border-gold-500/20 rounded-lg focus:outline-none focus:border-gold-500"
+                      className="w-full px-4 py-3 bg-dark-900 border border-gold-500/20 rounded-lg focus:outline-none focus:border-gold-500 text-white"
                     >
-                      <option value="">Select status</option>
-                      <option value="employed">Employed</option>
-                      <option value="self-employed">Self-Employed</option>
-                      <option value="retired">Retired</option>
-                      <option value="other">Other</option>
+                      <option value="" className="text-gray-400">Select status</option>
+                      <option value="employed" className="text-white">Employed</option>
+                      <option value="self-employed" className="text-white">Self-Employed</option>
+                      <option value="retired" className="text-white">Retired</option>
+                      <option value="other" className="text-white">Other</option>
                     </select>
                   </div>
 
@@ -246,7 +246,7 @@ export default function ApplyCardPage() {
                       onChange={(e) => setFormData({ ...formData, employer: e.target.value })}
                       required
                       placeholder="Company name"
-                      className="w-full px-4 py-3 bg-dark-900 border border-gold-500/20 rounded-lg focus:outline-none focus:border-gold-500"
+                      className="w-full px-4 py-3 bg-dark-900 border border-gold-500/20 rounded-lg focus:outline-none focus:border-gold-500 text-white placeholder:text-gray-500"
                     />
                   </div>
 
@@ -262,7 +262,7 @@ export default function ApplyCardPage() {
                         }
                         required
                         placeholder="0"
-                        className="w-full pl-10 pr-4 py-3 bg-dark-900 border border-gold-500/20 rounded-lg focus:outline-none focus:border-gold-500"
+                        className="w-full pl-10 pr-4 py-3 bg-dark-900 border border-gold-500/20 rounded-lg focus:outline-none focus:border-gold-500 text-white placeholder:text-gray-500"
                       />
                     </div>
                   </div>
@@ -275,12 +275,12 @@ export default function ApplyCardPage() {
                         setFormData({ ...formData, housing_status: e.target.value })
                       }
                       required
-                      className="w-full px-4 py-3 bg-dark-900 border border-gold-500/20 rounded-lg focus:outline-none focus:border-gold-500"
+                      className="w-full px-4 py-3 bg-dark-900 border border-gold-500/20 rounded-lg focus:outline-none focus:border-gold-500 text-white"
                     >
-                      <option value="">Select status</option>
-                      <option value="own">Own</option>
-                      <option value="rent">Rent</option>
-                      <option value="other">Other</option>
+                      <option value="" className="text-gray-400">Select status</option>
+                      <option value="own" className="text-white">Own</option>
+                      <option value="rent" className="text-white">Rent</option>
+                      <option value="other" className="text-white">Other</option>
                     </select>
                   </div>
 
@@ -296,7 +296,7 @@ export default function ApplyCardPage() {
                             setFormData({ ...formData, monthly_rent: e.target.value })
                           }
                           placeholder="0"
-                          className="w-full pl-10 pr-4 py-3 bg-dark-900 border border-gold-500/20 rounded-lg focus:outline-none focus:border-gold-500"
+                          className="w-full pl-10 pr-4 py-3 bg-dark-900 border border-gold-500/20 rounded-lg focus:outline-none focus:border-gold-500 text-white placeholder:text-gray-500"
                         />
                       </div>
                     </div>

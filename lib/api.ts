@@ -113,7 +113,7 @@ export interface Account {
   currency: string;
   status: string;
   created_at: string;
-  updated_at: string;
+  updated_at?: string;
 }
 
 export interface CreateAccountData {
@@ -153,6 +153,18 @@ export interface Transaction {
   created_at: string;
 }
 
+export interface Transfer {
+  id: string;
+  user_id: string;
+  from_account_id: string;
+  to_account_id?: string;
+  to_external?: any;
+  amount: number;
+  transfer_type: string;
+  status: string;
+  created_at: string;
+}
+
 export interface TransferData {
   from_account_id: string;
   to_account_id?: string;
@@ -168,8 +180,8 @@ export interface TransferData {
 }
 
 export const transferAPI = {
-  async createTransfer(data: TransferData): Promise<ApiResponse<any>> {
-    return fetchAPI<any>("/api/transfers", {
+  async createTransfer(data: TransferData): Promise<ApiResponse<Transfer>> {
+    return fetchAPI<Transfer>("/api/transfers", {
       method: "POST",
       body: JSON.stringify(data),
     });
@@ -190,8 +202,9 @@ export interface Card {
   expiry_date?: string;
   credit_limit?: number;
   balance?: number;
-  status: "active" | "locked" | "expired";
+  status: "active" | "locked" | "expired" | "approved";
   created_at: string;
+  updated_at?: string;
 }
 
 export interface CardApplicationData {
@@ -212,8 +225,8 @@ export const cardAPI = {
     });
   },
 
-  async lockCard(cardId: string, locked: boolean): Promise<ApiResponse<void>> {
-    return fetchAPI<void>(`/api/cards/${cardId}/lock`, {
+  async lockCard(cardId: string, locked: boolean): Promise<ApiResponse<Card>> {
+    return fetchAPI<Card>(`/api/cards/${cardId}/lock`, {
       method: "POST",
       body: JSON.stringify({ locked }),
     });
@@ -260,7 +273,7 @@ export interface Bill {
   user_id: string;
   payee_name: string;
   account_number?: string;
-  bill_type: string;
+  bill_type?: string;
   auto_pay: boolean;
   created_at: string;
 }
@@ -282,20 +295,27 @@ export interface BillPayment {
   created_at: string;
 }
 
+export interface AddBillData {
+  payee_name: string;
+  account_number?: string;
+  bill_type?: string;
+  auto_pay?: boolean;
+}
+
 export const billAPI = {
   async getBills(): Promise<ApiResponse<Bill[]>> {
     return fetchAPI<Bill[]>("/api/bills");
   },
 
-  async addBill(data: { payee_name: string; account_number?: string; bill_type?: string; auto_pay?: boolean }): Promise<ApiResponse<Bill>> {
+  async addBill(data: AddBillData): Promise<ApiResponse<Bill>> {
     return fetchAPI<Bill>("/api/bills", {
       method: "POST",
       body: JSON.stringify(data),
     });
   },
 
-  async payBill(billId: string, data: BillPaymentData): Promise<ApiResponse<any>> {
-    return fetchAPI<any>(`/api/bills/${billId}/pay`, {
+  async payBill(billId: string, data: BillPaymentData): Promise<ApiResponse<BillPayment>> {
+    return fetchAPI<BillPayment>(`/api/bills/${billId}/pay`, {
       method: "POST",
       body: JSON.stringify(data),
     });
@@ -312,6 +332,20 @@ export interface Check {
   account_id: string;
   check_number?: string;
   amount: number;
+  payee?: string;
+  front_image_url?: string;
+  back_image_url?: string;
+  status: string;
+  created_at: string;
+}
+
+export interface CheckOrder {
+  id: string;
+  user_id: string;
+  account_id: string;
+  design: string;
+  quantity: number;
+  price?: number;
   status: string;
   created_at: string;
 }
@@ -341,8 +375,8 @@ export const checkAPI = {
     });
   },
 
-  async orderChecks(data: CheckOrderData): Promise<ApiResponse<any>> {
-    return fetchAPI<any>("/api/checks/order", {
+  async orderChecks(data: CheckOrderData): Promise<ApiResponse<CheckOrder>> {
+    return fetchAPI<CheckOrder>("/api/checks/order", {
       method: "POST",
       body: JSON.stringify(data),
     });
@@ -357,8 +391,9 @@ export interface Notification {
   id: string;
   user_id: string;
   type: string;
-  title: string;
+  title?: string;
   message: string;
+  delivery_method?: string;
   read: boolean;
   created_at: string;
 }
@@ -404,6 +439,54 @@ export const settingsAPI = {
     return fetchAPI<UserSettings>("/api/settings", {
       method: "PUT",
       body: JSON.stringify(data),
+    });
+  },
+};
+
+// ============================================================================
+// Beneficiaries API
+// ============================================================================
+export interface Beneficiary {
+  id: string;
+  user_id: string;
+  full_name: string;
+  relationship: string;
+  email?: string;
+  phone?: string;
+  percentage: number;
+  created_at: string;
+}
+
+export interface BeneficiaryData {
+  full_name: string;
+  relationship: string;
+  email?: string;
+  phone?: string;
+  percentage: number;
+}
+
+export const beneficiariesAPI = {
+  async getBeneficiaries(): Promise<ApiResponse<Beneficiary[]>> {
+    return fetchAPI<Beneficiary[]>("/api/beneficiaries");
+  },
+
+  async addBeneficiary(data: BeneficiaryData): Promise<ApiResponse<Beneficiary>> {
+    return fetchAPI<Beneficiary>("/api/beneficiaries", {
+      method: "POST",
+      body: JSON.stringify(data),
+    });
+  },
+
+  async updateBeneficiary(id: string, data: Partial<BeneficiaryData>): Promise<ApiResponse<Beneficiary>> {
+    return fetchAPI<Beneficiary>(`/api/beneficiaries/${id}`, {
+      method: "PUT",
+      body: JSON.stringify(data),
+    });
+  },
+
+  async deleteBeneficiary(id: string): Promise<ApiResponse<void>> {
+    return fetchAPI<void>(`/api/beneficiaries/${id}`, {
+      method: "DELETE",
     });
   },
 };

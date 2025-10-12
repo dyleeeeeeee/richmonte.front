@@ -215,7 +215,7 @@ export default function ChecksPage() {
                     onChange={(e) => setAmount(e.target.value)}
                     placeholder="0.00"
                     step="0.01"
-                    className="w-full pl-10 pr-5 py-4 sm:py-5 text-lg sm:text-xl font-semibold bg-dark-900 border border-gold-500/20 rounded-2xl focus:outline-none focus:border-gold-500 transition-colors"
+                    className="w-full pl-10 pr-5 py-4 sm:py-5 text-lg sm:text-xl font-semibold bg-dark-900 border border-gold-500/20 rounded-2xl focus:outline-none focus:border-gold-500 transition-colors text-white placeholder:text-gray-500"
                   />
                 </div>
               </div>
@@ -243,18 +243,18 @@ export default function ChecksPage() {
               <div className="max-w-md mx-auto space-y-5">
                 <div>
                   <label className="block text-sm font-medium mb-2 px-1">Design Style</label>
-                  <select className="w-full px-4 sm:px-5 py-4 text-base bg-dark-900 border border-gold-500/20 rounded-xl focus:outline-none focus:border-gold-500 transition-colors">
-                    <option>Cartier Classic</option>
-                    <option>Van Cleef Elegance</option>
-                    <option>Montblanc Premium</option>
+                  <select className="w-full px-4 sm:px-5 py-4 text-base bg-dark-900 border border-gold-500/20 rounded-xl focus:outline-none focus:border-gold-500 transition-colors text-white">
+                    <option className="text-white">Cartier Classic</option>
+                    <option className="text-white">Van Cleef Elegance</option>
+                    <option className="text-white">Montblanc Premium</option>
                   </select>
                 </div>
                 <div>
                   <label className="block text-sm font-medium mb-2 px-1">Quantity</label>
-                  <select className="w-full px-4 sm:px-5 py-4 text-base bg-dark-900 border border-gold-500/20 rounded-xl focus:outline-none focus:border-gold-500 transition-colors">
-                    <option>50 checks - $25</option>
-                    <option>100 checks - $45</option>
-                    <option>200 checks - $80</option>
+                  <select className="w-full px-4 sm:px-5 py-4 text-base bg-dark-900 border border-gold-500/20 rounded-xl focus:outline-none focus:border-gold-500 transition-colors text-white">
+                    <option className="text-white">50 checks - $25</option>
+                    <option className="text-white">100 checks - $45</option>
+                    <option className="text-white">200 checks - $80</option>
                   </select>
                 </div>
                 <button className="w-full py-4 sm:py-5 bg-gradient-to-r from-gold-500 to-gold-600 text-dark-900 rounded-xl font-bold text-base sm:text-lg hover:from-gold-400 hover:to-gold-500 transition-all shadow-lg active:scale-[0.98]">

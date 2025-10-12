@@ -199,7 +199,7 @@ export default function TransfersPage() {
                     value={formData.from_account}
                     onChange={(e) => setFormData({ ...formData, from_account: e.target.value })}
                     required
-                    className="w-full px-4 py-3 bg-dark-900 border border-gold-500/20 rounded-lg focus:outline-none focus:border-gold-500"
+                    className="w-full px-4 py-3 bg-dark-900 border border-gold-500/20 rounded-lg focus:outline-none focus:border-gold-500 text-white"
                   >
                     {accounts.map((account) => (
                       <option key={account.id} value={account.id}>
@@ -217,9 +217,9 @@ export default function TransfersPage() {
                       value={formData.to_account}
                       onChange={(e) => setFormData({ ...formData, to_account: e.target.value })}
                       required
-                      className="w-full px-4 py-3 bg-dark-900 border border-gold-500/20 rounded-lg focus:outline-none focus:border-gold-500"
+                      className="w-full px-4 py-3 bg-dark-900 border border-gold-500/20 rounded-lg focus:outline-none focus:border-gold-500 text-white"
                     >
-                      <option value="">Select account</option>
+                      <option value="" className="text-gray-400">Select account</option>
                       {accounts
                         .filter((a) => a.id !== formData.from_account)
                         .map((account) => (
@@ -243,7 +243,7 @@ export default function TransfersPage() {
                         }
                         required
                         placeholder="Enter account number"
-                        className="w-full px-4 py-3 bg-dark-900 border border-gold-500/20 rounded-lg focus:outline-none focus:border-gold-500"
+                        className="w-full px-4 py-3 bg-dark-900 border border-gold-500/20 rounded-lg focus:outline-none focus:border-gold-500 text-white placeholder:text-gray-500"
                       />
                     </div>
                     <div>
@@ -256,7 +256,7 @@ export default function TransfersPage() {
                         }
                         required
                         placeholder="Enter routing number"
-                        className="w-full px-4 py-3 bg-dark-900 border border-gold-500/20 rounded-lg focus:outline-none focus:border-gold-500"
+                        className="w-full px-4 py-3 bg-dark-900 border border-gold-500/20 rounded-lg focus:outline-none focus:border-gold-500 text-white placeholder:text-gray-500"
                       />
                     </div>
                   </>
@@ -279,7 +279,7 @@ export default function TransfersPage() {
                         }}
                         required
                         placeholder="email@example.com or +1234567890"
-                        className="w-full px-4 py-3 bg-dark-900 border border-gold-500/20 rounded-lg focus:outline-none focus:border-gold-500"
+                        className="w-full px-4 py-3 bg-dark-900 border border-gold-500/20 rounded-lg focus:outline-none focus:border-gold-500 text-white placeholder:text-gray-500"
                       />
                     </div>
                   </>
@@ -297,7 +297,7 @@ export default function TransfersPage() {
                       min="0.01"
                       step="0.01"
                       placeholder="0.00"
-                      className="w-full pl-8 pr-4 py-3 bg-dark-900 border border-gold-500/20 rounded-lg focus:outline-none focus:border-gold-500"
+                      className="w-full pl-8 pr-4 py-3 bg-dark-900 border border-gold-500/20 rounded-lg focus:outline-none focus:border-gold-500 text-white placeholder:text-gray-500"
                     />
                   </div>
                   {selectedAccount && (
@@ -314,7 +314,7 @@ export default function TransfersPage() {
                     value={formData.description}
                     onChange={(e) => setFormData({ ...formData, description: e.target.value })}
                     placeholder="What's this for?"
-                    className="w-full px-4 py-3 bg-dark-900 border border-gold-500/20 rounded-lg focus:outline-none focus:border-gold-500"
+                    className="w-full px-4 py-3 bg-dark-900 border border-gold-500/20 rounded-lg focus:outline-none focus:border-gold-500 text-white placeholder:text-gray-500"
                   />
                 </div>
 
@@ -338,7 +338,7 @@ export default function TransfersPage() {
                       type="date"
                       value={formData.schedule_date}
                       onChange={(e) => setFormData({ ...formData, schedule_date: e.target.value })}
-                      className="w-full px-4 py-3 bg-dark-900 border border-gold-500/20 rounded-lg focus:outline-none focus:border-gold-500"
+                      className="w-full px-4 py-3 bg-dark-900 border border-gold-500/20 rounded-lg focus:outline-none focus:border-gold-500 text-white"
                     />
                   </div>
                 )}

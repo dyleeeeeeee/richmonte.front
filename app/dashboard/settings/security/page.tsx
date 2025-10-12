@@ -59,7 +59,7 @@ export default function SecuritySettingsPage() {
                     value={passwordData.current}
                     onChange={(e) => setPasswordData({ ...passwordData, current: e.target.value })}
                     required
-                    className="w-full px-4 py-3 bg-dark-900 border border-gold-500/20 rounded-lg focus:outline-none focus:border-gold-500"
+                    className="w-full px-4 py-3 bg-dark-900 border border-gold-500/20 rounded-lg focus:outline-none focus:border-gold-500 text-white placeholder:text-gray-500"
                   />
                 </div>
                 <div>
@@ -80,7 +80,7 @@ export default function SecuritySettingsPage() {
                     value={passwordData.confirm}
                     onChange={(e) => setPasswordData({ ...passwordData, confirm: e.target.value })}
                     required
-                    className="w-full px-4 py-3 bg-dark-900 border border-gold-500/20 rounded-lg focus:outline-none focus:border-gold-500"
+                    className="w-full px-4 py-3 bg-dark-900 border border-gold-500/20 rounded-lg focus:outline-none focus:border-gold-500 text-white placeholder:text-gray-500"
                   />
                 </div>
                 <button

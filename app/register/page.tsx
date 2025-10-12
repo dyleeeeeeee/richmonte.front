@@ -164,12 +164,12 @@ export default function RegisterPage() {
                 onChange={handleChange}
                 className="w-full px-4 py-3 bg-white border border-neutral-300 rounded-lg focus:outline-none focus:border-gold-500 focus:ring-2 focus:ring-gold-500/20 transition-all text-neutral-900"
               >
-                <option value="Cartier">Cartier</option>
-                <option value="Van Cleef & Arpels">Van Cleef & Arpels</option>
-                <option value="Montblanc">Montblanc</option>
-                <option value="Jaeger-LeCoultre">Jaeger-LeCoultre</option>
-                <option value="IWC Schaffhausen">IWC Schaffhausen</option>
-                <option value="Panerai">Panerai</option>
+                <option value="Cartier" className="text-neutral-900">Cartier</option>
+                <option value="Van Cleef & Arpels" className="text-neutral-900">Van Cleef & Arpels</option>
+                <option value="Montblanc" className="text-neutral-900">Montblanc</option>
+                <option value="Jaeger-LeCoultre" className="text-neutral-900">Jaeger-LeCoultre</option>
+                <option value="IWC Schaffhausen" className="text-neutral-900">IWC Schaffhausen</option>
+                <option value="Panerai" className="text-neutral-900">Panerai</option>
               </select>
             </div>
 
