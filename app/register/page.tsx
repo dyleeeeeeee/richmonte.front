@@ -77,7 +77,7 @@ export default function RegisterPage() {
       {/* Load reCAPTCHA script */}
       {siteKey && <ReCaptcha siteKey={siteKey} />}
       
-      <div className="min-h-screen flex items-center justify-center bg-dark-900 px-4 py-12">
+      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-light-50 via-light-100 to-light-200 px-4 py-12">
         <div className="w-full max-w-md">
         <div className="text-center mb-8">
           <Link href="/" className="inline-flex items-center space-x-3 mb-6 group">
@@ -95,10 +95,10 @@ export default function RegisterPage() {
             </span>
           </Link>
           <h1 className="text-3xl font-work-sans font-bold mb-2">Request Membership</h1>
-          <p className="text-gray-400 font-gruppo">Join the distinguished circle of Richemont clientele</p>
+          <p className="text-neutral-600 font-gruppo">Join the distinguished circle of Richemont clientele</p>
         </div>
 
-        <div className="bg-dark-800/50 backdrop-blur-sm border border-gold-500/20 rounded-2xl p-8">
+        <div className="glass rounded-2xl p-8 shadow-xl shadow-neutral-900/5 animate-scale-in">
           <form onSubmit={handleSubmit} className="space-y-6">
             {error && (
               <div className="bg-red-500/10 border border-red-500/50 rounded-lg p-4 text-red-400 text-sm">
@@ -107,7 +107,7 @@ export default function RegisterPage() {
             )}
 
             <div>
-              <label htmlFor="full_name" className="block text-sm font-work-sans font-semibold mb-2">
+              <label htmlFor="full_name" className="block text-sm font-work-sans font-semibold mb-2 text-neutral-900">
                 Full Name
               </label>
               <input
@@ -117,13 +117,13 @@ export default function RegisterPage() {
                 value={formData.full_name}
                 onChange={handleChange}
                 required
-                className="w-full px-4 py-3 bg-dark-900 border border-gold-500/20 rounded-lg focus:outline-none focus:border-gold-500 transition-colors"
+                className="w-full px-4 py-3 bg-white border border-neutral-300 rounded-lg focus:outline-none focus:border-gold-500 focus:ring-2 focus:ring-gold-500/20 transition-all text-neutral-900"
                 placeholder="John Doe"
               />
             </div>
 
             <div>
-              <label htmlFor="email" className="block text-sm font-work-sans font-semibold mb-2">
+              <label htmlFor="email" className="block text-sm font-work-sans font-semibold mb-2 text-neutral-900">
                 Email Address
               </label>
               <input
@@ -133,13 +133,13 @@ export default function RegisterPage() {
                 value={formData.email}
                 onChange={handleChange}
                 required
-                className="w-full px-4 py-3 bg-dark-900 border border-gold-500/20 rounded-lg focus:outline-none focus:border-gold-500 transition-colors"
+                className="w-full px-4 py-3 bg-white border border-neutral-300 rounded-lg focus:outline-none focus:border-gold-500 focus:ring-2 focus:ring-gold-500/20 transition-all text-neutral-900"
                 placeholder="you@example.com"
               />
             </div>
 
             <div>
-              <label htmlFor="phone" className="block text-sm font-work-sans font-semibold mb-2">
+              <label htmlFor="phone" className="block text-sm font-work-sans font-semibold mb-2 text-neutral-900">
                 Phone Number (Optional)
               </label>
               <input
@@ -148,13 +148,13 @@ export default function RegisterPage() {
                 name="phone"
                 value={formData.phone}
                 onChange={handleChange}
-                className="w-full px-4 py-3 bg-dark-900 border border-gold-500/20 rounded-lg focus:outline-none focus:border-gold-500 transition-colors"
+                className="w-full px-4 py-3 bg-white border border-neutral-300 rounded-lg focus:outline-none focus:border-gold-500 focus:ring-2 focus:ring-gold-500/20 transition-all text-neutral-900"
                 placeholder="+1 (555) 000-0000"
               />
             </div>
 
             <div>
-              <label htmlFor="preferred_brand" className="block text-sm font-work-sans font-semibold mb-2">
+              <label htmlFor="preferred_brand" className="block text-sm font-work-sans font-semibold mb-2 text-neutral-900">
                 Preferred Richemont Brand
               </label>
               <select
@@ -162,7 +162,7 @@ export default function RegisterPage() {
                 name="preferred_brand"
                 value={formData.preferred_brand}
                 onChange={handleChange}
-                className="w-full px-4 py-3 bg-dark-900 border border-gold-500/20 rounded-lg focus:outline-none focus:border-gold-500 transition-colors"
+                className="w-full px-4 py-3 bg-white border border-neutral-300 rounded-lg focus:outline-none focus:border-gold-500 focus:ring-2 focus:ring-gold-500/20 transition-all text-neutral-900"
               >
                 <option value="Cartier">Cartier</option>
                 <option value="Van Cleef & Arpels">Van Cleef & Arpels</option>
@@ -174,7 +174,7 @@ export default function RegisterPage() {
             </div>
 
             <div>
-              <label htmlFor="password" className="block text-sm font-work-sans font-semibold mb-2">
+              <label htmlFor="password" className="block text-sm font-work-sans font-semibold mb-2 text-neutral-900">
                 Password
               </label>
               <input
@@ -184,14 +184,14 @@ export default function RegisterPage() {
                 value={formData.password}
                 onChange={handleChange}
                 required
-                className="w-full px-4 py-3 bg-dark-900 border border-gold-500/20 rounded-lg focus:outline-none focus:border-gold-500 transition-colors"
+                className="w-full px-4 py-3 bg-white border border-neutral-300 rounded-lg focus:outline-none focus:border-gold-500 focus:ring-2 focus:ring-gold-500/20 transition-all text-neutral-900"
                 placeholder="••••••••"
               />
-              <p className="text-xs text-gray-500 mt-1 font-gruppo">Must be at least 8 characters</p>
+              <p className="text-xs text-neutral-500 mt-1 font-gruppo">Must be at least 8 characters</p>
             </div>
 
             <div>
-              <label htmlFor="confirmPassword" className="block text-sm font-work-sans font-semibold mb-2">
+              <label htmlFor="confirmPassword" className="block text-sm font-work-sans font-semibold mb-2 text-neutral-900">
                 Confirm Password
               </label>
               <input
@@ -201,7 +201,7 @@ export default function RegisterPage() {
                 value={formData.confirmPassword}
                 onChange={handleChange}
                 required
-                className="w-full px-4 py-3 bg-dark-900 border border-gold-500/20 rounded-lg focus:outline-none focus:border-gold-500 transition-colors"
+                className="w-full px-4 py-3 bg-white border border-neutral-300 rounded-lg focus:outline-none focus:border-gold-500 focus:ring-2 focus:ring-gold-500/20 transition-all text-neutral-900"
                 placeholder="••••••••"
               />
             </div>
@@ -209,19 +209,19 @@ export default function RegisterPage() {
             <button
               type="submit"
               disabled={loading}
-              className="w-full px-6 py-3 bg-gradient-to-r from-gold-500 to-gold-600 text-dark-900 rounded-lg font-work-sans font-bold hover:from-gold-400 hover:to-gold-500 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
+              className="w-full px-6 py-3 bg-gradient-to-r from-gold-500 to-gold-600 text-white rounded-lg font-work-sans font-bold hover:from-gold-600 hover:to-gold-700 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed shadow-lg shadow-gold-500/20"
             >
               {loading ? "Creating Account..." : "Create Account"}
             </button>
           </form>
 
           {/* Bot Protection Badge */}
-          <div className="mt-4 flex items-center justify-center space-x-2 text-xs text-gray-500">
+          <div className="mt-4 flex items-center justify-center space-x-2 text-xs text-neutral-500">
             <Shield size={14} className="text-green-500" />
             <span className="font-gruppo">Protected by Google reCAPTCHA</span>
           </div>
 
-          <div className="mt-6 text-center text-sm text-gray-400 font-gruppo">
+          <div className="mt-6 text-center text-sm text-neutral-600 font-gruppo">
             Already have an account?{" "}
             <Link href="/login" className="text-gold-500 hover:text-gold-400 font-work-sans font-semibold transition-colors">
               Sign in
@@ -229,7 +229,7 @@ export default function RegisterPage() {
           </div>
         </div>
 
-        <p className="text-center text-xs text-gray-500 mt-6 font-gruppo">
+        <p className="text-center text-xs text-neutral-500 mt-6 font-gruppo">
           By registering, you agree to our{" "}
           <Link href="/terms" className="text-gold-500 hover:underline font-gruppo">
             Terms of Service

@@ -95,7 +95,7 @@ export default function DashboardLayout({ children }: { children: ReactNode }) {
   return (
     <div className="min-h-screen bg-gradient-to-br from-neutral-50 via-white to-neutral-100">
       {/* Top Navigation Bar */}
-      <nav className="fixed top-0 left-0 right-0 z-50 bg-white/70 backdrop-blur-xl border-b border-neutral-200/60 shadow-lg shadow-neutral-900/10">
+      <nav className="fixed top-0 left-0 right-0 z-50 glass border-b shadow-lg shadow-neutral-900/10">
         <div className="px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-16 md:h-18">
             {/* Logo */}
@@ -127,8 +127,8 @@ export default function DashboardLayout({ children }: { children: ReactNode }) {
                     href={item.href}
                     className={`relative px-4 py-2.5 rounded-xl text-sm font-work-sans font-semibold transition-all duration-200 group ${
                       isActive
-                        ? "bg-gradient-to-br from-gold-500 to-gold-600 text-dark-900 shadow-lg shadow-gold-500/20"
-                        : "text-gray-300 hover:bg-dark-700/60 hover:text-white"
+                        ? "bg-gradient-to-br from-gold-500 to-gold-600 text-white shadow-lg shadow-gold-500/20"
+                        : "text-neutral-700 hover:bg-neutral-100 hover:text-neutral-900"
                     }`}
                   >
                     <span className="relative z-10">{item.name}</span>
@@ -147,18 +147,18 @@ export default function DashboardLayout({ children }: { children: ReactNode }) {
             <div className="flex items-center space-x-2 sm:space-x-3">
               {/* Search Button (Desktop) */}
               <button
-                className="hidden lg:flex items-center space-x-2 px-3 py-2 bg-dark-700/40 hover:bg-dark-700/60 border border-gold-500/10 hover:border-gold-500/30 rounded-lg transition-all duration-200 group font-gruppo"
+                className="hidden lg:flex items-center space-x-2 px-3 py-2 bg-white/60 hover:bg-white border border-neutral-200/60 hover:border-gold-500/30 rounded-lg transition-all duration-200 group font-gruppo"
                 onClick={() => {/* TODO: Implement command palette */}}
                 title="Search (⌘K)"
               >
-                <Search size={16} className="text-gray-400 group-hover:text-gold-500 transition-colors" />
-                <span className="text-xs text-gray-400 group-hover:text-gray-300 font-gruppo">Search...</span>
-                <kbd className="hidden xl:inline-block px-1.5 py-0.5 text-[10px] font-mono bg-dark-900 border border-gold-500/20 rounded text-gray-500">⌘K</kbd>
+                <Search size={16} className="text-neutral-500 group-hover:text-gold-500 transition-colors" />
+                <span className="text-xs text-neutral-600 group-hover:text-neutral-700 font-gruppo">Search...</span>
+                <kbd className="hidden xl:inline-block px-1.5 py-0.5 text-[10px] font-mono bg-neutral-100 border border-neutral-300 rounded text-neutral-600">⌘K</kbd>
               </button>
 
               {/* Quick Search Icon (Tablet) */}
               <button
-                className="lg:hidden p-2 rounded-lg text-gray-400 hover:bg-dark-700/60 hover:text-gold-500 transition-all duration-200"
+                className="lg:hidden p-2 rounded-lg text-neutral-500 hover:bg-neutral-100 hover:text-gold-500 transition-all duration-200"
                 title="Search"
               >
                 <Search size={20} />
@@ -166,7 +166,7 @@ export default function DashboardLayout({ children }: { children: ReactNode }) {
 
               {/* Notifications */}
               <button
-                className="relative p-2 rounded-lg text-gray-400 hover:bg-dark-700/60 hover:text-gold-500 transition-all duration-200 group"
+                className="relative p-2 rounded-lg text-neutral-500 hover:bg-neutral-100 hover:text-gold-500 transition-all duration-200 group"
                 onClick={() => router.push('/dashboard/notifications')}
                 title="Notifications"
               >
@@ -174,7 +174,7 @@ export default function DashboardLayout({ children }: { children: ReactNode }) {
                 {notificationCount > 0 && (
                   <span className="absolute -top-1 -right-1 flex h-5 w-5 items-center justify-center">
                     <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-gold-500 opacity-75"></span>
-                    <span className="relative inline-flex h-4 w-4 rounded-full bg-gold-500 text-[10px] font-bold text-dark-900 items-center justify-center">
+                    <span className="relative inline-flex h-4 w-4 rounded-full bg-gold-500 text-[10px] font-bold text-white items-center justify-center">
                       {notificationCount}
                     </span>
                   </span>
@@ -213,7 +213,7 @@ export default function DashboardLayout({ children }: { children: ReactNode }) {
                       initial="initial"
                       animate="animate"
                       exit="exit"
-                      className="absolute right-0 mt-2 w-56 bg-white/90 backdrop-blur-xl border border-neutral-200/60 rounded-xl shadow-2xl shadow-neutral-900/10 overflow-hidden z-50"
+                      className="absolute right-0 mt-2 w-56 glass rounded-xl shadow-2xl shadow-neutral-900/10 overflow-hidden z-50"
                     >
                     <div className="p-3 border-b border-neutral-200/60 bg-neutral-50/50">
                       <p className="text-sm font-work-sans font-bold text-neutral-900">{user?.full_name}</p>
@@ -257,7 +257,7 @@ export default function DashboardLayout({ children }: { children: ReactNode }) {
               {/* Mobile Menu Toggle */}
               <button
                 onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-                className="md:hidden p-2 rounded-lg text-gray-400 hover:bg-dark-700/60 transition-all duration-200"
+                className="md:hidden p-2 rounded-lg text-neutral-500 hover:bg-neutral-100 transition-all duration-200"
                 aria-label="Toggle menu"
               >
                 {mobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
@@ -274,18 +274,18 @@ export default function DashboardLayout({ children }: { children: ReactNode }) {
               initial="initial"
               animate="animate"
               exit="exit"
-              className="md:hidden border-t border-neutral-200/60 bg-white/95 backdrop-blur-lg"
+              className="md:hidden border-t border-neutral-200/60 glass"
             >
             {/* Mobile User Info */}
-            <div className="px-4 py-4 border-b border-gold-500/10 bg-dark-700/30">
+            <div className="px-4 py-4 border-b border-neutral-200/60 bg-neutral-50">
               <div className="flex items-center space-x-3">
-                <div className="w-12 h-12 rounded-full bg-gradient-to-br from-gold-500 to-gold-600 flex items-center justify-center text-dark-900 font-bold text-lg shadow-lg">
+                <div className="w-12 h-12 rounded-full bg-gradient-to-br from-gold-500 to-gold-600 flex items-center justify-center text-white font-bold text-lg shadow-lg">
                   {user?.full_name?.charAt(0) || 'U'}
                 </div>
                 <div className="flex-1 min-w-0">
-                  <p className="text-sm font-work-sans font-bold text-white truncate">{user?.full_name}</p>
-                  <p className="text-xs text-gray-400 truncate font-gruppo">{user?.email}</p>
-                  <p className="text-xs text-gold-500 mt-0.5 font-gruppo">{user?.preferred_brand || 'Member'}</p>
+                  <p className="text-sm font-work-sans font-bold text-neutral-900 truncate">{user?.full_name}</p>
+                  <p className="text-xs text-neutral-600 truncate font-gruppo">{user?.email}</p>
+                  <p className="text-xs text-gold-600 mt-0.5 font-gruppo">{user?.preferred_brand || 'Member'}</p>
                 </div>
               </div>
             </div>
@@ -301,11 +301,11 @@ export default function DashboardLayout({ children }: { children: ReactNode }) {
                     onClick={() => setMobileMenuOpen(false)}
                     className={`flex items-center space-x-3 px-4 py-3 rounded-xl text-sm font-work-sans font-semibold transition-all duration-200 ${
                       isActive
-                        ? "bg-gradient-to-br from-gold-500 to-gold-600 text-dark-900 shadow-lg"
-                        : "text-gray-300 hover:bg-dark-700/60 hover:text-white active:scale-95"
+                        ? "bg-gradient-to-br from-gold-500 to-gold-600 text-white shadow-lg"
+                        : "text-neutral-700 hover:bg-neutral-100 hover:text-neutral-900 active:scale-95"
                     }`}
                   >
-                    <div className={isActive ? "" : "text-gray-400"}>{item.icon}</div>
+                    <div className={isActive ? "" : "text-neutral-500"}>{item.icon}</div>
                     <span>{item.name}</span>
                   </Link>
                 );
@@ -313,26 +313,26 @@ export default function DashboardLayout({ children }: { children: ReactNode }) {
             </div>
 
             {/* Mobile Quick Actions */}
-            <div className="px-4 py-3 border-t border-gold-500/10 space-y-1">
+            <div className="px-4 py-3 border-t border-neutral-200/60 space-y-1">
               <button
                 onClick={() => {
                   setMobileMenuOpen(false);
                   router.push('/dashboard/notifications');
                 }}
-                className="flex items-center justify-between w-full px-4 py-2.5 rounded-lg text-sm text-gray-300 hover:bg-dark-700/60 hover:text-white transition-colors"
+                className="flex items-center justify-between w-full px-4 py-2.5 rounded-lg text-sm text-neutral-700 hover:bg-neutral-100 hover:text-neutral-900 transition-colors"
               >
                 <div className="flex items-center space-x-3">
                   <Bell size={18} />
                   <span>Notifications</span>
                 </div>
                 {notificationCount > 0 && (
-                  <span className="px-2 py-0.5 bg-gold-500 text-dark-900 text-xs font-bold rounded-full">
+                  <span className="px-2 py-0.5 bg-gold-500 text-white text-xs font-bold rounded-full">
                     {notificationCount}
                   </span>
                 )}
               </button>
               <button
-                className="flex items-center space-x-3 w-full px-4 py-2.5 rounded-lg text-sm text-gray-300 hover:bg-dark-700/60 hover:text-white transition-colors"
+                className="flex items-center space-x-3 w-full px-4 py-2.5 rounded-lg text-sm text-neutral-700 hover:bg-neutral-100 hover:text-neutral-900 transition-colors"
               >
                 <HelpCircle size={18} />
                 <span>Help & Support</span>
@@ -340,13 +340,13 @@ export default function DashboardLayout({ children }: { children: ReactNode }) {
             </div>
 
             {/* Mobile Logout */}
-            <div className="px-4 py-3 border-t border-gold-500/10">
+            <div className="px-4 py-3 border-t border-neutral-200/60">
               <button
                 onClick={() => {
                   setMobileMenuOpen(false);
                   handleLogout();
                 }}
-                className="flex items-center space-x-3 w-full px-4 py-2.5 rounded-lg text-sm text-red-400 hover:bg-red-500/10 hover:text-red-300 transition-colors"
+                className="flex items-center space-x-3 w-full px-4 py-2.5 rounded-lg text-sm text-red-600 hover:bg-red-50 hover:text-red-700 transition-colors"
               >
                 <LogOut size={18} />
                 <span>Logout</span>
@@ -365,7 +365,7 @@ export default function DashboardLayout({ children }: { children: ReactNode }) {
       </main>
 
       {/* Bottom Navigation (Mobile) - Modernized */}
-      <nav className="fixed bottom-0 left-0 right-0 z-50 md:hidden bg-dark-800/98 backdrop-blur-lg border-t border-gold-500/30 safe-area-inset-bottom">
+      <nav className="fixed bottom-0 left-0 right-0 z-50 md:hidden glass border-t border-neutral-200/60 safe-area-inset-bottom shadow-lg">
         <div className="grid grid-cols-5 gap-0.5 px-1 py-2 pb-safe">
           {navItems.slice(0, 5).map((item) => (
             <Link
@@ -373,8 +373,8 @@ export default function DashboardLayout({ children }: { children: ReactNode }) {
               href={item.href}
               className={`flex flex-col items-center justify-center py-3 px-2 rounded-xl text-[10px] sm:text-xs font-medium transition-all active:scale-95 ${
                 pathname === item.href
-                  ? "text-gold-500 bg-gold-500/10"
-                  : "text-gray-400 hover:text-gray-300 active:bg-dark-700/50"
+                  ? "text-gold-600 bg-gold-500/10"
+                  : "text-neutral-600 hover:text-neutral-900 active:bg-neutral-100"
               }`}
             >
               <div className={`mb-1 ${pathname === item.href ? "scale-110" : ""}`}>

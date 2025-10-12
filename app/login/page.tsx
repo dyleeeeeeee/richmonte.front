@@ -30,7 +30,7 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-dark-900 px-4">
+    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-light-50 via-light-100 to-light-200 px-4">
       <div className="w-full max-w-md">
         <div className="text-center mb-8">
           <Link href="/" className="inline-flex items-center space-x-3 mb-6 group">
@@ -48,10 +48,10 @@ export default function LoginPage() {
             </span>
           </Link>
           <h1 className="text-3xl font-work-sans font-bold mb-2">Welcome Back</h1>
-          <p className="text-gray-400 font-gruppo">Access your private vault</p>
+          <p className="text-neutral-600 font-gruppo">Access your private vault</p>
         </div>
 
-        <div className="bg-dark-800/50 backdrop-blur-sm border border-gold-500/20 rounded-2xl p-8">
+        <div className="glass rounded-2xl p-8 shadow-xl shadow-neutral-900/5 animate-scale-in">
           <form onSubmit={handleSubmit} className="space-y-6">
             {error && (
               <div className="bg-red-500/10 border border-red-500/50 rounded-lg p-4 text-red-400 text-sm">
@@ -60,7 +60,7 @@ export default function LoginPage() {
             )}
 
             <div>
-              <label htmlFor="email" className="block text-sm font-work-sans font-semibold mb-2">
+              <label htmlFor="email" className="block text-sm font-work-sans font-semibold mb-2 text-neutral-900">
                 Email Address
               </label>
               <input
@@ -69,13 +69,13 @@ export default function LoginPage() {
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 required
-                className="w-full px-4 py-3 bg-dark-900 border border-gold-500/20 rounded-lg focus:outline-none focus:border-gold-500 transition-colors"
+                className="w-full px-4 py-3 bg-white border border-neutral-300 rounded-lg focus:outline-none focus:border-gold-500 focus:ring-2 focus:ring-gold-500/20 transition-all text-neutral-900"
                 placeholder="member@richemont.com"
               />
             </div>
 
             <div>
-              <label htmlFor="password" className="block text-sm font-work-sans font-semibold mb-2">
+              <label htmlFor="password" className="block text-sm font-work-sans font-semibold mb-2 text-neutral-900">
                 Password
               </label>
               <input
@@ -84,7 +84,7 @@ export default function LoginPage() {
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 required
-                className="w-full px-4 py-3 bg-dark-900 border border-gold-500/20 rounded-lg focus:outline-none focus:border-gold-500 transition-colors"
+                className="w-full px-4 py-3 bg-white border border-neutral-300 rounded-lg focus:outline-none focus:border-gold-500 focus:ring-2 focus:ring-gold-500/20 transition-all text-neutral-900"
                 placeholder="••••••••"
               />
             </div>
@@ -93,9 +93,9 @@ export default function LoginPage() {
               <label className="flex items-center space-x-2 cursor-pointer">
                 <input
                   type="checkbox"
-                  className="w-4 h-4 bg-dark-900 border-gold-500/20 rounded focus:ring-2 focus:ring-gold-500"
+                  className="w-4 h-4 bg-white border-neutral-300 rounded focus:ring-2 focus:ring-gold-500"
                 />
-                <span className="text-gray-400 font-gruppo">Remember me</span>
+                <span className="text-neutral-600 font-gruppo">Remember me</span>
               </label>
               <Link href="/forgot-password" className="text-gold-500 hover:text-gold-400 transition-colors font-gruppo">
                 Forgot password?
@@ -105,13 +105,13 @@ export default function LoginPage() {
             <button
               type="submit"
               disabled={loading}
-              className="w-full px-6 py-3 bg-gradient-to-r from-gold-500 to-gold-600 text-dark-900 rounded-lg font-work-sans font-bold hover:from-gold-400 hover:to-gold-500 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
+              className="w-full px-6 py-3 bg-gradient-to-r from-gold-500 to-gold-600 text-white rounded-lg font-work-sans font-bold hover:from-gold-600 hover:to-gold-700 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed shadow-lg shadow-gold-500/20"
             >
               {loading ? "Signing in..." : "Sign In"}
             </button>
           </form>
 
-          <div className="mt-6 text-center text-sm text-gray-400 font-gruppo">
+          <div className="mt-6 text-center text-sm text-neutral-600 font-gruppo">
             Don&apos;t have an account?{" "}
             <Link href="/register" className="text-gold-500 hover:text-gold-400 font-work-sans font-semibold transition-colors">
               Register now
@@ -119,7 +119,7 @@ export default function LoginPage() {
           </div>
         </div>
 
-        <p className="text-center text-xs text-gray-500 mt-6 font-gruppo">
+        <p className="text-center text-xs text-neutral-500 mt-6 font-gruppo">
           By signing in, you agree to our{" "}
           <Link href="/terms" className="text-gold-500 hover:underline font-gruppo">
             Terms of Service

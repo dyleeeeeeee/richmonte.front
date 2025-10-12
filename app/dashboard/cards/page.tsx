@@ -77,7 +77,7 @@ export default function CardsPage() {
             </div>
             <button
               onClick={() => router.push("/dashboard/cards/apply")}
-              className="flex items-center space-x-2 px-4 sm:px-6 py-2.5 sm:py-3 bg-gradient-to-r from-gold-600 to-gold-700 text-white rounded-lg font-semibold hover:from-gold-500 hover:to-gold-600 transition-colors flex-shrink-0 text-sm sm:text-base active:scale-95 shadow-md"
+              className="flex items-center space-x-2 px-4 sm:px-6 py-2.5 sm:py-3 bg-gradient-to-r from-gold-600 to-gold-700 text-white rounded-lg font-semibold hover:from-gold-500 hover:to-gold-600 transition-smooth flex-shrink-0 text-sm sm:text-base active:scale-95 shadow-lg shadow-gold-500/20 hover-glow"
             >
               <Plus size={18} className="sm:w-5 sm:h-5" />
               <span className="hidden sm:inline">Request Card</span>
@@ -86,7 +86,7 @@ export default function CardsPage() {
           </div>
 
           {cards.length === 0 ? (
-            <div className="p-12 bg-white/50 backdrop-blur-sm border border-gold-200/60 rounded-xl text-center shadow-sm">
+            <div className="p-12 glass rounded-xl text-center shadow-lg animate-scale-in">
               <CreditCardIcon className="w-16 h-16 text-gold-600 mx-auto mb-4" />
               <h3 className="text-xl font-semibold mb-2 text-neutral-900">Your Collection Awaits</h3>
               <p className="text-neutral-600 mb-6">
@@ -94,7 +94,7 @@ export default function CardsPage() {
               </p>
               <button
                 onClick={() => router.push("/dashboard/cards/apply")}
-                className="px-8 py-3 bg-gradient-to-r from-gold-600 to-gold-700 text-white rounded-lg font-semibold hover:from-gold-500 hover:to-gold-600 transition-colors shadow-md"
+                className="px-8 py-3 bg-gradient-to-r from-gold-600 to-gold-700 text-white rounded-lg font-semibold hover:from-gold-500 hover:to-gold-600 transition-smooth shadow-lg shadow-gold-500/20 hover-glow active:scale-95"
               >
                 Request Your Card
               </button>
@@ -117,11 +117,11 @@ export default function CardsPage() {
                   />
 
                   {/* Card Actions */}
-                  <div className="bg-white/50 backdrop-blur-sm border border-gold-200/60 rounded-xl p-4 shadow-sm space-y-3">
+                  <div className="glass rounded-xl p-4 shadow-md space-y-3 hover-lift">
                     <div className="flex items-center justify-between">
                       <button
                         onClick={() => toggleCardLock(card.id, card.status)}
-                        className="flex items-center space-x-2 text-sm text-gold-700 hover:text-gold-600 font-medium transition-colors"
+                        className="flex items-center space-x-2 text-sm text-gold-700 hover:text-gold-600 font-medium transition-smooth active:scale-95"
                       >
                         {card.status === "locked" ? <Unlock size={16} /> : <Lock size={16} />}
                         <span>{card.status === "locked" ? "Activate" : "Secure"}</span>
@@ -130,7 +130,7 @@ export default function CardsPage() {
 
                     <button
                       onClick={() => alert("Report lost/stolen functionality")}
-                      className="w-full flex items-center justify-center space-x-2 py-2 text-sm text-red-600 hover:text-red-500 font-medium transition-colors"
+                      className="w-full flex items-center justify-center space-x-2 py-2 text-sm text-red-600 hover:text-red-500 font-medium transition-smooth active:scale-95"
                     >
                       <AlertCircle size={16} />
                       <span>Report Issue</span>
@@ -143,7 +143,7 @@ export default function CardsPage() {
 
           {/* Card Benefits */}
           <div className="grid md:grid-cols-3 gap-6 mt-12">
-            <div className="bg-white/50 backdrop-blur-sm border border-gold-200/60 rounded-xl p-6 shadow-sm">
+            <div className="glass rounded-xl p-6 shadow-lg hover-lift transition-smooth">
               <div className="w-12 h-12 bg-gold-500/20 rounded-lg flex items-center justify-center mb-4">
                 <CreditCardIcon className="text-gold-600" size={24} />
               </div>
@@ -153,7 +153,7 @@ export default function CardsPage() {
               </p>
             </div>
 
-            <div className="bg-white/50 backdrop-blur-sm border border-gold-200/60 rounded-xl p-6 shadow-sm">
+            <div className="glass rounded-xl p-6 shadow-lg hover-lift transition-smooth">
               <div className="w-12 h-12 bg-gold-500/20 rounded-lg flex items-center justify-center mb-4">
                 <Lock className="text-gold-600" size={24} />
               </div>
@@ -163,7 +163,7 @@ export default function CardsPage() {
               </p>
             </div>
 
-            <div className="bg-white/50 backdrop-blur-sm border border-gold-200/60 rounded-xl p-6 shadow-sm">
+            <div className="glass rounded-xl p-6 shadow-lg hover-lift transition-smooth">
               <div className="w-12 h-12 bg-gold-500/20 rounded-lg flex items-center justify-center mb-4">
                 <AlertCircle className="text-gold-600" size={24} />
               </div>

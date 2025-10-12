@@ -96,7 +96,7 @@ export default function DashboardPage() {
           >
             <AnimatedButton
               onClick={() => router.push("/dashboard/transfers")}
-              className="p-4 sm:p-6 bg-white/40 backdrop-blur-sm border border-neutral-200/60 rounded-xl hover:bg-white/60 hover:border-gold-500/40 hover:shadow-lg transition-all group"
+              className="p-4 sm:p-6 glass hover:glass-gold rounded-xl hover:shadow-xl transition-smooth group hover-lift"
             >
               <div className="w-10 h-10 sm:w-12 sm:h-12 bg-gold-500/10 rounded-lg flex items-center justify-center mb-3 sm:mb-4 group-hover:bg-gold-500/20 transition-colors">
                 <Send className="text-gold-600" size={20} />
@@ -107,7 +107,7 @@ export default function DashboardPage() {
 
             <AnimatedButton
               onClick={() => router.push("/dashboard/bills")}
-              className="p-4 sm:p-6 bg-white/40 backdrop-blur-sm border border-neutral-200/60 rounded-xl hover:bg-white/60 hover:border-gold-500/40 hover:shadow-lg transition-all group"
+              className="p-4 sm:p-6 glass hover:glass-gold rounded-xl hover:shadow-xl transition-smooth group hover-lift"
             >
               <div className="w-10 h-10 sm:w-12 sm:h-12 bg-gold-500/10 rounded-lg flex items-center justify-center mb-3 sm:mb-4 group-hover:bg-gold-500/20 transition-colors">
                 <ArrowUpRight className="text-gold-600" size={20} />
@@ -118,7 +118,7 @@ export default function DashboardPage() {
 
             <AnimatedButton
               onClick={() => router.push("/dashboard/cards")}
-              className="p-4 sm:p-6 bg-white/40 backdrop-blur-sm border border-neutral-200/60 rounded-xl hover:bg-white/60 hover:border-gold-500/40 hover:shadow-lg transition-all group"
+              className="p-4 sm:p-6 glass hover:glass-gold rounded-xl hover:shadow-xl transition-smooth group hover-lift"
             >
               <div className="w-10 h-10 sm:w-12 sm:h-12 bg-gold-500/10 rounded-lg flex items-center justify-center mb-3 sm:mb-4 group-hover:bg-gold-500/20 transition-colors">
                 <CreditCard className="text-gold-600" size={20} />
@@ -129,7 +129,7 @@ export default function DashboardPage() {
 
             <AnimatedButton
               onClick={() => router.push("/dashboard/accounts?action=new")}
-              className="p-4 sm:p-6 bg-white/40 backdrop-blur-sm border border-neutral-200/60 rounded-xl hover:bg-white/60 hover:border-gold-500/40 hover:shadow-lg transition-all group"
+              className="p-4 sm:p-6 glass hover:glass-gold rounded-xl hover:shadow-xl transition-smooth group hover-lift"
             >
               <div className="w-10 h-10 sm:w-12 sm:h-12 bg-gold-500/10 rounded-lg flex items-center justify-center mb-3 sm:mb-4 group-hover:bg-gold-500/20 transition-colors">
                 <Plus className="text-gold-600" size={20} />
@@ -152,7 +152,7 @@ export default function DashboardPage() {
             </div>
             <div className="grid md:grid-cols-3 gap-4">
               {accounts.length === 0 ? (
-                <div className="col-span-3 p-8 bg-white/40 backdrop-blur-xl border border-neutral-200/60 rounded-xl text-center">
+                <div className="col-span-3 p-8 glass rounded-xl text-center">
                   <p className="text-neutral-600 mb-4 font-gruppo">Begin your wealth journey</p>
                   <button
                     onClick={() => router.push("/dashboard/accounts?action=new")}
@@ -165,7 +165,7 @@ export default function DashboardPage() {
                 accounts.map((account) => (
                   <div
                     key={account.id}
-                    className="p-6 bg-white/40 backdrop-blur-sm border border-neutral-200/60 rounded-xl hover:bg-white/60 hover:border-gold-500/40 hover:shadow-lg transition-all cursor-pointer"
+                    className="p-6 glass hover:glass-gold rounded-xl hover:shadow-xl transition-smooth cursor-pointer hover-lift"
                     onClick={() => router.push(`/dashboard/accounts/${account.id}`)}
                   >
                     <p className="text-sm text-neutral-600 mb-2 font-gruppo">{account.account_type}</p>
@@ -187,13 +187,13 @@ export default function DashboardPage() {
                 View All
               </button>
             </div>
-            <div className="bg-white/40 backdrop-blur-xl border border-neutral-200/60 rounded-xl overflow-hidden">
+            <div className="glass rounded-xl overflow-hidden">
               {transactions.length === 0 ? (
                 <div className="p-8 text-center text-neutral-600 font-gruppo">No activity recorded</div>
               ) : (
                 <div className="divide-y divide-neutral-200/60">
                   {transactions.map((tx) => (
-                    <div key={tx.id} className="p-4 hover:bg-white/60 transition-colors flex items-center justify-between">
+                    <div key={tx.id} className="p-4 hover:bg-white/80 transition-smooth flex items-center justify-between">
                       <div className="flex items-center space-x-4">
                         <div className={`w-10 h-10 rounded-lg flex items-center justify-center ${
                           tx.type === "credit" ? "bg-green-500/20" : "bg-red-500/20"
@@ -235,12 +235,12 @@ export default function DashboardPage() {
                 {cards.map((card) => (
                   <div
                     key={card.id}
-                    className="p-6 bg-gradient-to-br from-dark-800 to-dark-700 border border-gold-500/20 rounded-xl"
+                    className="p-6 bg-gradient-to-br from-gold-500 to-gold-600 border border-gold-500/30 rounded-xl shadow-lg shadow-gold-500/20 text-white"
                   >
-                    <p className="text-sm text-gray-400 mb-4 font-gruppo">{card.card_type} • {card.card_brand}</p>
+                    <p className="text-sm opacity-90 mb-4 font-gruppo">{card.card_type} • {card.card_brand}</p>
                     <p className="text-lg font-mono mb-4">•••• {card.card_number?.slice(-4)}</p>
                     <div className="flex items-center justify-between text-sm">
-                      <span className="text-gray-400 font-gruppo">Balance</span>
+                      <span className="opacity-90 font-gruppo">Balance</span>
                       <span className="font-work-sans font-semibold">${card.balance?.toLocaleString()}</span>
                     </div>
                   </div>

@@ -106,7 +106,7 @@ export default function NotificationsPage() {
             {unreadCount > 0 && (
               <AnimatedButton
                 onClick={markAllAsRead}
-                className="flex items-center space-x-2 px-4 py-2 bg-white/60 backdrop-blur-sm border border-neutral-200/60 rounded-xl hover:bg-white/80 transition-all font-work-sans font-semibold text-sm"
+                className="flex items-center space-x-2 px-4 py-2 glass rounded-xl hover:glass-gold transition-smooth font-work-sans font-semibold text-sm hover-lift shadow-md"
               >
                 <MailOpen size={16} />
                 <span>Mark All Read</span>
@@ -118,20 +118,20 @@ export default function NotificationsPage() {
           <div className="flex space-x-2">
             <AnimatedButton
               onClick={() => setFilter('all')}
-              className={`px-4 py-2 rounded-xl font-work-sans font-semibold text-sm transition-all ${
+              className={`px-4 py-2 rounded-xl font-work-sans font-semibold text-sm transition-smooth ${
                 filter === 'all'
-                  ? 'bg-gradient-to-br from-gold-500 to-gold-600 text-white shadow-lg'
-                  : 'bg-white/60 backdrop-blur-sm border border-neutral-200/60 text-neutral-700 hover:bg-white/80'
+                  ? 'bg-gradient-to-br from-gold-500 to-gold-600 text-white shadow-lg shadow-gold-500/20'
+                  : 'glass text-neutral-700 hover:glass-gold hover-lift'
               }`}
             >
               All ({notifications.length})
             </AnimatedButton>
             <AnimatedButton
               onClick={() => setFilter('unread')}
-              className={`px-4 py-2 rounded-xl font-work-sans font-semibold text-sm transition-all ${
+              className={`px-4 py-2 rounded-xl font-work-sans font-semibold text-sm transition-smooth ${
                 filter === 'unread'
-                  ? 'bg-gradient-to-br from-gold-500 to-gold-600 text-white shadow-lg'
-                  : 'bg-white/60 backdrop-blur-sm border border-neutral-200/60 text-neutral-700 hover:bg-white/80'
+                  ? 'bg-gradient-to-br from-gold-500 to-gold-600 text-white shadow-lg shadow-gold-500/20'
+                  : 'glass text-neutral-700 hover:glass-gold hover-lift'
               }`}
             >
               Unread ({unreadCount})
@@ -144,7 +144,7 @@ export default function NotificationsPage() {
             variants={containerVariants}
           >
             {filteredNotifications.length === 0 ? (
-              <div className="bg-white/40 backdrop-blur-xl border border-neutral-200/60 rounded-2xl p-12 text-center">
+              <div className="glass rounded-2xl p-12 text-center shadow-lg animate-scale-in">
                 <Bell className="w-16 h-16 text-neutral-300 mx-auto mb-4" />
                 <p className="text-xl font-work-sans font-bold text-neutral-700 mb-2">No notifications</p>
                 <p className="text-neutral-600 font-gruppo">You&apos;re all caught up!</p>
@@ -154,8 +154,8 @@ export default function NotificationsPage() {
                 <motion.div
                   variants={itemVariants}
                   key={notification.id}
-                  className={`bg-white/40 backdrop-blur-xl border border-neutral-200/60 rounded-2xl p-6 transition-all hover:bg-white/60 hover:shadow-lg ${
-                    !notification.read ? 'border-gold-500/40 shadow-gold-500/10' : ''
+                  className={`glass rounded-2xl p-6 transition-smooth hover:glass-gold hover-lift ${
+                    !notification.read ? 'border-gold-500/40 shadow-gold-500/10' : 'shadow-md'
                   }`}
                 >
                   <div className="flex items-start space-x-4">
@@ -192,7 +192,7 @@ export default function NotificationsPage() {
                         {!notification.read && (
                           <button
                             onClick={() => markAsRead(notification.id)}
-                            className="text-xs text-gold-600 hover:text-gold-700 font-work-sans font-semibold flex items-center space-x-1"
+                            className="text-xs text-gold-600 hover:text-gold-700 font-work-sans font-semibold flex items-center space-x-1 transition-smooth active:scale-95"
                           >
                             <Check size={12} />
                             <span>Mark as read</span>
