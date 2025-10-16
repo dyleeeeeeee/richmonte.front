@@ -5,7 +5,7 @@
         xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
   <!-- Homepage - Highest Priority -->
   <url>
-    <loc>https://conciergebank.com/</loc>
+    <loc>https://conciergebank.us/</loc>
     <lastmod>2025-10-11</lastmod>
     <changefreq>daily</changefreq>
     <priority>1.0</priority>
@@ -13,25 +13,25 @@
   
   <!-- Main Landing Pages -->
   <url>
-    <loc>https://conciergebank.com/about</loc>
+    <loc>https://conciergebank.us/about</loc>
     <lastmod>2025-10-11</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://conciergebank.com/services</loc>
+    <loc>https://conciergebank.us/services</loc>
     <lastmod>2025-10-11</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://conciergebank.com/wealth-management</loc>
+    <loc>https://conciergebank.us/wealth-management</loc>
     <lastmod>2025-10-11</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://conciergebank.com/private-banking</loc>
+    <loc>https://conciergebank.us/private-banking</loc>
     <lastmod>2025-10-11</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
@@ -39,19 +39,19 @@
   
   <!-- Banking Services -->
   <url>
-    <loc>https://conciergebank.com/cards</loc>
+    <loc>https://conciergebank.us/cards</loc>
     <lastmod>2025-10-11</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://conciergebank.com/accounts</loc>
+    <loc>https://conciergebank.us/accounts</loc>
     <lastmod>2025-10-11</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://conciergebank.com/transfers</loc>
+    <loc>https://conciergebank.us/transfers</loc>
     <lastmod>2025-10-11</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
@@ -59,19 +59,19 @@
   
   <!-- Legal & Info Pages -->
   <url>
-    <loc>https://conciergebank.com/security</loc>
+    <loc>https://conciergebank.us/security</loc>
     <lastmod>2025-10-11</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://conciergebank.com/privacy</loc>
+    <loc>https://conciergebank.us/privacy</loc>
     <lastmod>2025-10-11</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://conciergebank.com/terms</loc>
+    <loc>https://conciergebank.us/terms</loc>
     <lastmod>2025-10-11</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
@@ -79,13 +79,13 @@
   
   <!-- Application Pages -->
   <url>
-    <loc>https://conciergebank.com/register</loc>
+    <loc>https://conciergebank.us/register</loc>
     <lastmod>2025-10-11</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://conciergebank.com/login</loc>
+    <loc>https://conciergebank.us/login</loc>
     <lastmod>2025-10-11</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>

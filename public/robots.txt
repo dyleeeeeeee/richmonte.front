@@ -42,8 +42,8 @@ Allow: /privacy
 Allow: /terms
 
 # Sitemap locations
-Sitemap: https://conciergebank.com/sitemap.xml
-Sitemap: https://conciergebank.com/sitemap-images.xml
+Sitemap: https://conciergebank.us/sitemap.xml
+Sitemap: https://conciergebank.us/sitemap-images.xml
 
 # Host preference
-Host: https://conciergebank.com
+Host: https://conciergebank.us

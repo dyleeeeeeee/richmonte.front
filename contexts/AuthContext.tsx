@@ -36,8 +36,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     refreshUser().finally(() => setLoading(false));
   }, []);
 
-  const login = async (email: string, password: string) => {
-    const response = await authAPI.login({ email, password });
+  const login = async (email: string, password: string, recaptchaToken?: string) => {
+    const response = await authAPI.login({ email, password, recaptcha_token: recaptchaToken });
     if (response.error) {
       throw new Error(response.error);
     }

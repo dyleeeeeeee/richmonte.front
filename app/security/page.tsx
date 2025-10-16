@@ -148,7 +148,7 @@ export default function SecurityPage() {
 				</p>
 				<p className="text-neutral-700 mt-4">
 					<strong>24/7 Security Hotline:</strong> +41 22 123 4567<br />
-					<strong>Email:</strong> security@conciergebank.com<br />
+					<strong>Email:</strong> security@conciergebank.us<br />
 					<strong>For Emergencies:</strong> Use the &quot;Report Fraud&quot; button in your mobile app
 				</p>
 				<p className="text-neutral-700 leading-relaxed mt-4">

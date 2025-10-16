@@ -67,6 +67,7 @@ export interface User {
 export interface LoginCredentials {
   email: string;
   password: string;
+  recaptcha_token?: string; // Anti-bot verification token
 }
 export interface RegisterData {
   email: string;

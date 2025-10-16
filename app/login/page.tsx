@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import Link from "next/link";
 import Image from "next/image";
 import { useAuth } from "@/contexts/AuthContext";
+import ReCaptcha, { executeRecaptcha } from "@/components/ReCaptcha";
 
 export default function LoginPage() {
   const [email, setEmail] = useState("");
@@ -20,7 +21,15 @@ export default function LoginPage() {
     setLoading(true);
 
     try {
-      await login(email, password);
+      // Execute reCAPTCHA verification (anti-bot protection)
+      let recaptchaToken = '';
+      try {
+        recaptchaToken = await executeRecaptcha('login');
+      } catch (recaptchaError) {
+        console.warn('reCAPTCHA verification failed:', recaptchaError);
+      }
+
+      await login(email, password, recaptchaToken);
       router.push("/dashboard");
     } catch (err) {
       setError(err instanceof Error ? err.message : "Login failed");
@@ -29,8 +38,14 @@ export default function LoginPage() {
     }
   };
 
+  const siteKey = process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY || '';
+
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-light-50 via-light-100 to-light-200 px-4">
+    <>
+      {/* Load reCAPTCHA script */}
+      {siteKey && <ReCaptcha siteKey={siteKey} />}
+      
+      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-light-50 via-light-100 to-light-200 px-4">
       <div className="w-full max-w-md">
         <div className="text-center mb-8">
           <Link href="/" className="inline-flex items-center space-x-3 mb-6 group">
@@ -131,5 +146,6 @@ export default function LoginPage() {
         </p>
       </div>
     </div>
+    </>
   );
 }
