@@ -177,7 +177,7 @@ export default function AboutPage() {
               Global Reach, <span className="text-gold-600">Personal Touch</span>
             </h2>
             <p className="text-lg text-neutral-600 font-gruppo max-w-3xl mx-auto">
-              As part of the Richemont Group's global network, we leverage international expertise while maintaining 
+              As part of the Richemont Group&apos;s global network, we leverage international expertise while maintaining 
               the personalized service you expect from a private bank.
             </p>
           </div>
