@@ -44,7 +44,7 @@ export default function ServicesPage() {
           </h1>
           <p className="text-xl text-neutral-600 font-gruppo max-w-3xl mx-auto leading-relaxed">
             We deliver exceptional financial services with Swiss precision, creating memorable experiences 
-            for today's sophisticated clients who are at the core of our approach.
+            for today&apos;s sophisticated clients who are at the core of our approach.
           </p>
         </div>
       </section>
@@ -67,7 +67,7 @@ export default function ServicesPage() {
                   Luxury Concierge Cards
                 </h3>
                 <p className="text-neutral-700 font-gruppo leading-relaxed mb-6">
-                  Experience our exclusive card collection, inspired by Richemont's finest Maisons. From the 
+                  Experience our exclusive card collection, inspired by Richemont&apos;s finest Maisons. From the 
                   elegant Gold Card to the prestigious Platinum and the ultra-exclusive Black Card—each crafted 
                   with Swiss precision and American style.
                 </p>
@@ -178,7 +178,7 @@ export default function ServicesPage() {
                   Wealth Management
                 </h3>
                 <p className="text-neutral-700 font-gruppo leading-relaxed mb-6">
-                  Leverage Richemont's global expertise to grow and protect your wealth. Our dedicated wealth 
+                  Leverage Richemont&apos;s global expertise to grow and protect your wealth. Our dedicated wealth 
                   advisors create bespoke portfolios that align with your values, risk tolerance, and long-term 
                   vision.
                 </p>
@@ -215,7 +215,7 @@ export default function ServicesPage() {
             </h2>
             <p className="text-lg text-neutral-600 font-gruppo max-w-2xl mx-auto">
               We set unparalleled standards of service, creating memorable experiences backed by 
-              Richemont's commitment to excellence.
+              Richemont&apos;s commitment to excellence.
             </p>
           </div>
 

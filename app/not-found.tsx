@@ -37,7 +37,7 @@ export default function NotFound() {
           <h1 className="text-9xl font-work-sans font-bold text-gold-500 mb-4">404</h1>
           <h2 className="text-3xl font-work-sans font-bold text-neutral-900 mb-4">Page Not Found</h2>
           <p className="text-lg text-neutral-600 font-gruppo mb-8 max-w-md mx-auto">
-            The page you're seeking doesn't exist in our exclusive banking vault. 
+            The page you&apos;re seeking doesn&apos;t exist in our exclusive banking vault. 
             Let us guide you back to security.
           </p>
 

@@ -96,8 +96,8 @@ export default function PrivateBankingPage() {
               </h2>
               <p className="text-lg text-neutral-700 font-gruppo leading-relaxed mb-6">
                 As a family-spirited subsidiary of Richemont—home to Cartier, Van Cleef & Arpels, IWC Schaffhausen, 
-                and other legendary Maisons—we understand what true luxury means. It's not about ostentation; 
-                it's about <strong>authenticity, craftsmanship, and enduring relationships</strong>.
+                and other legendary Maisons—we understand what true luxury means. It&apos;s not about ostentation; 
+                it&apos;s about <strong>authenticity, craftsmanship, and enduring relationships</strong>.
               </p>
               <p className="text-lg text-neutral-700 font-gruppo leading-relaxed mb-8">
                 Your private banking relationship with us is built on the same principles Richemont has upheld for 

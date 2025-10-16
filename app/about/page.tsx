@@ -72,14 +72,14 @@ export default function AboutPage() {
               </h2>
               <p className="text-lg text-neutral-700 font-gruppo leading-relaxed mb-6">
                 Concierge Bank was established in 2024 as a subsidiary of <strong>Compagnie Financière Richemont SA</strong>, 
-                one of the world's most respected luxury conglomerates. Founded by Johann Rupert in 1988, Richemont has 
+                one of the world&apos;s most respected luxury conglomerates. Founded by Johann Rupert in 1988, Richemont has 
                 cultivated a legacy of nurturing exceptional Maisons—from Cartier and Van Cleef & Arpels to IWC Schaffhausen 
                 and Jaeger-LeCoultre.
               </p>
               <p className="text-lg text-neutral-700 font-gruppo leading-relaxed mb-6">
                 We inherited this same philosophy: <strong>a long-term view, meticulous craftsmanship, and an unwavering 
                 commitment to authenticity</strong>. Just as Richemont nurtures its Maisons with patience and respect for 
-                their heritage, we nurture our clients' wealth with Swiss precision and American dynamism.
+                their heritage, we nurture our clients&apos; wealth with Swiss precision and American dynamism.
               </p>
               <div className="flex items-start space-x-3 mb-4">
                 <Award className="w-6 h-6 text-gold-600 mt-1" />
@@ -209,7 +209,7 @@ export default function AboutPage() {
             </h2>
             <p className="text-lg text-neutral-600 font-gruppo mb-8 max-w-2xl mx-auto">
               Experience private banking the way it was meant to be—personalized, discreet, and backed by 
-              the legacy of Richemont's commitment to excellence.
+              the legacy of Richemont&apos;s commitment to excellence.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Link

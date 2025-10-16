@@ -100,7 +100,7 @@ export default function WealthManagementPage() {
               </h3>
               <p className="text-neutral-700 font-gruppo leading-relaxed">
                 No two clients are alike. We begin by understanding your values, aspirations, and risk tolerance. 
-                Whether you're preserving generational wealth or building it for the first time, your portfolio 
+                Whether you&apos;re preserving generational wealth or building it for the first time, your portfolio 
                 reflects your unique financial DNA.
               </p>
             </div>
@@ -111,8 +111,8 @@ export default function WealthManagementPage() {
                 Global Perspective
               </h3>
               <p className="text-neutral-700 font-gruppo leading-relaxed">
-                Through Richemont's global network spanning Geneva, New York, Hong Kong, and beyond, we access 
-                opportunities across continents. Your wealth isn't confined by borders—neither is our expertise.
+                Through Richemont&apos;s global network spanning Geneva, New York, Hong Kong, and beyond, we access 
+                opportunities across continents. Your wealth isn&apos;t confined by borders—neither is our expertise.
               </p>
             </div>
 
@@ -251,7 +251,7 @@ export default function WealthManagementPage() {
                 The Concierge <span className="text-gold-600">Difference</span>
               </h2>
               <p className="text-lg text-neutral-700 font-gruppo leading-relaxed mb-6">
-                What sets us apart isn't just our Richemont heritage—it's how we apply those values to your wealth.
+                What sets us apart isn&apos;t just our Richemont heritage—it&apos;s how we apply those values to your wealth.
               </p>
               <div className="space-y-6">
                 <div className="flex items-start space-x-4">
@@ -277,7 +277,7 @@ export default function WealthManagementPage() {
                       Fiduciary Standard
                     </h3>
                     <p className="text-neutral-700 font-gruppo">
-                      We're legally obligated to act in your best interest—always. No conflicts, no commissions, just aligned incentives.
+                      We&apos;re legally obligated to act in your best interest—always. No conflicts, no commissions, just aligned incentives.
                     </p>
                   </div>
                 </div>
@@ -291,7 +291,7 @@ export default function WealthManagementPage() {
                       Exclusive Opportunities
                     </h3>
                     <p className="text-neutral-700 font-gruppo">
-                      Access to pre-IPO investments, private placements, and luxury collectibles through Richemont's network.
+                      Access to pre-IPO investments, private placements, and luxury collectibles through Richemont&apos;s network.
                     </p>
                   </div>
                 </div>
@@ -337,7 +337,7 @@ export default function WealthManagementPage() {
         <div className="max-w-4xl mx-auto text-center">
           <div className="glass rounded-3xl p-12">
             <h2 className="text-4xl font-work-sans font-bold text-neutral-900 mb-6">
-              Let's Craft Your <span className="text-gold-600">Financial Legacy</span>
+              Let&apos;s Craft Your <span className="text-gold-600">Financial Legacy</span>
             </h2>
             <p className="text-lg text-neutral-600 font-gruppo mb-8 max-w-2xl mx-auto">
               Schedule a confidential consultation with our wealth management team. Discover how Swiss precision 
