@@ -3,18 +3,27 @@
 import { useEffect, useState } from "react";
 import ProtectedRoute from "@/components/ProtectedRoute";
 import DashboardLayout from "@/components/DashboardLayout";
-import { accountAPI } from "@/lib/api";
+import { accountAPI, billAPI } from "@/lib/api";
 import { Receipt, Plus, Calendar, Check } from "lucide-react";
 
 export default function BillsPage() {
   const [loading, setLoading] = useState(true);
-  const [bills] = useState([
-    { id: "1", payee_name: "Electric", amount: 150, due_date: "2025-11-01", auto_pay: true },
-    { id: "2", payee_name: "Internet", amount: 90, due_date: "2025-11-05", auto_pay: false },
-  ]);
+  const [bills, setBills] = useState([]);
 
   useEffect(() => {
-    setLoading(false);
+    const loadBills = async () => {
+      try {
+        const response = await billAPI.getBills();
+        if (response.data) {
+          setBills(response.data);
+        }
+      } catch (error) {
+        console.error("Failed to load bills:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+    loadBills();
   }, []);
 
   if (loading) {

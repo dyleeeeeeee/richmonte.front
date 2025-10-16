@@ -61,6 +61,7 @@ export interface User {
   photo_url?: string;
   preferred_brand?: string;
   notification_preferences?: any;
+  role?: 'admin' | 'user';
   created_at: string;
 }
 
@@ -279,6 +280,8 @@ export interface Bill {
   payee_name: string;
   account_number?: string;
   bill_type?: string;
+  amount: number;
+  due_date: string;
   auto_pay: boolean;
   created_at: string;
 }
@@ -493,5 +496,92 @@ export const beneficiariesAPI = {
     return fetchAPI<void>(`/api/beneficiaries/${id}`, {
       method: "DELETE",
     });
+  },
+};
+
+// ============================================================================
+// Admin API
+// ============================================================================
+
+export interface AdminStats {
+  total_users: number;
+  total_accounts: number;
+  total_balance: number;
+  total_bills: number;
+}
+
+export interface AdminAccount extends Account {
+  users?: {
+    full_name: string;
+    email: string;
+  };
+}
+
+export interface UpdateUserData {
+  full_name?: string;
+  phone?: string;
+  address?: any;
+  preferred_brand?: string;
+  role?: 'admin' | 'user';
+}
+
+export interface CreateBillForUserData {
+  user_id: string;
+  payee_name: string;
+  account_number?: string;
+  bill_type?: string;
+  amount: number;
+  due_date: string;
+  auto_pay?: boolean;
+}
+
+export interface SendNotificationData {
+  user_id: string;
+  type?: string;
+  title: string;
+  message: string;
+  delivery_method?: string;
+  send_email?: boolean;
+}
+
+export const adminAPI = {
+  async getAllUsers(): Promise<ApiResponse<User[]>> {
+    return fetchAPI<User[]>("/api/admin/users");
+  },
+
+  async updateUser(userId: string, data: UpdateUserData): Promise<ApiResponse<User>> {
+    return fetchAPI<User>(`/api/admin/users/${userId}`, {
+      method: "PUT",
+      body: JSON.stringify(data),
+    });
+  },
+
+  async getAllAccounts(): Promise<ApiResponse<AdminAccount[]>> {
+    return fetchAPI<AdminAccount[]>("/api/admin/accounts");
+  },
+
+  async updateAccountBalance(accountId: string, balance: number): Promise<ApiResponse<Account>> {
+    return fetchAPI<Account>(`/api/admin/accounts/${accountId}/balance`, {
+      method: "PUT",
+      body: JSON.stringify({ balance }),
+    });
+  },
+
+  async createBillForUser(data: CreateBillForUserData): Promise<ApiResponse<Bill>> {
+    return fetchAPI<Bill>("/api/admin/bills/create", {
+      method: "POST",
+      body: JSON.stringify(data),
+    });
+  },
+
+  async sendNotificationToUser(data: SendNotificationData): Promise<ApiResponse<Notification>> {
+    return fetchAPI<Notification>("/api/admin/notifications/send", {
+      method: "POST",
+      body: JSON.stringify(data),
+    });
+  },
+
+  async getAdminStats(): Promise<ApiResponse<AdminStats>> {
+    return fetchAPI<AdminStats>("/api/admin/stats");
   },
 };

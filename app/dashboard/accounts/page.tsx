@@ -5,6 +5,7 @@ import { useRouter, useSearchParams } from "next/navigation";
 import ProtectedRoute from "@/components/ProtectedRoute";
 import DashboardLayout from "@/components/DashboardLayout";
 import { accountAPI, Account } from "@/lib/api";
+import { useNotification } from "@/contexts/NotificationContext";
 import { Plus, ChevronRight, TrendingUp, Wallet } from "lucide-react";
 
 export const runtime = 'edge';
@@ -19,6 +20,7 @@ export default function AccountsPage() {
   const [creating, setCreating] = useState(false);
   const router = useRouter();
   const searchParams = useSearchParams();
+  const { showNotification } = useNotification();
 
   useEffect(() => {
     loadAccounts();
@@ -56,12 +58,12 @@ export default function AccountsPage() {
         setShowNewAccountModal(false);
         setNewAccountType("Checking");
         setInitialDeposit("");
-        alert("Account created successfully! Check your email for confirmation.");
+        showNotification("Account created successfully! Check your email for confirmation.", "success");
       } else if (response.error) {
-        alert(`Error: ${response.error}`);
+        showNotification(`Error: ${response.error}`, "error");
       }
     } catch (error) {
-      alert("Failed to create account");
+      showNotification("Failed to create account", "error");
     } finally {
       setCreating(false);
     }
@@ -140,7 +142,18 @@ export default function AccountsPage() {
                     <ChevronRight className="text-gray-400 group-hover:text-gold-500 transition-colors" size={20} />
                   </div>
                   <h3 className="text-xl font-work-sans font-semibold mb-2 text-neutral-900">{account.account_type}</h3>
-                  <p className="text-sm text-neutral-600 font-gruppo mb-4">••••  {account.account_number?.slice(-4)}</p>
+                  <button
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      navigator.clipboard.writeText(account.account_number);
+                      showNotification('Account number copied to clipboard', 'success');
+                    }}
+                    className="text-sm text-neutral-600 font-gruppo mb-4 hover:text-gold-500 transition-colors group"
+                    title="Click to copy full account number"
+                  >
+                    •••• {account.account_number?.slice(-4)}
+                    <span className="ml-2 text-xs opacity-0 group-hover:opacity-100 transition-opacity">📋</span>
+                  </button>
                   <div className="border-t border-gold-500/20 pt-4">
                     <p className="text-sm text-neutral-600 font-gruppo mb-1">Current Balance</p>
                     <p className="text-3xl font-work-sans font-bold text-neutral-900">${account.balance.toLocaleString("en-US", { minimumFractionDigits: 2 })}</p>

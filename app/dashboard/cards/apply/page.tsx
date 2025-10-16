@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import ProtectedRoute from "@/components/ProtectedRoute";
 import DashboardLayout from "@/components/DashboardLayout";
 import { cardAPI } from "@/lib/api";
+import { useNotification } from "@/contexts/NotificationContext";
 import { Check, CreditCard, DollarSign, Shield, ChevronRight, ChevronLeft } from "lucide-react";
 
 const CARD_TIERS = [
@@ -51,6 +52,7 @@ const CARD_TIERS = [
 
 export default function ApplyCardPage() {
   const router = useRouter();
+  const { showNotification } = useNotification();
   const [step, setStep] = useState(1);
   const [selectedTier, setSelectedTier] = useState("Platinum");
   const [formData, setFormData] = useState({
@@ -85,10 +87,10 @@ export default function ApplyCardPage() {
         if (response.data) {
           setApproved(true);
         } else {
-          alert("Application failed. Please try again.");
+          showNotification("Application failed. Please try again.", "error");
         }
       } catch (error) {
-        alert("Application failed. Please try again.");
+        showNotification("Application failed. Please try again.", "error");
       } finally {
         setSubmitting(false);
       }

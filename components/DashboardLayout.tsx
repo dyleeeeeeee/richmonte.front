@@ -24,12 +24,14 @@ import {
   ChevronDown,
   User,
   HelpCircle,
+  Shield,
 } from "lucide-react";
 
 interface NavItem {
   name: string;
   href: string;
   icon: ReactNode;
+  adminOnly?: boolean;
 }
 
 const navItems: NavItem[] = [
@@ -40,6 +42,7 @@ const navItems: NavItem[] = [
   { name: "Bills", href: "/dashboard/bills", icon: <Receipt size={20} /> },
   { name: "Checks", href: "/dashboard/checks", icon: <FileText size={20} /> },
   { name: "Settings", href: "/dashboard/settings", icon: <Settings size={20} /> },
+  { name: "Admin", href: "/dashboard/admin", icon: <Shield size={20} />, adminOnly: true },
 ];
 
 export default function DashboardLayout({ children }: { children: ReactNode }) {
@@ -119,7 +122,7 @@ export default function DashboardLayout({ children }: { children: ReactNode }) {
 
             {/* Desktop Navigation */}
             <div className="hidden md:flex items-center space-x-1">
-              {navItems.map((item) => {
+              {navItems.filter(item => !item.adminOnly || user?.role === 'admin').map((item) => {
                 const isActive = pathname === item.href || pathname?.startsWith(item.href + '/');
                 return (
                   <Link
@@ -131,7 +134,13 @@ export default function DashboardLayout({ children }: { children: ReactNode }) {
                         : "text-neutral-700 hover:bg-neutral-100 hover:text-neutral-900"
                     }`}
                   >
-                    <span className="relative z-10">{item.name}</span>
+                    <span className="relative z-10 flex items-center space-x-2">
+                      {item.icon}
+                      <span>{item.name}</span>
+                      {item.adminOnly && (
+                        <div className="w-2 h-2 rounded-full bg-red-500 animate-pulse" />
+                      )}
+                    </span>
                     {isActive && (
                       <div className="absolute inset-0 bg-white/10 rounded-xl animate-pulse"></div>
                     )}
@@ -292,7 +301,7 @@ export default function DashboardLayout({ children }: { children: ReactNode }) {
 
             {/* Mobile Navigation */}
             <div className="px-4 py-4 space-y-1">
-              {navItems.map((item) => {
+              {navItems.filter(item => !item.adminOnly || user?.role === 'admin').map((item) => {
                 const isActive = pathname === item.href || pathname?.startsWith(item.href + '/');
                 return (
                   <Link
@@ -305,8 +314,13 @@ export default function DashboardLayout({ children }: { children: ReactNode }) {
                         : "text-neutral-700 hover:bg-neutral-100 hover:text-neutral-900 active:scale-95"
                     }`}
                   >
-                    <div className={isActive ? "" : "text-neutral-500"}>{item.icon}</div>
-                    <span>{item.name}</span>
+                    <div className={`${isActive ? "" : "text-neutral-500"} flex items-center space-x-2`}>
+                      {item.icon}
+                      <span>{item.name}</span>
+                      {item.adminOnly && (
+                        <div className="w-2 h-2 rounded-full bg-red-500 animate-pulse" />
+                      )}
+                    </div>
                   </Link>
                 );
               })}
@@ -367,7 +381,7 @@ export default function DashboardLayout({ children }: { children: ReactNode }) {
       {/* Bottom Navigation (Mobile) - Modernized */}
       <nav className="fixed bottom-0 left-0 right-0 z-50 md:hidden glass border-t border-neutral-200/60 safe-area-inset-bottom shadow-lg">
         <div className="grid grid-cols-5 gap-0.5 px-1 py-2 pb-safe">
-          {navItems.slice(0, 5).map((item) => (
+          {navItems.filter(item => !item.adminOnly || user?.role === 'admin').slice(0, 5).map((item) => (
             <Link
               key={item.href}
               href={item.href}
@@ -377,8 +391,11 @@ export default function DashboardLayout({ children }: { children: ReactNode }) {
                   : "text-neutral-600 hover:text-neutral-900 active:bg-neutral-100"
               }`}
             >
-              <div className={`mb-1 ${pathname === item.href ? "scale-110" : ""}`}>
+              <div className={`mb-1 ${pathname === item.href ? "scale-110" : ""} flex items-center space-x-1`}>
                 {item.icon}
+                {item.adminOnly && (
+                  <div className="w-1.5 h-1.5 rounded-full bg-red-500 animate-pulse" />
+                )}
               </div>
               <span className="leading-tight">{item.name}</span>
             </Link>

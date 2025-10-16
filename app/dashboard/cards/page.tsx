@@ -6,10 +6,12 @@ import ProtectedRoute from "@/components/ProtectedRoute";
 import DashboardLayout from "@/components/DashboardLayout";
 import CreditCard from "@/components/CreditCard";
 import { cardAPI, Card } from "@/lib/api";
+import { useNotification } from "@/contexts/NotificationContext";
 import { CreditCard as CreditCardIcon, Lock, Unlock, AlertCircle, Plus } from "lucide-react";
 
 export default function CardsPage() {
   const router = useRouter();
+  const { showNotification } = useNotification();
   const [cards, setCards] = useState<Card[]>([]);
   const [loading, setLoading] = useState(true);
 
@@ -36,10 +38,10 @@ export default function CardsPage() {
       const response = await cardAPI.lockCard(cardId, newStatus === "locked");
       if (response.data) {
         setCards(cards.map((c) => (c.id === cardId ? { ...c, status: newStatus } : c)));
-        alert(`Card ${newStatus === "locked" ? "locked" : "unlocked"} successfully`);
+        showNotification(`Card ${newStatus === "locked" ? "locked" : "unlocked"} successfully`, "success");
       }
     } catch (error) {
-      alert("Failed to update card status");
+      showNotification("Failed to update card status", "error");
     }
   };
 
@@ -129,7 +131,7 @@ export default function CardsPage() {
                     </div>
 
                     <button
-                      onClick={() => alert("Report lost/stolen functionality")}
+                      onClick={() => showNotification("Report lost/stolen functionality coming soon", "info")}
                       className="w-full flex items-center justify-center space-x-2 py-2 text-sm text-red-600 hover:text-red-500 font-medium transition-smooth active:scale-95"
                     >
                       <AlertCircle size={16} />

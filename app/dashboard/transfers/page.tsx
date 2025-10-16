@@ -5,6 +5,7 @@ import { useRouter, useSearchParams } from "next/navigation";
 import ProtectedRoute from "@/components/ProtectedRoute";
 import DashboardLayout from "@/components/DashboardLayout";
 import { accountAPI, transferAPI, Account } from "@/lib/api";
+import { useNotification } from "@/contexts/NotificationContext";
 import { Send, Calendar, Repeat, User, Building, ArrowRight } from "lucide-react";
 
 export const runtime = 'edge';
@@ -13,6 +14,7 @@ export const dynamic = 'force-dynamic';
 export default function TransfersPage() {
   const router = useRouter();
   const searchParams = useSearchParams();
+  const { showNotification } = useNotification();
   const [accounts, setAccounts] = useState<Account[]>([]);
   const [transferType, setTransferType] = useState<"internal" | "external" | "p2p">("internal");
   const [formData, setFormData] = useState({
@@ -105,7 +107,7 @@ export default function TransfersPage() {
       const response = await transferAPI.createTransfer(transferData);
 
       if (response.data) {
-        alert("Transfer completed successfully!");
+        showNotification("Transfer completed successfully!", "success");
         setFormData({
           ...formData,
           amount: "",
@@ -119,10 +121,10 @@ export default function TransfersPage() {
         loadAccounts();
         loadHistory();
       } else if (response.error) {
-        alert(`Transfer failed: ${response.error}`);
+        showNotification(`Transfer failed: ${response.error}`, "error");
       }
     } catch (error) {
-      alert("Transfer failed. Please try again.");
+      showNotification("Transfer failed. Please try again.", "error");
     } finally {
       setSubmitting(false);
     }
