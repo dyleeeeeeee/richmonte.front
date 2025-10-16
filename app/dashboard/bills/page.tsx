@@ -3,12 +3,12 @@
 import { useEffect, useState } from "react";
 import ProtectedRoute from "@/components/ProtectedRoute";
 import DashboardLayout from "@/components/DashboardLayout";
-import { accountAPI, billAPI } from "@/lib/api";
+import { accountAPI, billAPI, Bill } from "@/lib/api";
 import { Receipt, Plus, Calendar, Check } from "lucide-react";
 
 export default function BillsPage() {
   const [loading, setLoading] = useState(true);
-  const [bills, setBills] = useState([]);
+  const [bills, setBills] = useState<Bill[]>([]);
 
   useEffect(() => {
     const loadBills = async () => {

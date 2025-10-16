@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import { useRouter } from "next/navigation";
 import ProtectedRoute from "@/components/ProtectedRoute";
 import DashboardLayout from "@/components/DashboardLayout";
@@ -48,21 +48,7 @@ export default function AdminDashboardPage() {
     send_email: false,
   });
 
-  // Check if user is admin
-  useEffect(() => {
-    if (user && user.role !== 'admin') {
-      router.push('/dashboard');
-      showNotification('Access denied. Admin privileges required.', 'error');
-    }
-  }, [user, router, showNotification]);
-
-  useEffect(() => {
-    if (user?.role === 'admin') {
-      loadData();
-    }
-  }, [user]);
-
-  const loadData = async () => {
+  const loadData = useCallback(async () => {
     try {
       const [statsRes, usersRes, accountsRes] = await Promise.all([
         adminAPI.getAdminStats(),
@@ -79,7 +65,21 @@ export default function AdminDashboardPage() {
     } finally {
       setLoading(false);
     }
-  };
+  }, [showNotification]);
+
+  // Check if user is admin
+  useEffect(() => {
+    if (user && user.role !== 'admin') {
+      router.push('/dashboard');
+      showNotification('Access denied. Admin privileges required.', 'error');
+    }
+  }, [user, router, showNotification]);
+
+  useEffect(() => {
+    if (user?.role === 'admin') {
+      loadData();
+    }
+  }, [user, loadData]);
 
   const handleUpdateUserRole = async (userId: string, newRole: 'admin' | 'user') => {
     try {
