@@ -6,7 +6,8 @@
     "dev": "next dev",
     "build": "cross-env NODE_OPTIONS=--max_old_space_size=4096 next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "type-check": "tsc --noEmit --project ."
   },
   "dependencies": {
     "@radix-ui/react-dialog": "^1.1.2",

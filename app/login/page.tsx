@@ -6,16 +6,34 @@ import Link from "next/link";
 import Image from "next/image";
 import { useAuth } from "@/contexts/AuthContext";
 import ReCaptcha, { executeRecaptcha } from "@/components/ReCaptcha";
+import TwoFactorVerification from "@/components/TwoFactorVerification";
+import BackupCodeVerification from "@/components/BackupCodeVerification";
+import { twoFactorAPI } from "@/lib/api";
+
+type LoginStep = 'credentials' | '2fa' | 'backup';
+
+interface LoginResponse {
+  requires_2fa?: boolean;
+  user_id?: string;
+  email?: string;
+  token?: string;
+  user?: any;
+  error?: string;
+}
 
 export default function LoginPage() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
+  const [loginStep, setLoginStep] = useState<LoginStep>('credentials');
+  const [twoFAData, setTwoFAData] = useState<{ userId: string; email: string } | null>(null);
+  const [twoFAError, setTwoFAError] = useState("");
+  const [twoFALoading, setTwoFALoading] = useState(false);
   const { login } = useAuth();
   const router = useRouter();
 
-  const handleSubmit = async (e: FormEvent) => {
+  const handleCredentialsSubmit = async (e: FormEvent) => {
     e.preventDefault();
     setError("");
     setLoading(true);
@@ -29,8 +47,36 @@ export default function LoginPage() {
         console.warn('reCAPTCHA verification failed:', recaptchaError);
       }
 
-      await login(email, password, recaptchaToken);
-      router.push("/dashboard");
+      // Custom login logic to handle 2FA
+      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000"}/api/auth/login`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          email,
+          password,
+          recaptcha_token: recaptchaToken,
+        }),
+      });
+
+      const data: LoginResponse = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.error || 'Login failed');
+      }
+
+      if (data.requires_2fa && data.user_id && data.email) {
+        // 2FA required - switch to verification step
+        setTwoFAData({ userId: data.user_id, email: data.email });
+        setLoginStep('2fa');
+      } else if (data.token && data.user) {
+        // Standard login successful
+        localStorage.setItem('auth_token', data.token);
+        router.push("/dashboard");
+      } else {
+        throw new Error('Invalid login response');
+      }
     } catch (err) {
       setError(err instanceof Error ? err.message : "Login failed");
     } finally {
@@ -38,13 +84,111 @@ export default function LoginPage() {
     }
   };
 
+  const handleTwoFAVerify = async (otpCode: string) => {
+    if (!twoFAData) return;
+
+    setTwoFAError("");
+    setTwoFALoading(true);
+
+    try {
+      const response = await twoFactorAPI.verifyOtp({
+        user_id: twoFAData.userId,
+        email: twoFAData.email,
+        otp_code: otpCode,
+      });
+
+      if (response.data?.token && response.data?.user) {
+        localStorage.setItem('auth_token', response.data.token);
+        router.push("/dashboard");
+      } else {
+        throw new Error('Verification failed');
+      }
+    } catch (err) {
+      setTwoFAError(err instanceof Error ? err.message : "Verification failed");
+    } finally {
+      setTwoFALoading(false);
+    }
+  };
+
+  const handleBackupCodeVerify = async (backupCode: string) => {
+    if (!twoFAData) return;
+
+    setTwoFAError("");
+    setTwoFALoading(true);
+
+    try {
+      const response = await twoFactorAPI.verifyBackupCode({
+        user_id: twoFAData.userId,
+        email: twoFAData.email,
+        backup_code: backupCode,
+      });
+
+      if (response.data?.token && response.data?.user) {
+        localStorage.setItem('auth_token', response.data.token);
+        router.push("/dashboard");
+      } else {
+        throw new Error('Backup code verification failed');
+      }
+    } catch (err) {
+      setTwoFAError(err instanceof Error ? err.message : "Backup code verification failed");
+    } finally {
+      setTwoFALoading(false);
+    }
+  };
+
+  const handleBackToCredentials = () => {
+    setLoginStep('credentials');
+    setTwoFAData(null);
+    setTwoFAError("");
+  };
+
+  const handleUseBackupCode = () => {
+    setLoginStep('backup');
+    setTwoFAError("");
+  };
+
+  const handleBackTo2FA = () => {
+    setLoginStep('2fa');
+    setTwoFAError("");
+  };
+
   const siteKey = process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY || '';
 
+  // Show 2FA verification screen
+  if (loginStep === '2fa' && twoFAData) {
+    return (
+      <TwoFactorVerification
+        email={twoFAData.email}
+        userId={twoFAData.userId}
+        onVerify={handleTwoFAVerify}
+        onUseBackupCode={handleUseBackupCode}
+        onBack={handleBackToCredentials}
+        error={twoFAError}
+        loading={twoFALoading}
+      />
+    );
+  }
+
+  // Show backup code verification screen
+  if (loginStep === 'backup' && twoFAData) {
+    return (
+      <BackupCodeVerification
+        email={twoFAData.email}
+        userId={twoFAData.userId}
+        onVerify={handleBackupCodeVerify}
+        onBack={handleBackTo2FA}
+        error={twoFAError}
+        loading={twoFALoading}
+      />
+    );
+  }
+
+  // Show credentials login form
   return (
     <>
       {/* Load reCAPTCHA script */}
       {siteKey && <ReCaptcha siteKey={siteKey} />}
-      
+
       <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-light-50 via-light-100 to-light-200 px-4">
       <div className="w-full max-w-md">
         <div className="text-center mb-8">
@@ -67,7 +211,7 @@ export default function LoginPage() {
         </div>
 
         <div className="glass rounded-2xl p-8 shadow-xl shadow-neutral-900/5 animate-scale-in">
-          <form onSubmit={handleSubmit} className="space-y-6">
+          <form onSubmit={handleCredentialsSubmit} className="space-y-6">
             {error && (
               <div className="bg-red-500/10 border border-red-500/50 rounded-lg p-4 text-red-400 text-sm">
                 {error}

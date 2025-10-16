@@ -50,9 +50,9 @@ export default function AdminDashboardPage() {
   const loadData = useCallback(async () => {
     try {
       const [statsRes, usersRes, accountsRes] = await Promise.all([
-        adminAPI.getAdminStats(),
-        adminAPI.getAllUsers(),
-        adminAPI.getAllAccounts(),
+        adminAPI.getStats(),
+        adminAPI.getUsers(),
+        adminAPI.getAccounts(),
       ]);
 
       if (statsRes.data) setStats(statsRes.data);
@@ -148,7 +148,7 @@ export default function AdminDashboardPage() {
     }
 
     try {
-      const response = await adminAPI.sendNotificationToUser({
+      const response = await adminAPI.sendNotification({
         user_id: selectedUser,
         message: notificationForm.message,
         type: notificationForm.type,

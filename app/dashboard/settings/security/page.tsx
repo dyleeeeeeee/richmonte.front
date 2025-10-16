@@ -4,7 +4,9 @@ import { useState, useEffect, FormEvent } from "react";
 import { useRouter } from "next/navigation";
 import ProtectedRoute from "@/components/ProtectedRoute";
 import DashboardLayout from "@/components/DashboardLayout";
-import { ArrowLeft, Lock, Shield, Smartphone, Monitor } from "lucide-react";
+import TwoFactorSetupModal from "@/components/TwoFactorSetupModal";
+import { ArrowLeft, Lock, Shield, Smartphone, Monitor, Key, RotateCcw } from "lucide-react";
+import { twoFactorAPI } from "@/lib/api";
 
 export default function SecuritySettingsPage() {
   const router = useRouter();
@@ -15,6 +17,9 @@ export default function SecuritySettingsPage() {
   });
   const [loginHistory, setLoginHistory] = useState<any[]>([]);
   const [twoFAEnabled, setTwoFAEnabled] = useState(false);
+  const [twoFAStatus, setTwoFAStatus] = useState<any>(null);
+  const [showSetupModal, setShowSetupModal] = useState(false);
+  const [backupCodes, setBackupCodes] = useState<string[]>([]);
   const [saving, setSaving] = useState(false);
 
   useEffect(() => {
@@ -73,6 +78,23 @@ export default function SecuritySettingsPage() {
     };
 
     generateLoginHistory();
+  }, []);
+
+  // Load 2FA status
+  useEffect(() => {
+    const loadTwoFAStatus = async () => {
+      try {
+        const response = await twoFactorAPI.getTwoFactorStatus();
+        if (response.data) {
+          setTwoFAStatus(response.data);
+          setTwoFAEnabled(response.data.enabled);
+        }
+      } catch (error) {
+        console.error("Failed to load 2FA status:", error);
+      }
+    };
+
+    loadTwoFAStatus();
   }, []);
 
   // Helper functions to detect browser/OS
@@ -210,26 +232,64 @@ export default function SecuritySettingsPage() {
                 <button
                   onClick={async () => {
                     const newState = !twoFAEnabled;
+                    setSaving(true);
+
                     try {
-                      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000"}/api/settings/security/2fa`, {
-                        method: "PUT",
-                        headers: {
-                          "Content-Type": "application/json",
-                          Authorization: `Bearer ${localStorage.getItem('auth_token')}`,
-                        },
-                        body: JSON.stringify({ enabled: newState }),
-                      });
-                      
-                      if (response.ok) {
-                        setTwoFAEnabled(newState);
+                      if (newState) {
+                        // Enable 2FA - this will set it up and return backup codes
+                        const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000"}/api/settings/security/2fa`, {
+                          method: "PUT",
+                          headers: {
+                            "Content-Type": "application/json",
+                            Authorization: `Bearer ${localStorage.getItem('auth_token')}`,
+                          },
+                          body: JSON.stringify({ enabled: true }),
+                        });
+
+                        const data = await response.json();
+
+                        if (response.ok && data.backup_codes) {
+                          setBackupCodes(data.backup_codes);
+                          setShowSetupModal(true);
+                          setTwoFAEnabled(true);
+                          // Reload status
+                          const statusResponse = await twoFactorAPI.getTwoFactorStatus();
+                          if (statusResponse.data) {
+                            setTwoFAStatus(statusResponse.data);
+                          }
+                        } else {
+                          alert(data.error || "Failed to enable 2FA");
+                        }
+                      } else {
+                        // Disable 2FA
+                        const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000"}/api/settings/security/2fa`, {
+                          method: "PUT",
+                          headers: {
+                            "Content-Type": "application/json",
+                            Authorization: `Bearer ${localStorage.getItem('auth_token')}`,
+                          },
+                          body: JSON.stringify({ enabled: false }),
+                        });
+
+                        if (response.ok) {
+                          setTwoFAEnabled(false);
+                          setTwoFAStatus(null);
+                        } else {
+                          const data = await response.json();
+                          alert(data.error || "Failed to disable 2FA");
+                        }
                       }
                     } catch (error) {
                       console.error("Failed to toggle 2FA:", error);
+                      alert("Failed to update 2FA settings");
+                    } finally {
+                      setSaving(false);
                     }
                   }}
+                  disabled={saving}
                   className={`relative w-14 h-8 rounded-full transition-colors ${
                     twoFAEnabled ? "bg-gradient-to-r from-gold-600 to-gold-700 shadow-md" : "bg-neutral-300"
-                  }`}
+                  } ${saving ? 'opacity-50 cursor-not-allowed' : ''}`}
                 >
                   <div
                     className={`absolute top-1 left-1 w-6 h-6 bg-white rounded-full transition-transform ${
@@ -238,10 +298,60 @@ export default function SecuritySettingsPage() {
                   />
                 </button>
               </div>
-              {twoFAEnabled && (
-                <div className="mt-4 p-4 bg-gold-500/10 border border-gold-500/20 rounded-lg">
-                  <p className="text-sm text-neutral-700 font-gruppo">Scan this QR code with your authenticator app</p>
-                  <div className="w-40 h-40 bg-white border-2 border-gold-500/30 mx-auto my-4 rounded-lg shadow-inner"></div>
+
+              {/* 2FA Status Info */}
+              {twoFAEnabled && twoFAStatus && (
+                <div className="mt-4 space-y-3">
+                  <div className="bg-green-50 border border-green-200 rounded-lg p-3">
+                    <div className="flex items-center justify-between">
+                      <div className="flex items-center space-x-2">
+                        <Shield className="w-4 h-4 text-green-600" />
+                        <span className="text-sm font-work-sans font-medium text-green-800">2FA is enabled</span>
+                      </div>
+                      <span className="text-xs text-green-600 font-gruppo">
+                        {twoFAStatus.backup_codes_count} backup codes remaining
+                      </span>
+                    </div>
+                  </div>
+
+                  {/* Backup Code Actions */}
+                  <div className="flex space-x-2">
+                    <button
+                      onClick={async () => {
+                        if (confirm("This will generate new backup codes. Your old codes will no longer work. Continue?")) {
+                          try {
+                            const response = await twoFactorAPI.regenerateBackupCodes();
+                            if (response.data?.backup_codes) {
+                              setBackupCodes(response.data.backup_codes);
+                              setShowSetupModal(true);
+                              // Reload status
+                              const statusResponse = await twoFactorAPI.getTwoFactorStatus();
+                              if (statusResponse.data) {
+                                setTwoFAStatus(statusResponse.data);
+                              }
+                            }
+                          } catch (error) {
+                            console.error("Failed to regenerate codes:", error);
+                            alert("Failed to regenerate backup codes");
+                          }
+                        }
+                      }}
+                      className="flex items-center space-x-2 px-3 py-2 text-sm bg-neutral-100 hover:bg-neutral-200 rounded-lg transition-colors"
+                    >
+                      <RotateCcw size={14} />
+                      <span>Regenerate Codes</span>
+                    </button>
+                  </div>
+                </div>
+              )}
+
+              {/* Setup Info for Disabled State */}
+              {!twoFAEnabled && (
+                <div className="mt-4 bg-neutral-50 border border-neutral-200 rounded-lg p-3">
+                  <p className="text-sm text-neutral-700 font-gruppo">
+                    When enabled, you&apos;ll receive a verification code via email each time you log in.
+                    Backup codes will be provided for account recovery.
+                  </p>
                 </div>
               )}
             </div>
@@ -275,6 +385,14 @@ export default function SecuritySettingsPage() {
           </div>
         </div>
       </DashboardLayout>
+
+      {/* 2FA Setup Modal */}
+      <TwoFactorSetupModal
+        isOpen={showSetupModal}
+        onClose={() => setShowSetupModal(false)}
+        backupCodes={backupCodes}
+        onConfirm={() => setShowSetupModal(false)}
+      />
     </ProtectedRoute>
   );
 }

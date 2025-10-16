@@ -7,6 +7,7 @@ import { usePathname, useRouter } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
 import { useAuth } from "@/contexts/AuthContext";
 import { notificationAPI, Notification } from "@/lib/api";
+import SearchModal from "@/components/SearchModal";
 import { dropdownVariants, slideInFromBottom, iconButtonVariants, badgeVariants } from "@/lib/animations";
 import {
   Home,
@@ -51,6 +52,7 @@ export default function DashboardLayout({ children }: { children: ReactNode }) {
   const { user, logout } = useAuth();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [userMenuOpen, setUserMenuOpen] = useState(false);
+  const [searchModalOpen, setSearchModalOpen] = useState(false);
   const [notifications, setNotifications] = useState<Notification[]>([]);
   const [notificationCount, setNotificationCount] = useState(0);
   const userMenuRef = useRef<HTMLDivElement>(null);
@@ -75,6 +77,24 @@ export default function DashboardLayout({ children }: { children: ReactNode }) {
     const interval = setInterval(loadNotifications, 30000);
     return () => clearInterval(interval);
   }, []);
+
+  // Keyboard shortcuts
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      // Cmd+K or Ctrl+K to open search
+      if ((e.metaKey || e.ctrlKey) && e.key === 'k') {
+        e.preventDefault();
+        setSearchModalOpen(true);
+      }
+      // Escape to close search
+      if (e.key === 'Escape' && searchModalOpen) {
+        setSearchModalOpen(false);
+      }
+    };
+
+    document.addEventListener('keydown', handleKeyDown);
+    return () => document.removeEventListener('keydown', handleKeyDown);
+  }, [searchModalOpen]);
 
   // Close user menu when clicking outside
   useEffect(() => {
@@ -157,7 +177,7 @@ export default function DashboardLayout({ children }: { children: ReactNode }) {
               {/* Search Button (Desktop) */}
               <button
                 className="hidden lg:flex items-center space-x-2 px-3 py-2 bg-white/60 hover:bg-white border border-neutral-200/60 hover:border-gold-500/30 rounded-lg transition-all duration-200 group font-gruppo"
-                onClick={() => {/* TODO: Implement command palette */}}
+                onClick={() => setSearchModalOpen(true)}
                 title="Search (⌘K)"
               >
                 <Search size={16} className="text-neutral-500 group-hover:text-gold-500 transition-colors" />
@@ -168,6 +188,7 @@ export default function DashboardLayout({ children }: { children: ReactNode }) {
               {/* Quick Search Icon (Tablet) */}
               <button
                 className="lg:hidden p-2 rounded-lg text-neutral-500 hover:bg-neutral-100 hover:text-gold-500 transition-all duration-200"
+                onClick={() => setSearchModalOpen(true)}
                 title="Search"
               >
                 <Search size={20} />
@@ -370,6 +391,12 @@ export default function DashboardLayout({ children }: { children: ReactNode }) {
           )}
         </AnimatePresence>
       </nav>
+
+      {/* Search Modal */}
+      <SearchModal
+        isOpen={searchModalOpen}
+        onClose={() => setSearchModalOpen(false)}
+      />
 
       {/* Main Content */}
       <main className="pt-16 pb-24 md:pb-8">

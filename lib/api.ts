@@ -557,9 +557,44 @@ export interface SendNotificationData {
   send_email?: boolean;
 }
 
+export interface SearchResult {
+  id: string;
+  type: string;
+  title: string;
+  subtitle: string;
+  amount?: number;
+  status?: string;
+  date?: string;
+  href: string;
+  icon: string;
+  category: string;
+  priority?: number;
+}
+
+export interface SearchResponse {
+  results: SearchResult[];
+  counts: {
+    accounts: number;
+    transactions: number;
+    cards: number;
+    bills: number;
+    beneficiaries: number;
+    notifications: number;
+  };
+  query: string;
+}
+
 export const adminAPI = {
-  async getAllUsers(): Promise<ApiResponse<User[]>> {
+  async getStats(): Promise<ApiResponse<AdminStats>> {
+    return fetchAPI<AdminStats>("/api/admin/stats");
+  },
+
+  async getUsers(): Promise<ApiResponse<User[]>> {
     return fetchAPI<User[]>("/api/admin/users");
+  },
+
+  async getAccounts(): Promise<ApiResponse<AdminAccount[]>> {
+    return fetchAPI<AdminAccount[]>("/api/admin/accounts");
   },
 
   async updateUser(userId: string, data: UpdateUserData): Promise<ApiResponse<User>> {
@@ -569,8 +604,10 @@ export const adminAPI = {
     });
   },
 
-  async getAllAccounts(): Promise<ApiResponse<AdminAccount[]>> {
-    return fetchAPI<AdminAccount[]>("/api/admin/accounts");
+  async deleteUser(userId: string): Promise<ApiResponse<void>> {
+    return fetchAPI<void>(`/api/admin/users/${userId}`, {
+      method: "DELETE",
+    });
   },
 
   async updateAccountBalance(accountId: string, balance: number): Promise<ApiResponse<Account>> {
@@ -581,20 +618,60 @@ export const adminAPI = {
   },
 
   async createBillForUser(data: CreateBillForUserData): Promise<ApiResponse<Bill>> {
-    return fetchAPI<Bill>("/api/admin/bills/create", {
+    return fetchAPI<Bill>("/api/admin/bills", {
       method: "POST",
       body: JSON.stringify(data),
     });
   },
 
-  async sendNotificationToUser(data: SendNotificationData): Promise<ApiResponse<Notification>> {
-    return fetchAPI<Notification>("/api/admin/notifications/send", {
+  async sendNotification(data: SendNotificationData): Promise<ApiResponse<void>> {
+    return fetchAPI<void>("/api/admin/notifications", {
+      method: "POST",
+      body: JSON.stringify(data),
+    });
+  },
+};
+
+export const searchAPI = {
+  async globalSearch(query: string): Promise<ApiResponse<SearchResponse>> {
+    return fetchAPI<SearchResponse>(`/api/search?q=${encodeURIComponent(query)}`);
+  },
+};
+
+export const twoFactorAPI = {
+  async verifyOtp(data: { user_id: string; email: string; otp_code: string }): Promise<ApiResponse<{ token: string; user: User }>> {
+    return fetchAPI<{ token: string; user: User }>("/api/auth/verify-2fa", {
       method: "POST",
       body: JSON.stringify(data),
     });
   },
 
-  async getAdminStats(): Promise<ApiResponse<AdminStats>> {
-    return fetchAPI<AdminStats>("/api/admin/stats");
+  async verifyBackupCode(data: { user_id: string; email: string; backup_code: string }): Promise<ApiResponse<{ token: string; user: User }>> {
+    return fetchAPI<{ token: string; user: User }>("/api/auth/verify-backup-code", {
+      method: "POST",
+      body: JSON.stringify(data),
+    });
+  },
+
+  async getTwoFactorStatus(): Promise<ApiResponse<{
+    enabled: boolean;
+    setup_date?: string;
+    backup_codes_count: number;
+    failed_attempts: number;
+    has_pending_otp: boolean;
+  }>> {
+    return fetchAPI<{
+      enabled: boolean;
+      setup_date?: string;
+      backup_codes_count: number;
+      failed_attempts: number;
+      has_pending_otp: boolean;
+    }>("/api/settings/security/2fa/status");
+  },
+
+  async regenerateBackupCodes(): Promise<ApiResponse<{ backup_codes: string[]; message: string }>> {
+    return fetchAPI<{ backup_codes: string[]; message: string }>("/api/settings/security/2fa/regenerate-codes", {
+      method: "POST",
+    });
   },
 };
