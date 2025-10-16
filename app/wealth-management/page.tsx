@@ -18,13 +18,13 @@ import {
 
 export const metadata: Metadata = {
   title: "Wealth Management - Personalized Investment Strategies",
-  description: "Concierge Bank's bespoke wealth management services for high net worth individuals. Global market access, personalized portfolios, and dedicated advisors. Swiss precision, American opportunity.",
+  description: "Concierge Bank&apos;s bespoke wealth management services for high net worth individuals. Global market access, personalized portfolios, and dedicated advisors. Swiss precision, American opportunity.",
   alternates: {
     canonical: "https://conciergebank.us/wealth-management",
   },
   openGraph: {
     title: "Wealth Management | Concierge Bank",
-    description: "Grow and protect your wealth with Swiss precision. Personalized investment strategies backed by Richemont's global expertise.",
+    description: "Grow and protect your wealth with Swiss precision. Personalized investment strategies backed by Richemont&apos;s global expertise.",
     url: "https://conciergebank.us/wealth-management",
   },
 };
