@@ -6,7 +6,7 @@ import { authAPI, type User } from "@/lib/api";
 interface AuthContextType {
   user: User | null;
   loading: boolean;
-  login: (email: string, password: string) => Promise<void>;
+  login: (email: string, password: string, recaptchaToken?: string) => Promise<void>;
   register: (data: { email: string; password: string; full_name: string; phone?: string; address?: string; preferred_brand?: string }) => Promise<void>;
   logout: () => Promise<void>;
   refreshUser: () => Promise<void>;
