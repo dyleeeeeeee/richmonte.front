@@ -1,16 +1,8 @@
-import type { Metadata } from "next";
+"use client";
+
 import Link from "next/link";
 import Image from "next/image";
 import { Home, ArrowLeft } from "lucide-react";
-
-export const metadata: Metadata = {
-  title: "404 - Page Not Found",
-  description: "The page you're looking for doesn't exist. Return to Concierge Bank homepage for exclusive private banking services.",
-  robots: {
-    index: false,
-    follow: true,
-  },
-};
 
 export default function NotFound() {
   return (
