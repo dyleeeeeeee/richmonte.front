@@ -211,19 +211,19 @@ export default function CreditCard({
             </div>
 
             {/* Enhanced Expiry Date */}
-            <div className="absolute left-6 transition-all duration-300" style={{ top: "165px" }}>
-              <p className={`text-[10px] ${tierConfig.textColor} opacity-70 uppercase tracking-wide mb-1`}>
+            <div className="absolute left-6 transition-all duration-300" style={{ top: "155px" }}>
+              <p className={`text-[9px] ${tierConfig.textColor} opacity-60 uppercase tracking-wider mb-3 font-light`}>
                 Valid Thru
               </p>
-              <p className={`text-sm font-mono ${tierConfig.textColor} font-medium`}>{expiryDate}</p>
+              <p className={`text-sm font-mono ${tierConfig.textColor} font-semibold`}>{expiryDate}</p>
             </div>
 
             {/* Enhanced Cardholder Name */}
-            <div className="absolute left-6 transition-all duration-300" style={{ bottom: "20px" }}>
-              <p className={`text-[10px] ${tierConfig.textColor} opacity-70 uppercase tracking-wide mb-1`}>
+            <div className="absolute left-6 transition-all duration-300" style={{ bottom: "25px" }}>
+              <p className={`text-[9px] ${tierConfig.textColor} opacity-60 uppercase tracking-wider mb-3 font-light`}>
                 Cardholder
               </p>
-              <p className={`text-sm font-mono uppercase ${tierConfig.textColor} font-medium tracking-wider`}>
+              <p className={`text-sm font-mono uppercase ${tierConfig.textColor} font-semibold tracking-wider`}>
                 {holder}
               </p>
             </div>

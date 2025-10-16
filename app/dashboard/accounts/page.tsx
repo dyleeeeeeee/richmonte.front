@@ -16,7 +16,6 @@ export default function AccountsPage() {
   const [loading, setLoading] = useState(true);
   const [showNewAccountModal, setShowNewAccountModal] = useState(false);
   const [newAccountType, setNewAccountType] = useState("Checking");
-  const [initialDeposit, setInitialDeposit] = useState("");
   const [creating, setCreating] = useState(false);
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -50,14 +49,12 @@ export default function AccountsPage() {
     try {
       const response = await accountAPI.createAccount({
         account_type: newAccountType,
-        initial_deposit: parseFloat(initialDeposit) || 0,
       });
 
       if (response.data) {
         setAccounts([...accounts, response.data]);
         setShowNewAccountModal(false);
         setNewAccountType("Checking");
-        setInitialDeposit("");
         showNotification("Account created successfully! Check your email for confirmation.", "success");
       } else if (response.error) {
         showNotification(`Error: ${response.error}`, "error");
@@ -207,24 +204,13 @@ export default function AccountsPage() {
                   </select>
                 </div>
 
-                <div>
-                  <label className="block text-sm font-medium mb-2 text-neutral-900">Initial Deposit (Optional)</label>
-                  <input
-                    type="number"
-                    value={initialDeposit}
-                    onChange={(e) => setInitialDeposit(e.target.value)}
-                    min="0"
-                    step="0.01"
-                    placeholder="0.00"
-                    className="w-full px-4 py-3 bg-white/90 border border-gold-500/30 rounded-lg focus:outline-none focus:border-gold-500 transition-smooth text-neutral-900 placeholder:text-neutral-400 shadow-inner"
-                  />
-                </div>
-
                 <div className="bg-gold-500/10 border border-gold-500/20 rounded-lg p-4">
                   <p className="text-sm text-neutral-700 font-gruppo">
                     {newAccountType === "Checking" && "Perfect for everyday transactions. No monthly fees."}
                     {newAccountType === "Savings" && "Earn 4.5% APY with no minimum balance requirement."}
                     {newAccountType === "Investment" && "Build your wealth with diversified portfolios."}
+                    <br /><br />
+                    <strong>Note:</strong> All accounts start with a $0.00 balance and are approved instantly.
                   </p>
                 </div>
 

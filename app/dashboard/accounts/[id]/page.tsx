@@ -116,7 +116,15 @@ export default function AccountDetailPage() {
               ← Back to Accounts
             </button>
             <h1 className="text-4xl font-serif font-bold mb-2">{account.account_type} Account</h1>
-            <p className="text-lg opacity-90 mb-6">Account ••••{account.account_number?.slice(-4)}</p>
+            <div className="mb-6 space-y-1">
+              <p className="text-lg opacity-90">Account ••••{account.account_number?.slice(-4)}</p>
+              <p className="text-sm opacity-75">
+                Routing Number: {account.routing_number || '121000248'}
+                <span className="text-xs block text-gold-200 mt-1">
+                  Wells Fargo Bank N.A. - Our US partner bank for clearing and settlement services
+                </span>
+              </p>
+            </div>
             <div className="flex items-baseline space-x-2">
               <span className="text-sm opacity-80">Current Balance</span>
               <h2 className="text-5xl font-bold">

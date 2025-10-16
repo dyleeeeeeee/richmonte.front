@@ -12,8 +12,8 @@ export default function NotificationSettingsPage() {
     email_transactions: true,
     email_bills: true,
     email_security: true,
-    email_marketing: false,
-    sms_transactions: false,
+    email_marketing: false, // Marketing stays false by default
+    sms_transactions: false, // SMS stays false by default for cost reasons
     sms_security: true,
     push_transactions: true,
     push_bills: true,

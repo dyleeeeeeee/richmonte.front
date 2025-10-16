@@ -118,13 +118,13 @@ export interface Account {
   balance: number;
   currency: string;
   status: string;
+  routing_number?: string;
   created_at: string;
   updated_at?: string;
 }
 
 export interface CreateAccountData {
   account_type: string;
-  initial_deposit?: number;
 }
 
 export const accountAPI = {
