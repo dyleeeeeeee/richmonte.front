@@ -16,6 +16,12 @@ export default function CardsPage() {
   const { user } = useAuth();
   const [cards, setCards] = useState<Card[]>([]);
   const [loading, setLoading] = useState(true);
+  const [showReportIssueModal, setShowReportIssueModal] = useState(false);
+  const [selectedCardForReport, setSelectedCardForReport] = useState<string>('');
+  const [reportForm, setReportForm] = useState({
+    issue_type: 'lost' as 'lost' | 'stolen' | 'damaged' | 'other',
+    description: '',
+  });
 
   useEffect(() => {
     loadCards();
@@ -47,15 +53,22 @@ export default function CardsPage() {
     }
   };
 
-  const getCardColor = (brand: string) => {
-    const colors: { [key: string]: string } = {
-      Cartier: "from-red-600 to-red-800",
-      "Van Cleef & Arpels": "from-blue-600 to-blue-800",
-      Montblanc: "from-gray-700 to-gray-900",
-      "Jaeger-LeCoultre": "from-purple-600 to-purple-800",
-      default: "from-gold-500 to-gold-700",
-    };
-    return colors[brand] || colors.default;
+  const reportCardIssue = async (cardId: string) => {
+    try {
+      const response = await cardAPI.reportCardIssue(cardId, reportForm);
+      if (response.data) {
+        setCards(cards.map((c) => (c.id === cardId ? { ...c, status: "reported" } : c)));
+        showNotification("Card issue reported successfully. Investigation will begin shortly.", "success");
+        setShowReportIssueModal(false);
+        setReportForm({
+          issue_type: 'lost',
+          description: '',
+        });
+        setSelectedCardForReport('');
+      }
+    } catch (error) {
+      showNotification("Failed to report card issue", "error");
+    }
   };
 
   if (loading) {
@@ -133,7 +146,10 @@ export default function CardsPage() {
                     </div>
 
                     <button
-                      onClick={() => showNotification("Report lost/stolen functionality coming soon", "info")}
+                      onClick={() => {
+                        setSelectedCardForReport(card.id);
+                        setShowReportIssueModal(true);
+                      }}
                       className="w-full flex items-center justify-center space-x-2 py-2 text-sm text-red-600 hover:text-red-500 font-medium transition-smooth active:scale-95"
                     >
                       <AlertCircle size={16} />
@@ -177,6 +193,84 @@ export default function CardsPage() {
               </p>
             </div>
           </div>
+
+          {/* Report Issue Modal */}
+          {showReportIssueModal && (
+            <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm">
+              <div className="w-full max-w-md glass-gold border border-gold-500/30 rounded-2xl p-8 shadow-2xl animate-scale-in">
+                <h2 className="text-2xl font-work-sans font-bold mb-6 text-neutral-900">Report Card Issue</h2>
+                <p className="text-neutral-600 mb-6 text-sm">
+                  Report lost, stolen, or damaged cards immediately. Your card will be temporarily suspended for investigation.
+                </p>
+                <form
+                  onSubmit={(e) => {
+                    e.preventDefault();
+                    reportCardIssue(selectedCardForReport);
+                  }}
+                  className="space-y-4"
+                >
+                  <div>
+                    <label className="block text-sm font-medium mb-2 text-neutral-900">Issue Type</label>
+                    <select
+                      value={reportForm.issue_type}
+                      onChange={(e) => setReportForm({ ...reportForm, issue_type: e.target.value as any })}
+                      required
+                      className="w-full px-4 py-3 bg-white/90 border border-gold-500/30 rounded-lg focus:outline-none focus:border-gold-500 transition-smooth text-neutral-900"
+                    >
+                      <option value="lost">Card Lost</option>
+                      <option value="stolen">Card Stolen</option>
+                      <option value="damaged">Card Damaged</option>
+                      <option value="other">Other Issue</option>
+                    </select>
+                  </div>
+
+                  <div>
+                    <label className="block text-sm font-medium mb-2 text-neutral-900">Description (Optional)</label>
+                    <textarea
+                      value={reportForm.description}
+                      onChange={(e) => setReportForm({ ...reportForm, description: e.target.value })}
+                      placeholder="Provide additional details about the issue..."
+                      rows={3}
+                      className="w-full px-4 py-3 bg-white/90 border border-gold-500/30 rounded-lg focus:outline-none focus:border-gold-500 transition-smooth text-neutral-900 placeholder:text-neutral-400 resize-none"
+                    />
+                  </div>
+
+                  <div className="bg-orange-50 border border-orange-200 rounded-lg p-3">
+                    <div className="flex items-start space-x-2">
+                      <AlertCircle className="w-5 h-5 text-orange-600 mt-0.5 flex-shrink-0" />
+                      <div className="text-sm text-orange-800">
+                        <p className="font-medium">Important:</p>
+                        <p>Your card will be temporarily blocked during investigation. A replacement will be issued within 3-5 business days.</p>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="flex space-x-4 pt-4">
+                    <button
+                      type="button"
+                      onClick={() => {
+                        setShowReportIssueModal(false);
+                        setSelectedCardForReport('');
+                        setReportForm({
+                          issue_type: 'lost',
+                          description: '',
+                        });
+                      }}
+                      className="flex-1 px-6 py-3 glass text-neutral-700 rounded-lg font-work-sans font-semibold hover:glass-gold transition-smooth"
+                    >
+                      Cancel
+                    </button>
+                    <button
+                      type="submit"
+                      className="flex-1 px-6 py-3 bg-gradient-to-r from-red-600 to-red-700 text-white rounded-lg font-work-sans font-semibold hover:from-red-500 hover:to-red-600 transition-smooth"
+                    >
+                      Report Issue
+                    </button>
+                  </div>
+                </form>
+              </div>
+            </div>
+          )}
         </div>
       </DashboardLayout>
     </ProtectedRoute>

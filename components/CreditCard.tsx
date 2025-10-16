@@ -118,6 +118,7 @@ export default function CreditCard({
               ? "rotateY(180deg)"
               : `rotateY(${isHovered ? '5deg' : '0deg'}) rotateX(${isHovered ? '5deg' : '0deg'})`,
             transformOrigin: isHovered ? `${mousePosition.x}px ${mousePosition.y}px` : 'center center',
+            willChange: isHovered ? 'transform' : 'auto',
           }}
         >
           {/* FRONT OF CARD */}
@@ -127,7 +128,9 @@ export default function CreditCard({
             }`}
             style={{
               backfaceVisibility: "hidden",
-              transform: "translateZ(0)",
+              transform: "translateZ(0.1px)", // Force hardware acceleration
+              WebkitBackfaceVisibility: "hidden",
+              WebkitTransform: "translateZ(0.1px)",
             }}
           >
             {/* Animated Background Gradient */}
@@ -208,7 +211,7 @@ export default function CreditCard({
             </div>
 
             {/* Enhanced Expiry Date */}
-            <div className="absolute left-6 transition-all duration-300" style={{ top: "185px" }}>
+            <div className="absolute left-6 transition-all duration-300" style={{ top: "165px" }}>
               <p className={`text-[10px] ${tierConfig.textColor} opacity-70 uppercase tracking-wide mb-1`}>
                 Valid Thru
               </p>
@@ -216,7 +219,10 @@ export default function CreditCard({
             </div>
 
             {/* Enhanced Cardholder Name */}
-            <div className="absolute left-6 bottom-6 transition-all duration-300">
+            <div className="absolute left-6 transition-all duration-300" style={{ bottom: "20px" }}>
+              <p className={`text-[10px] ${tierConfig.textColor} opacity-70 uppercase tracking-wide mb-1`}>
+                Cardholder
+              </p>
               <p className={`text-sm font-mono uppercase ${tierConfig.textColor} font-medium tracking-wider`}>
                 {holder}
               </p>
@@ -242,6 +248,34 @@ export default function CreditCard({
                 </div>
               </div>
             )}
+
+            {status === "reported" && (
+              <div className="absolute inset-0 bg-gradient-to-br from-orange-900/80 to-orange-800/60 backdrop-blur-sm flex items-center justify-center rounded-2xl transition-all duration-500">
+                <div className="text-center animate-pulse">
+                  <div className="w-12 h-12 rounded-full bg-orange-500/30 flex items-center justify-center mx-auto mb-2 backdrop-blur-sm">
+                    <svg className="w-6 h-6 text-orange-300" fill="currentColor" viewBox="0 0 20 20">
+                      <path fillRule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clipRule="evenodd" />
+                    </svg>
+                  </div>
+                  <p className="text-white font-bold text-sm tracking-wide">ISSUE REPORTED</p>
+                  <p className="text-orange-200 text-xs mt-1">Investigation in progress</p>
+                </div>
+              </div>
+            )}
+
+            {status === "blocked" && (
+              <div className="absolute inset-0 bg-gradient-to-br from-gray-900/90 to-gray-800/80 backdrop-blur-sm flex items-center justify-center rounded-2xl transition-all duration-500">
+                <div className="text-center">
+                  <div className="w-12 h-12 rounded-full bg-gray-500/30 flex items-center justify-center mx-auto mb-2 backdrop-blur-sm">
+                    <svg className="w-6 h-6 text-gray-300" fill="currentColor" viewBox="0 0 20 20">
+                      <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clipRule="evenodd" />
+                    </svg>
+                  </div>
+                  <p className="text-white font-bold text-sm tracking-wide">CARD BLOCKED</p>
+                  <p className="text-gray-300 text-xs mt-1">Permanently disabled</p>
+                </div>
+              </div>
+            )}
           </div>
 
           {/* BACK OF CARD - Enhanced */}
@@ -249,7 +283,9 @@ export default function CreditCard({
             className={`absolute w-full h-full rounded-2xl overflow-hidden shadow-2xl bg-gradient-to-br ${tierConfig.gradient}`}
             style={{
               backfaceVisibility: "hidden",
-              transform: "rotateY(180deg) translateZ(0)",
+              transform: "rotateY(180deg) translateZ(0.1px)", // Force hardware acceleration
+              WebkitBackfaceVisibility: "hidden",
+              WebkitTransform: "rotateY(180deg) translateZ(0.1px)",
             }}
           >
             {/* Magnetic Strip */}

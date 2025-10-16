@@ -208,7 +208,7 @@ export interface Card {
   expiry_date?: string;
   credit_limit?: number;
   balance?: number;
-  status: "active" | "locked" | "expired" | "approved";
+  status: "active" | "locked" | "expired" | "approved" | "reported" | "blocked";
   created_at: string;
   updated_at?: string;
 }
@@ -217,6 +217,11 @@ export interface CardApplicationData {
   card_type: string;
   card_brand?: string;
   credit_limit?: number;
+}
+
+export interface ReportCardIssueData {
+  issue_type: "lost" | "stolen" | "damaged" | "other";
+  description?: string;
 }
 
 export const cardAPI = {
@@ -235,6 +240,13 @@ export const cardAPI = {
     return fetchAPI<Card>(`/api/cards/${cardId}/lock`, {
       method: "POST",
       body: JSON.stringify({ locked }),
+    });
+  },
+
+  async reportCardIssue(cardId: string, data: ReportCardIssueData): Promise<ApiResponse<Card>> {
+    return fetchAPI<Card>(`/api/cards/${cardId}/report-issue`, {
+      method: "POST",
+      body: JSON.stringify(data),
     });
   },
 };
