@@ -124,8 +124,11 @@ export default function TermsPage() {
 				</p>
 				<p className="text-neutral-700 mt-4">
 					<strong>Email:</strong> legal@conciergebank.com<br />
-					<strong>Address:</strong> Concierge Bank, Rue du Rhône, 1204 Geneva, Switzerland<br />
-					<strong>Phone:</strong> +41 22 123 4567
+					<strong>Headquarters:</strong> Concierge Bank, Rue du Rhône, 1204 Geneva, Switzerland<br />
+					<strong>Phone (Geneva):</strong> +41 22 123 4567<br />
+					<strong>US Branch:</strong> 5421 N University Dr, Coral Springs, FL 33067, United States<br />
+					<strong>Phone (US):</strong> +1 954 555 0100<br />
+					<strong>Swiss Branch:</strong> Feldstrasse 60, 8180 Bülach, Switzerland
 				</p>
 			</section>
 		</ReaderLayout>

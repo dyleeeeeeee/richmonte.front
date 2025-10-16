@@ -99,7 +99,8 @@ export default function Footer() {
             <h4 className="font-semibold mb-4 text-gold-700">Contact</h4>
             <ul className="space-y-2 text-sm text-neutral-600">
               <li>contact@conciergebank.com</li>
-              <li>+41 22 123 4567</li>
+              <li>+41 22 123 4567 (Geneva)</li>
+              <li>+1 954 555 0100 (Coral Springs)</li>
               <li className="pt-4">
                 <div className="flex space-x-4">
                   <a href="https://www.linkedin.com/company/richemont" target="_blank" rel="noopener noreferrer" className="hover:text-gold-600 transition-colors">
@@ -129,7 +130,9 @@ export default function Footer() {
             </p>
           </div>
           <p className="text-sm text-neutral-500">&copy; {new Date().getFullYear()} Concierge Bank. A subsidiary of Compagnie Financière Richemont SA. All rights reserved.</p>
-          <p className="text-xs mt-2 text-neutral-400">Geneva, Switzerland • Regulated Financial Institution</p>
+          <p className="text-xs mt-2 text-neutral-400">
+            Headquarters: Geneva, Switzerland • Branches: 5421 N University Dr, Coral Springs, FL 33067, USA • Feldstrasse 60, 8180 Bülach, Switzerland
+          </p>
         </div>
       </div>
     </footer>

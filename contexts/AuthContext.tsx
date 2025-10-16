@@ -42,7 +42,14 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       throw new Error(response.error);
     }
     if (response.data) {
-      setUser(response.data);
+      // Store token in localStorage
+      const token = (response.data as any).token;
+      if (token) {
+        localStorage.setItem('auth_token', token);
+      }
+      // Store user data (without token)
+      const user = (response.data as any).user || response.data;
+      setUser(user);
     }
   };
 
@@ -52,12 +59,20 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       throw new Error(response.error);
     }
     if (response.data) {
-      setUser(response.data);
+      // Store token in localStorage
+      const token = (response.data as any).token;
+      if (token) {
+        localStorage.setItem('auth_token', token);
+      }
+      // Store user data (without token)
+      const user = (response.data as any).user || response.data;
+      setUser(user);
     }
   };
 
   const logout = async () => {
     await authAPI.logout();
+    localStorage.removeItem('auth_token');
     setUser(null);
   };
 

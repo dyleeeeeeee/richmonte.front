@@ -147,21 +147,21 @@ export default function TransfersPage() {
       <DashboardLayout>
         <div className="space-y-6 sm:space-y-8 pb-4">
           <div className="px-1">
-            <h1 className="text-2xl sm:text-3xl font-serif font-bold mb-1 sm:mb-2">Transfers</h1>
-            <p className="text-sm sm:text-base text-gray-400">Send money quickly and securely</p>
+            <h1 className="text-2xl sm:text-3xl font-work-sans font-bold mb-1 sm:mb-2 text-neutral-900">Transfers</h1>
+            <p className="text-sm sm:text-base text-neutral-600 font-gruppo">Send money quickly and securely</p>
           </div>
 
           <div className="grid lg:grid-cols-3 gap-8">
             {/* Transfer Form */}
             <div className="lg:col-span-2 space-y-6">
               {/* Transfer Type Tabs */}
-              <div className="bg-dark-800/50 border border-gold-500/20 rounded-xl p-2 flex space-x-2">
+              <div className="glass border border-gold-500/20 rounded-xl p-2 flex space-x-2 shadow-md">
                 <button
                   onClick={() => setTransferType("internal")}
                   className={`flex-1 flex items-center justify-center space-x-2 px-4 py-3 rounded-lg font-medium transition-all ${
                     transferType === "internal"
-                      ? "bg-gold-500 text-dark-900"
-                      : "text-gray-300 hover:bg-dark-700"
+                      ? "bg-gradient-to-r from-gold-600 to-gold-700 text-white shadow-md"
+                      : "text-neutral-700 hover:glass-gold"
                   }`}
                 >
                   <Send size={18} />
@@ -171,8 +171,8 @@ export default function TransfersPage() {
                   onClick={() => setTransferType("external")}
                   className={`flex-1 flex items-center justify-center space-x-2 px-4 py-3 rounded-lg font-medium transition-all ${
                     transferType === "external"
-                      ? "bg-gold-500 text-dark-900"
-                      : "text-gray-300 hover:bg-dark-700"
+                      ? "bg-gradient-to-r from-gold-600 to-gold-700 text-white shadow-md"
+                      : "text-neutral-700 hover:glass-gold"
                   }`}
                 >
                   <Building size={18} />
@@ -182,8 +182,8 @@ export default function TransfersPage() {
                   onClick={() => setTransferType("p2p")}
                   className={`flex-1 flex items-center justify-center space-x-2 px-4 py-3 rounded-lg font-medium transition-all ${
                     transferType === "p2p"
-                      ? "bg-gold-500 text-dark-900"
-                      : "text-gray-300 hover:bg-dark-700"
+                      ? "bg-gradient-to-r from-gold-600 to-gold-700 text-white shadow-md"
+                      : "text-neutral-700 hover:glass-gold"
                   }`}
                 >
                   <User size={18} />
@@ -192,14 +192,14 @@ export default function TransfersPage() {
               </div>
 
               {/* Transfer Form */}
-              <form onSubmit={handleSubmit} className="bg-dark-800/30 border border-gold-500/10 rounded-xl p-6 space-y-6">
+              <form onSubmit={handleSubmit} className="glass border border-gold-500/20 rounded-xl p-6 space-y-6 shadow-lg">
                 <div>
-                  <label className="block text-sm font-medium mb-2">From Account</label>
+                  <label className="block text-sm font-medium mb-2 text-neutral-900">From Account</label>
                   <select
                     value={formData.from_account}
                     onChange={(e) => setFormData({ ...formData, from_account: e.target.value })}
                     required
-                    className="w-full px-4 py-3 bg-dark-900 border border-gold-500/20 rounded-lg focus:outline-none focus:border-gold-500 text-white"
+                    className="w-full px-4 py-3 bg-white/90 border border-gold-500/30 rounded-lg focus:outline-none focus:border-gold-500 transition-smooth text-neutral-900 shadow-inner"
                   >
                     {accounts.map((account) => (
                       <option key={account.id} value={account.id}>
@@ -212,12 +212,12 @@ export default function TransfersPage() {
 
                 {transferType === "internal" && (
                   <div>
-                    <label className="block text-sm font-medium mb-2">To Account</label>
+                    <label className="block text-sm font-medium mb-2 text-neutral-900">To Account</label>
                     <select
                       value={formData.to_account}
                       onChange={(e) => setFormData({ ...formData, to_account: e.target.value })}
                       required
-                      className="w-full px-4 py-3 bg-dark-900 border border-gold-500/20 rounded-lg focus:outline-none focus:border-gold-500 text-white"
+                      className="w-full px-4 py-3 bg-white/90 border border-gold-500/30 rounded-lg focus:outline-none focus:border-gold-500 transition-smooth text-neutral-900 shadow-inner"
                     >
                       <option value="" className="text-gray-400">Select account</option>
                       {accounts
@@ -234,7 +234,7 @@ export default function TransfersPage() {
                 {transferType === "external" && (
                   <>
                     <div>
-                      <label className="block text-sm font-medium mb-2">Account Number</label>
+                      <label className="block text-sm font-medium mb-2 text-neutral-900">Account Number</label>
                       <input
                         type="text"
                         value={formData.to_external_account}
@@ -243,11 +243,11 @@ export default function TransfersPage() {
                         }
                         required
                         placeholder="Enter account number"
-                        className="w-full px-4 py-3 bg-dark-900 border border-gold-500/20 rounded-lg focus:outline-none focus:border-gold-500 text-white placeholder:text-gray-500"
+                        className="w-full px-4 py-3 bg-white/90 border border-gold-500/30 rounded-lg focus:outline-none focus:border-gold-500 transition-smooth text-neutral-900 placeholder:text-neutral-400 shadow-inner"
                       />
                     </div>
                     <div>
-                      <label className="block text-sm font-medium mb-2">Routing Number</label>
+                      <label className="block text-sm font-medium mb-2 text-neutral-900">Routing Number</label>
                       <input
                         type="text"
                         value={formData.to_external_routing}
@@ -256,7 +256,7 @@ export default function TransfersPage() {
                         }
                         required
                         placeholder="Enter routing number"
-                        className="w-full px-4 py-3 bg-dark-900 border border-gold-500/20 rounded-lg focus:outline-none focus:border-gold-500 text-white placeholder:text-gray-500"
+                        className="w-full px-4 py-3 bg-white/90 border border-gold-500/30 rounded-lg focus:outline-none focus:border-gold-500 transition-smooth text-neutral-900 placeholder:text-neutral-400 shadow-inner"
                       />
                     </div>
                   </>
@@ -265,7 +265,7 @@ export default function TransfersPage() {
                 {transferType === "p2p" && (
                   <>
                     <div>
-                      <label className="block text-sm font-medium mb-2">Email or Phone</label>
+                      <label className="block text-sm font-medium mb-2 text-neutral-900">Email or Phone</label>
                       <input
                         type="text"
                         value={formData.to_email || formData.to_phone}
@@ -279,16 +279,16 @@ export default function TransfersPage() {
                         }}
                         required
                         placeholder="email@example.com or +1234567890"
-                        className="w-full px-4 py-3 bg-dark-900 border border-gold-500/20 rounded-lg focus:outline-none focus:border-gold-500 text-white placeholder:text-gray-500"
+                        className="w-full px-4 py-3 bg-white/90 border border-gold-500/30 rounded-lg focus:outline-none focus:border-gold-500 transition-smooth text-neutral-900 placeholder:text-neutral-400 shadow-inner"
                       />
                     </div>
                   </>
                 )}
 
                 <div>
-                  <label className="block text-sm font-medium mb-2">Amount</label>
+                  <label className="block text-sm font-medium mb-2 text-neutral-900">Amount</label>
                   <div className="relative">
-                    <span className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400">$</span>
+                    <span className="absolute left-4 top-1/2 -translate-y-1/2 text-neutral-500">$</span>
                     <input
                       type="number"
                       value={formData.amount}
@@ -297,18 +297,18 @@ export default function TransfersPage() {
                       min="0.01"
                       step="0.01"
                       placeholder="0.00"
-                      className="w-full pl-8 pr-4 py-3 bg-dark-900 border border-gold-500/20 rounded-lg focus:outline-none focus:border-gold-500 text-white placeholder:text-gray-500"
+                      className="w-full pl-8 pr-4 py-3 bg-white/90 border border-gold-500/30 rounded-lg focus:outline-none focus:border-gold-500 transition-smooth text-neutral-900 placeholder:text-neutral-400 shadow-inner"
                     />
                   </div>
                   {selectedAccount && (
-                    <p className="text-sm text-gray-400 mt-2">
+                    <p className="text-sm text-neutral-600 font-gruppo mt-2">
                       Available: ${selectedAccount.balance.toLocaleString()}
                     </p>
                   )}
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium mb-2">Description (Optional)</label>
+                  <label className="block text-sm font-medium mb-2 text-neutral-900">Description (Optional)</label>
                   <input
                     type="text"
                     value={formData.description}
@@ -326,19 +326,19 @@ export default function TransfersPage() {
                     onChange={(e) => setFormData({ ...formData, recurring: e.target.checked })}
                     className="w-5 h-5 bg-dark-900 border-gold-500/20 rounded"
                   />
-                  <label htmlFor="recurring" className="text-sm font-medium cursor-pointer">
+                  <label htmlFor="recurring" className="text-sm font-medium cursor-pointer text-neutral-900">
                     Make this a recurring transfer
                   </label>
                 </div>
 
                 {formData.recurring && (
                   <div>
-                    <label className="block text-sm font-medium mb-2">Schedule Date</label>
+                    <label className="block text-sm font-medium mb-2 text-neutral-900">Schedule Date</label>
                     <input
                       type="date"
                       value={formData.schedule_date}
                       onChange={(e) => setFormData({ ...formData, schedule_date: e.target.value })}
-                      className="w-full px-4 py-3 bg-dark-900 border border-gold-500/20 rounded-lg focus:outline-none focus:border-gold-500 text-white"
+                      className="w-full px-4 py-3 bg-white/90 border border-gold-500/30 rounded-lg focus:outline-none focus:border-gold-500 transition-smooth text-neutral-900 shadow-inner"
                     />
                   </div>
                 )}
@@ -346,16 +346,9 @@ export default function TransfersPage() {
                 <button
                   type="submit"
                   disabled={submitting}
-                  className="w-full px-6 py-4 bg-gradient-to-r from-gold-500 to-gold-600 text-dark-900 rounded-lg font-bold hover:from-gold-400 hover:to-gold-500 transition-all disabled:opacity-50 flex items-center justify-center space-x-2"
+                  className="w-full px-6 py-3 bg-gradient-to-r from-gold-600 to-gold-700 text-white rounded-lg font-work-sans font-semibold hover:from-gold-500 hover:to-gold-600 transition-smooth disabled:opacity-50 shadow-lg shadow-gold-500/20 active:scale-95"
                 >
-                  {submitting ? (
-                    <span>Processing...</span>
-                  ) : (
-                    <>
-                      <span>Transfer ${formData.amount || "0.00"}</span>
-                      <ArrowRight size={20} />
-                    </>
-                  )}
+                  {submitting ? "Processing..." : "Complete Transfer"}
                 </button>
               </form>
             </div>

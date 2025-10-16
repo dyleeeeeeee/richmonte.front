@@ -19,13 +19,17 @@ async function fetchAPI<T>(
   options: RequestInit = {}
 ): Promise<ApiResponse<T>> {
   try {
+    // Get JWT token from localStorage
+    const token = typeof window !== 'undefined' ? localStorage.getItem('auth_token') : null;
+    
     const response = await fetch(`${API_BASE_URL}${endpoint}`, {
       ...options,
       headers: {
         "Content-Type": "application/json",
+        ...(token && { Authorization: `Bearer ${token}` }),
         ...options.headers,
       },
-      credentials: "include", // Include cookies for JWT authentication
+      credentials: "include",
     });
 
     if (!response.ok) {
