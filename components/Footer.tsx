@@ -98,7 +98,7 @@ export default function Footer() {
           <div>
             <h4 className="font-semibold mb-4 text-gold-700">Contact</h4>
             <ul className="space-y-2 text-sm text-neutral-600">
-              <li>contact@conciergebank.com</li>
+              <li>contact@conciergebank.us</li>
               <li>+41 22 123 4567 (Geneva)</li>
               <li>+1 954 555 0100 (Coral Springs)</li>
               <li className="pt-4">
