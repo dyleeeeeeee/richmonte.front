@@ -307,6 +307,8 @@ export interface AddBillData {
   payee_name: string;
   account_number?: string;
   bill_type?: string;
+  amount: number;
+  due_date: string;
   auto_pay?: boolean;
 }
 
@@ -538,7 +540,6 @@ export interface CreateBillForUserData {
 export interface SendNotificationData {
   user_id: string;
   type?: string;
-  title: string;
   message: string;
   delivery_method?: string;
   send_email?: boolean;

@@ -42,7 +42,6 @@ export default function AdminDashboardPage() {
     auto_pay: false,
   });
   const [notificationForm, setNotificationForm] = useState({
-    title: '',
     message: '',
     type: 'admin_message',
     send_email: false,
@@ -151,7 +150,6 @@ export default function AdminDashboardPage() {
     try {
       const response = await adminAPI.sendNotificationToUser({
         user_id: selectedUser,
-        title: notificationForm.title,
         message: notificationForm.message,
         type: notificationForm.type,
         send_email: notificationForm.send_email,
@@ -161,7 +159,6 @@ export default function AdminDashboardPage() {
         showNotification('Notification sent successfully', 'success');
         setShowSendNotificationModal(false);
         setNotificationForm({
-          title: '',
           message: '',
           type: 'admin_message',
           send_email: false,
@@ -608,18 +605,6 @@ export default function AdminDashboardPage() {
                         </option>
                       ))}
                     </select>
-                  </div>
-
-                  <div>
-                    <label className="block text-sm font-medium mb-2 text-neutral-900">Title</label>
-                    <input
-                      type="text"
-                      value={notificationForm.title}
-                      onChange={(e) => setNotificationForm({ ...notificationForm, title: e.target.value })}
-                      required
-                      placeholder="Notification title"
-                      className="w-full px-4 py-3 bg-white/90 border border-gold-500/30 rounded-lg focus:outline-none focus:border-gold-500 transition-smooth text-neutral-900 placeholder:text-neutral-400"
-                    />
                   </div>
 
                   <div>

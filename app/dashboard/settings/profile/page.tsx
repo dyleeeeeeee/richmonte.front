@@ -1,15 +1,17 @@
 "use client";
 
-import { useState, FormEvent } from "react";
+import { useState, FormEvent, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import ProtectedRoute from "@/components/ProtectedRoute";
 import DashboardLayout from "@/components/DashboardLayout";
 import { useAuth } from "@/contexts/AuthContext";
-import { Camera, ArrowLeft } from "lucide-react";
+import { useNotification } from "@/contexts/NotificationContext";
+import { Camera, ArrowLeft, Check } from "lucide-react";
 
 export default function ProfileSettingsPage() {
   const router = useRouter();
-  const { user } = useAuth();
+  const { user, refreshUser } = useAuth();
+  const { showNotification } = useNotification();
   const [formData, setFormData] = useState({
     full_name: user?.full_name || "",
     phone: user?.phone || "",
@@ -17,6 +19,36 @@ export default function ProfileSettingsPage() {
     preferred_brand: user?.preferred_brand || "Cartier",
   });
   const [saving, setSaving] = useState(false);
+  const [loading, setLoading] = useState(true);
+
+  // Load existing profile data
+  useEffect(() => {
+    const loadProfile = async () => {
+      try {
+        const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000"}/api/settings`, {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem('auth_token')}`,
+          },
+        });
+
+        if (response.ok) {
+          const userData = await response.json();
+          setFormData({
+            full_name: userData.full_name || "",
+            phone: userData.phone || "",
+            address: userData.address || "",
+            preferred_brand: userData.preferred_brand || "Cartier",
+          });
+        }
+      } catch (error) {
+        console.error("Failed to load profile:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    loadProfile();
+  }, [user]);
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
@@ -36,14 +68,31 @@ export default function ProfileSettingsPage() {
         throw new Error("Failed to update profile");
       }
 
-      alert("Profile updated successfully!");
+      // Refresh user context to update the UI
+      await refreshUser();
+      
+      showNotification("Profile updated successfully!", "success");
     } catch (error) {
-      alert("Failed to update profile. Please try again.");
+      showNotification("Failed to update profile. Please try again.", "error");
       console.error(error);
     } finally {
       setSaving(false);
     }
   };
+
+  if (loading) {
+    return (
+      <ProtectedRoute>
+        <DashboardLayout>
+          <div className="max-w-2xl mx-auto space-y-8">
+            <div className="flex items-center justify-center h-64">
+              <div className="w-12 h-12 border-4 border-gold-500 border-t-transparent rounded-full animate-spin"></div>
+            </div>
+          </div>
+        </DashboardLayout>
+      </ProtectedRoute>
+    );
+  }
 
   return (
     <ProtectedRoute>

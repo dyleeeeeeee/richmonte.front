@@ -7,11 +7,13 @@ import DashboardLayout from "@/components/DashboardLayout";
 import CreditCard from "@/components/CreditCard";
 import { cardAPI, Card } from "@/lib/api";
 import { useNotification } from "@/contexts/NotificationContext";
+import { useAuth } from "@/contexts/AuthContext";
 import { CreditCard as CreditCardIcon, Lock, Unlock, AlertCircle, Plus } from "lucide-react";
 
 export default function CardsPage() {
   const router = useRouter();
   const { showNotification } = useNotification();
+  const { user } = useAuth();
   const [cards, setCards] = useState<Card[]>([]);
   const [loading, setLoading] = useState(true);
 
@@ -108,7 +110,7 @@ export default function CardsPage() {
                   {/* 3D Flip Credit Card */}
                   <CreditCard
                     cardNumber={card.card_number}
-                    holder="Cardholder Name"
+                    holder={user?.full_name || "Cardholder"}
                     expiryDate={card.expiry_date}
                     cvv={card.cvv}
                     tier={card.card_type}
