@@ -277,7 +277,7 @@ export default function BillsPage() {
                         ) : searchQuery ? (
                           <div className="text-center py-8">
                             <Building className="w-12 h-12 text-neutral-400 mx-auto mb-4" />
-                            <p className="text-neutral-600 mb-4">No payees found matching "{searchQuery}"</p>
+                            <p className="text-neutral-600 mb-4">No payees found matching &quot;{searchQuery}&quot;</p>
                             <button
                               onClick={handleCustomPayee}
                               className="px-6 py-2 bg-gold-600 text-white rounded-lg font-medium hover:bg-gold-500 transition-colors"
