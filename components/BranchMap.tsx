@@ -111,7 +111,10 @@ export default function BranchMap() {
     };
 
     const createMap = () => {
-      if (!mapRef.current || !window.google) return;
+      if (!mapRef.current || !window.google) {
+        setIsLoading(false);
+        return;
+      }
 
       try {
         // Map options
