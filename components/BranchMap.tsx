@@ -3,7 +3,6 @@
 import { useState, useEffect, useRef } from "react";
 import Image from "next/image";
 import { MapPin, Phone, Clock, ExternalLink } from "lucide-react";
-import { Loader } from "@googlemaps/js-api-loader";
 
 interface Branch {
   id: string;
@@ -79,14 +78,19 @@ export default function BranchMap() {
 
     const initMap = async () => {
       try {
-        // Load Google Maps
-        const loader = new Loader({
-          apiKey: googleMapsApiKey,
-          version: "weekly",
-          libraries: ["places"]
+        // Load Google Maps script
+        await new Promise<void>((resolve, reject) => {
+          const script = document.createElement('script');
+          script.src = `https://maps.googleapis.com/maps/api/js?key=${googleMapsApiKey}&libraries=places`;
+          script.async = true;
+          script.defer = true;
+          script.onload = () => resolve();
+          script.onerror = reject;
+          document.head.appendChild(script);
         });
 
-        const { Map } = await loader.importLibrary("maps");
+        // Access the global google object
+        const google = (window as any).google;
 
         // Map options - center on Europe/North America
         const mapOptions: google.maps.MapOptions = {
@@ -171,7 +175,7 @@ export default function BranchMap() {
         };
 
         if (mapRef.current) {
-          const googleMap = new Map(mapRef.current, mapOptions);
+          const googleMap = new google.maps.Map(mapRef.current, mapOptions);
           setMap(googleMap);
 
           // Add markers for each branch
