@@ -3,6 +3,7 @@
 import { useState, useEffect, useRef } from "react";
 import Image from "next/image";
 import { MapPin, Phone, Clock, ExternalLink } from "lucide-react";
+import { Loader } from "@googlemaps/js-api-loader";
 
 interface Branch {
   id: string;
@@ -76,23 +77,22 @@ export default function BranchMap() {
       return;
     }
 
-    const initMap = async () => {
+    // Initialize Google Maps using the official @googlemaps/js-api-loader
+    const initMap = async (): Promise<void> => {
       try {
-        // Load Google Maps script
-        await new Promise<void>((resolve, reject) => {
-          const script = document.createElement('script');
-          script.src = `https://maps.googleapis.com/maps/api/js?key=${googleMapsApiKey}&libraries=places`;
-          script.async = true;
-          script.defer = true;
-          script.onload = () => resolve();
-          script.onerror = reject;
-          document.head.appendChild(script);
+        // Create loader instance with API key
+        const loader = new Loader({
+          apiKey: googleMapsApiKey,
+          version: "weekly"
         });
 
-        // Access the global google object
-        const google = (window as any).google;
+        // Load the Google Maps API
+        await loader.load();
 
-        // Map options - center on Europe/North America
+        // Load the maps library as per Google documentation
+        const { Map } = await google.maps.importLibrary("maps") as google.maps.MapsLibrary;
+
+        // Map options - center on Europe/North America as per Google example
         const mapOptions: google.maps.MapOptions = {
           center: { lat: 40.0, lng: -20.0 }, // Centered between US and Europe
           zoom: 3,
@@ -175,7 +175,8 @@ export default function BranchMap() {
         };
 
         if (mapRef.current) {
-          const googleMap = new google.maps.Map(mapRef.current, mapOptions);
+          // Create map as per Google documentation example
+          const googleMap = new Map(mapRef.current, mapOptions);
           setMap(googleMap);
 
           // Add markers for each branch
@@ -246,7 +247,7 @@ export default function BranchMap() {
   useEffect(() => {
     if (!map || markers.length === 0) return;
 
-    markers.forEach((marker, index) => {
+    markers.forEach((marker: google.maps.Marker, index: number) => {
       const branch = branches[index];
       const isSelected = selectedBranch?.id === branch.id;
 
@@ -294,7 +295,8 @@ export default function BranchMap() {
               </div>
             </div>
           ) : (
-            <div ref={mapRef} className="w-full h-full rounded-2xl" />
+            // Map div element as per Google documentation
+            <div id="map" ref={mapRef} className="w-full h-full rounded-2xl" style={{ height: "100%" }} />
           )}
 
           {/* Map Title */}

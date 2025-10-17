@@ -90,41 +90,11 @@ export default function SearchModal({ isOpen, onClose }: SearchModalProps) {
     }
   }, [isOpen]);
 
-  // Keyboard navigation
-  useEffect(() => {
-    const handleKeyDown = (e: KeyboardEvent) => {
-      if (!isOpen) return;
+  const handleResultClick = useCallback((result: LocalSearchResult) => {
+    router.push(result.href);
+    onClose();
+  }, [router, onClose]);
 
-      switch (e.key) {
-        case 'Escape':
-          onClose();
-          break;
-        case 'ArrowDown':
-          e.preventDefault();
-          setSelectedIndex(prev =>
-            prev < results.length - 1 ? prev + 1 : prev
-          );
-          break;
-        case 'ArrowUp':
-          e.preventDefault();
-          setSelectedIndex(prev => prev > -1 ? prev - 1 : -1);
-          break;
-        case 'Enter':
-          e.preventDefault();
-          if (selectedIndex >= 0 && results[selectedIndex]) {
-            handleResultClick(results[selectedIndex]);
-          } else if (query.trim()) {
-            performSearch(query);
-          }
-          break;
-      }
-    };
-
-    document.addEventListener('keydown', handleKeyDown);
-    return () => document.removeEventListener('keydown', handleKeyDown);
-  }, [isOpen, results, selectedIndex, query]);
-
-  // Debounced search
   const performSearch = useCallback(async (searchQuery: string) => {
     if (!searchQuery.trim()) {
       setResults([]);
@@ -156,6 +126,38 @@ export default function SearchModal({ isOpen, onClose }: SearchModalProps) {
     }
   }, [recentSearches]);
 
+  // Keyboard navigation
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (!isOpen) return;
+
+      switch (e.key) {
+        case 'Escape':
+          onClose();
+          break;
+        case 'ArrowDown':
+          e.preventDefault();
+          setSelectedIndex(prev => Math.min(prev + 1, results.length - 1));
+          break;
+        case 'ArrowUp':
+          e.preventDefault();
+          setSelectedIndex(prev => Math.max(prev - 1, 0));
+          break;
+        case 'Enter':
+          e.preventDefault();
+          if (selectedIndex >= 0 && selectedIndex < results.length) {
+            handleResultClick(results[selectedIndex]);
+          } else if (query.trim()) {
+            performSearch(query);
+          }
+          break;
+      }
+    };
+
+    document.addEventListener('keydown', handleKeyDown);
+    return () => document.removeEventListener('keydown', handleKeyDown);
+  }, [isOpen, results, selectedIndex, query, handleResultClick, onClose, performSearch]);
+
   // Debounce search
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -164,11 +166,6 @@ export default function SearchModal({ isOpen, onClose }: SearchModalProps) {
 
     return () => clearTimeout(timer);
   }, [query, performSearch]);
-
-  const handleResultClick = useCallback((result: LocalSearchResult) => {
-    router.push(result.href);
-    onClose();
-  }, [router, onClose]);
 
   const getStatusColor = (status?: string) => {
     switch (status?.toLowerCase()) {
