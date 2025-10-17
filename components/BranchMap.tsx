@@ -1,8 +1,9 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 import Image from "next/image";
 import { MapPin, Phone, Clock, ExternalLink } from "lucide-react";
+import { Loader } from "@googlemaps/js-api-loader";
 
 interface Branch {
   id: string;
@@ -61,84 +62,239 @@ const branches: Branch[] = [
 
 export default function BranchMap() {
   const [selectedBranch, setSelectedBranch] = useState<Branch | null>(null);
+  const [map, setMap] = useState<google.maps.Map | null>(null);
+  const [markers, setMarkers] = useState<google.maps.Marker[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const mapRef = useRef<HTMLDivElement>(null);
+
+  // Google Maps API Key from environment
+  const googleMapsApiKey = process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY;
+
+  useEffect(() => {
+    if (!googleMapsApiKey) {
+      console.error("Google Maps API key not found. Please add NEXT_PUBLIC_GOOGLE_MAPS_API_KEY to your .env.local file");
+      setIsLoading(false);
+      return;
+    }
+
+    const initMap = async () => {
+      try {
+        // Load Google Maps
+        const loader = new Loader({
+          apiKey: googleMapsApiKey,
+          version: "weekly",
+          libraries: ["places"]
+        });
+
+        const { Map } = await loader.importLibrary("maps");
+
+        // Map options - center on Europe/North America
+        const mapOptions: google.maps.MapOptions = {
+          center: { lat: 40.0, lng: -20.0 }, // Centered between US and Europe
+          zoom: 3,
+          styles: [
+            {
+              featureType: "water",
+              elementType: "geometry",
+              stylers: [{ color: "#e9e9e9" }, { lightness: 17 }]
+            },
+            {
+              featureType: "landscape",
+              elementType: "geometry",
+              stylers: [{ color: "#f5f5f5" }, { lightness: 20 }]
+            },
+            {
+              featureType: "road.highway",
+              elementType: "geometry.fill",
+              stylers: [{ color: "#ffffff" }, { lightness: 17 }]
+            },
+            {
+              featureType: "road.highway",
+              elementType: "geometry.stroke",
+              stylers: [{ color: "#ffffff" }, { lightness: 29 }, { weight: 0.2 }]
+            },
+            {
+              featureType: "road.arterial",
+              elementType: "geometry",
+              stylers: [{ color: "#ffffff" }, { lightness: 18 }]
+            },
+            {
+              featureType: "road.local",
+              elementType: "geometry",
+              stylers: [{ color: "#ffffff" }, { lightness: 16 }]
+            },
+            {
+              featureType: "poi",
+              elementType: "geometry",
+              stylers: [{ color: "#f5f5f5" }, { lightness: 21 }]
+            },
+            {
+              featureType: "poi.park",
+              elementType: "geometry",
+              stylers: [{ color: "#dedede" }, { lightness: 21 }]
+            },
+            {
+              elementType: "labels.text.stroke",
+              stylers: [{ visibility: "on" }, { color: "#ffffff" }, { lightness: 16 }]
+            },
+            {
+              elementType: "labels.text.fill",
+              stylers: [{ saturation: 36 }, { color: "#333333" }, { lightness: 40 }]
+            },
+            {
+              elementType: "labels.icon",
+              stylers: [{ visibility: "off" }]
+            },
+            {
+              featureType: "transit",
+              elementType: "geometry",
+              stylers: [{ color: "#f2f2f2" }, { lightness: 19 }]
+            },
+            {
+              featureType: "administrative",
+              elementType: "geometry.fill",
+              stylers: [{ color: "#fefefe" }, { lightness: 20 }]
+            },
+            {
+              featureType: "administrative",
+              elementType: "geometry.stroke",
+              stylers: [{ color: "#fefefe" }, { lightness: 17 }, { weight: 1.2 }]
+            }
+          ],
+          disableDefaultUI: false,
+          zoomControl: true,
+          mapTypeControl: false,
+          scaleControl: false,
+          streetViewControl: false,
+          rotateControl: false,
+          fullscreenControl: true
+        };
+
+        if (mapRef.current) {
+          const googleMap = new Map(mapRef.current, mapOptions);
+          setMap(googleMap);
+
+          // Add markers for each branch
+          const newMarkers: google.maps.Marker[] = [];
+
+          branches.forEach((branch, index) => {
+            const marker = new google.maps.Marker({
+              position: branch.coordinates,
+              map: googleMap,
+              title: branch.name,
+              icon: {
+                url: `data:image/svg+xml;charset=UTF-8,${encodeURIComponent(`
+                  <svg width="32" height="32" viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg">
+                    <circle cx="16" cy="16" r="12" fill="${
+                      branch.id === 'geneva' ? '#dc2626' :
+                      branch.id === 'coral-springs' ? '#2563eb' : '#16a34a'
+                    }" opacity="0.9"/>
+                    <circle cx="16" cy="16" r="8" fill="${
+                      branch.id === 'geneva' ? '#dc2626' :
+                      branch.id === 'coral-springs' ? '#2563eb' : '#16a34a'
+                    }"/>
+                    <circle cx="16" cy="16" r="4" fill="white"/>
+                  </svg>
+                `)}`,
+                scaledSize: new google.maps.Size(32, 32),
+                anchor: new google.maps.Point(16, 32)
+              },
+              animation: google.maps.Animation.DROP
+            });
+
+            // Add click listener
+            marker.addListener("click", () => {
+              setSelectedBranch(branch);
+              googleMap.panTo(branch.coordinates);
+              googleMap.setZoom(12);
+            });
+
+            newMarkers.push(marker);
+          });
+
+          setMarkers(newMarkers);
+
+          // Fit map to show all markers
+          const bounds = new google.maps.LatLngBounds();
+          branches.forEach(branch => bounds.extend(branch.coordinates));
+          googleMap.fitBounds(bounds);
+
+          // Adjust zoom if too close
+          const listener = google.maps.event.addListener(googleMap, "idle", () => {
+            if (googleMap.getZoom() && googleMap.getZoom()! > 12) {
+              googleMap.setZoom(12);
+            }
+            google.maps.event.removeListener(listener);
+          });
+
+          setIsLoading(false);
+        }
+      } catch (error) {
+        console.error("Error loading Google Maps:", error);
+        setIsLoading(false);
+      }
+    };
+
+    initMap();
+  }, [googleMapsApiKey]);
+
+  // Update selected marker styling
+  useEffect(() => {
+    if (!map || markers.length === 0) return;
+
+    markers.forEach((marker, index) => {
+      const branch = branches[index];
+      const isSelected = selectedBranch?.id === branch.id;
+
+      marker.setIcon({
+        url: `data:image/svg+xml;charset=UTF-8,${encodeURIComponent(`
+          <svg width="32" height="32" viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="16" cy="16" r="12" fill="${
+              branch.id === 'geneva' ? '#dc2626' :
+              branch.id === 'coral-springs' ? '#2563eb' : '#16a34a'
+            }" opacity="${isSelected ? '1' : '0.9'}"/>
+            <circle cx="16" cy="16" r="${isSelected ? '10' : '8'}" fill="${
+              branch.id === 'geneva' ? '#dc2626' :
+              branch.id === 'coral-springs' ? '#2563eb' : '#16a34a'
+            }"/>
+            <circle cx="16" cy="16" r="${isSelected ? '5' : '4'}" fill="white"/>
+            ${isSelected ? '<circle cx="16" cy="16" r="14" fill="none" stroke="white" stroke-width="2"/>' : ''}
+          </svg>
+        `)}`,
+        scaledSize: new google.maps.Size(isSelected ? 36 : 32, isSelected ? 36 : 32),
+        anchor: new google.maps.Point(isSelected ? 18 : 16, isSelected ? 36 : 32)
+      });
+    });
+  }, [selectedBranch, map, markers]);
 
   return (
     <div className="w-full">
       {/* Map Container */}
       <div className="relative bg-gradient-to-br from-neutral-100 to-neutral-200 rounded-2xl overflow-hidden shadow-xl mb-8">
         <div className="relative h-96 bg-gradient-to-br from-gold-100 via-gold-50 to-neutral-100">
-          {/* Simplified Map Background */}
-          <div className="absolute inset-0 bg-gradient-to-br from-blue-50 via-white to-green-50 opacity-60"></div>
-
-          {/* World Map Overlay */}
-          <div className="absolute inset-0 flex items-center justify-center">
-            <div className="relative w-full h-full max-w-4xl">
-              {/* Geneva Marker */}
-              <div
-                className="absolute top-1/3 left-1/2 transform -translate-x-1/2 -translate-y-1/2 cursor-pointer group"
-                style={{ top: '35%', left: '48%' }}
-                onClick={() => setSelectedBranch(branches[0])}
-              >
-                <div className="relative">
-                  <MapPin
-                    size={32}
-                    className="text-red-600 drop-shadow-lg group-hover:scale-110 transition-transform duration-300"
-                  />
-                  <div className="absolute -top-8 -left-8 w-16 h-16 bg-red-600/20 rounded-full animate-ping"></div>
-                </div>
-                <div className="absolute top-full left-1/2 transform -translate-x-1/2 mt-2 bg-white px-3 py-1 rounded-lg shadow-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300 whitespace-nowrap text-sm font-work-sans font-medium">
-                  Geneva HQ
-                </div>
-              </div>
-
-              {/* Coral Springs Marker */}
-              <div
-                className="absolute top-1/2 left-1/4 cursor-pointer group"
-                style={{ top: '45%', left: '25%' }}
-                onClick={() => setSelectedBranch(branches[1])}
-              >
-                <div className="relative">
-                  <MapPin
-                    size={32}
-                    className="text-blue-600 drop-shadow-lg group-hover:scale-110 transition-transform duration-300"
-                  />
-                  <div className="absolute -top-8 -left-8 w-16 h-16 bg-blue-600/20 rounded-full animate-ping"></div>
-                </div>
-                <div className="absolute top-full left-1/2 transform -translate-x-1/2 mt-2 bg-white px-3 py-1 rounded-lg shadow-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300 whitespace-nowrap text-sm font-work-sans font-medium">
-                  Coral Springs
-                </div>
-              </div>
-
-              {/* Bülach Marker */}
-              <div
-                className="absolute top-2/5 left-1/2 cursor-pointer group"
-                style={{ top: '42%', left: '52%' }}
-                onClick={() => setSelectedBranch(branches[2])}
-              >
-                <div className="relative">
-                  <MapPin
-                    size={28}
-                    className="text-green-600 drop-shadow-lg group-hover:scale-110 transition-transform duration-300"
-                  />
-                  <div className="absolute -top-8 -left-8 w-16 h-16 bg-green-600/20 rounded-full animate-ping"></div>
-                </div>
-                <div className="absolute top-full left-1/2 transform -translate-x-1/2 mt-2 bg-white px-3 py-1 rounded-lg shadow-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300 whitespace-nowrap text-sm font-work-sans font-medium">
-                  Bülach
-                </div>
-              </div>
-
-              {/* Decorative Elements */}
-              <div className="absolute inset-0 pointer-events-none">
-                <div className="absolute top-1/4 left-1/3 w-2 h-2 bg-gold-400 rounded-full opacity-60"></div>
-                <div className="absolute top-3/4 right-1/4 w-1.5 h-1.5 bg-gold-500 rounded-full opacity-40"></div>
-                <div className="absolute top-1/2 left-3/4 w-1 h-1 bg-gold-300 rounded-full opacity-50"></div>
-                <div className="absolute bottom-1/4 left-1/4 w-2.5 h-2.5 bg-gold-400 rounded-full opacity-30"></div>
+          {isLoading ? (
+            <div className="absolute inset-0 flex items-center justify-center">
+              <div className="w-8 h-8 border-4 border-gold-500 border-t-transparent rounded-full animate-spin"></div>
+              <span className="ml-3 text-neutral-600 font-gruppo">Loading map...</span>
+            </div>
+          ) : !googleMapsApiKey ? (
+            <div className="absolute inset-0 flex items-center justify-center">
+              <div className="text-center p-6">
+                <MapPin className="w-12 h-12 text-neutral-400 mx-auto mb-4" />
+                <h3 className="text-lg font-work-sans font-semibold text-neutral-900 mb-2">
+                  Google Maps Not Configured
+                </h3>
+                <p className="text-neutral-600 font-gruppo max-w-md">
+                  Please add your Google Maps API key to <code className="bg-neutral-100 px-2 py-1 rounded text-sm">.env.local</code> file.
+                </p>
               </div>
             </div>
-          </div>
+          ) : (
+            <div ref={mapRef} className="w-full h-full rounded-2xl" />
+          )}
 
           {/* Map Title */}
-          <div className="absolute top-6 left-6 right-6">
+          <div className="absolute top-6 left-6 right-6 z-10">
             <h3 className="text-2xl font-work-sans font-bold text-neutral-900 mb-2">
               Global Presence
             </h3>
