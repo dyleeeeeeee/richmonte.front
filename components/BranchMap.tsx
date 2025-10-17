@@ -332,7 +332,10 @@ export default function BranchMap() {
             </p>
 
             {/* Visit Button */}
-            <button className="w-full mt-4 px-4 py-2 bg-gradient-to-r from-blue-500 to-blue-600 text-white rounded-lg font-medium hover:from-blue-600 hover:to-blue-700 transition-all duration-300 flex items-center justify-center space-x-2 text-sm">
+            <button
+              onClick={() => window.open(`https://www.google.com/maps?q=${branch.coordinates.lat},${branch.coordinates.lng}`, '_blank')}
+              className="w-full mt-4 px-4 py-2 bg-gradient-to-r from-blue-500 to-blue-600 text-white rounded-lg font-medium hover:from-blue-600 hover:to-blue-700 transition-all duration-300 flex items-center justify-center space-x-2 text-sm"
+            >
               <span>Visit Branch</span>
               <ExternalLink size={14} />
             </button>
