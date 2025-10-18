@@ -44,7 +44,7 @@ export const metadata: Metadata = {
     locale: 'en_US',
     url: 'https://conciergebank.us/',
     siteName: 'Concierge Bank',
-    title: 'Concierge Bank | #1 Private Swiss Banking in USA',
+    title: 'Concierge Bank | #1 Private Swiss Banking in USA | Premium Wealth Management',
     description: 'America\'s premier private banking institution. Swiss precision meets American excellence. Exclusive wealth management for high net worth individuals. FDIC insured, trusted by Fortune 500.',
     images: [
       {
@@ -52,14 +52,38 @@ export const metadata: Metadata = {
         width: 1200,
         height: 630,
         alt: 'Concierge Bank - Swiss Precision Banking',
+        type: 'image/png',
+      },
+      {
+        url: 'https://conciergebank.us/twitter-image.png',
+        width: 1200,
+        height: 600,
+        alt: 'Concierge Bank - Elite Banking Services',
+        type: 'image/png',
       },
     ],
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Concierge Bank | #1 Private Banking in USA',
+    site: '@conciergebank',
+    creator: '@conciergebank',
+    title: 'Concierge Bank | #1 Private Banking in USA | Premium Wealth Management',
     description: 'America\'s premier private banking. Swiss precision banking, exclusive wealth management, and elite financial services for high net worth individuals.',
-    images: ['https://conciergebank.us/twitter-image.png'],
+    images: [
+      {
+        url: 'https://conciergebank.us/twitter-image.png',
+        alt: 'Concierge Bank - Swiss Precision Banking',
+      },
+    ],
+  },
+  other: {
+    'og:image:secure_url': 'https://conciergebank.us/og-image.png',
+    'og:image:width': '1200',
+    'og:image:height': '630',
+    'og:image:type': 'image/png',
+    'og:site_name': 'Concierge Bank',
+    'article:author': 'Concierge Bank',
+    'article:publisher': 'https://www.facebook.com/conciergebank',
   },
   alternates: {
     canonical: 'https://conciergebank.us/',
@@ -89,12 +113,45 @@ export default function RootLayout({
         <meta name="apple-mobile-web-app-capable" content="yes" />
         <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
         
-        {/* Favicon */}
-        <link rel="icon" href="/favicon.ico" />
+        {/* Enhanced Social Media Meta Tags */}
+        <meta property="og:title" content="Concierge Bank | #1 Private Swiss Banking in USA | Premium Wealth Management" />
+        <meta property="og:description" content="America's premier private banking institution. Swiss precision meets American excellence. Exclusive wealth management for high net worth individuals. FDIC insured, trusted by Fortune 500." />
+        <meta property="og:image" content="https://conciergebank.us/og-image.png" />
+        <meta property="og:image:secure_url" content="https://conciergebank.us/og-image.png" />
+        <meta property="og:image:width" content="1200" />
+        <meta property="og:image:height" content="630" />
+        <meta property="og:image:type" content="image/png" />
+        <meta property="og:image:alt" content="Concierge Bank - Swiss Precision Banking" />
+        <meta property="og:url" content="https://conciergebank.us/" />
+        <meta property="og:type" content="website" />
+        <meta property="og:site_name" content="Concierge Bank" />
+        <meta property="og:locale" content="en_US" />
+        
+        {/* Twitter Card Meta Tags */}
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:site" content="@conciergebank" />
+        <meta name="twitter:creator" content="@conciergebank" />
+        <meta name="twitter:title" content="Concierge Bank | #1 Private Swiss Banking in USA | Premium Wealth Management" />
+        <meta name="twitter:description" content="America's premier private banking. Swiss precision banking, exclusive wealth management, and elite financial services for high net worth individuals." />
+        <meta name="twitter:image" content="https://conciergebank.us/twitter-image.png" />
+        <meta name="twitter:image:alt" content="Concierge Bank - Swiss Precision Banking" />
+        
+        {/* WhatsApp and Telegram specific optimizations */}
+        <meta property="article:author" content="Concierge Bank" />
+        <meta property="article:publisher" content="https://www.facebook.com/conciergebank" />
+        
+        {/* Favicon - Optimized for Google Search */}
         <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
         <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
+        <link rel="icon" type="image/x-icon" href="/favicon.ico" />
+        <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico" />
         <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
         <link rel="manifest" href="/site.webmanifest" />
+        
+        {/* Additional favicon declarations for better Google support */}
+        <link rel="icon" href="/favicon-32x32.png" sizes="32x32" />
+        <meta name="msapplication-TileImage" content="/favicon-32x32.png" />
+        <meta name="msapplication-TileColor" content="#EBA420" />
         
         
         {/* Geo Tags - USA Focus */}

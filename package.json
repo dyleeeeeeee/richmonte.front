@@ -4,7 +4,8 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "cross-env NODE_OPTIONS=--max_old_space_size=4096 next build",
+    "build": "npm run copy-favicon && cross-env NODE_OPTIONS=--max_old_space_size=4096 next build",
+    "copy-favicon": "node -e \"const fs = require('fs'); fs.copyFileSync('./app/favicon.ico', './public/favicon.ico'); console.log('Favicon copied to public directory');\"",
     "start": "next start",
     "lint": "next lint",
     "type-check": "tsc --noEmit --project ."
