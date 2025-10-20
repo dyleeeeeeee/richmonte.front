@@ -11,7 +11,7 @@ export default function LoginPage() {
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
-  const { login, refreshUser } = useAuth();
+  const { login } = useAuth();
   const router = useRouter();
 
   const handleSubmit = async (e: FormEvent) => {
@@ -20,33 +20,9 @@ export default function LoginPage() {
     setLoading(true);
 
     try {
-      // Login with backend API
-      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000"}/api/auth/login`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          email,
-          password,
-        }),
-      });
-
-      const data = await response.json();
-
-      if (!response.ok) {
-        throw new Error(data.error || 'Login failed');
-      }
-
-      if (data.token && data.user) {
-        // Login successful
-        localStorage.setItem('auth_token', data.token);
-        // Refresh auth context to load user data
-        await refreshUser();
-        router.push("/dashboard");
-      } else {
-        throw new Error('Invalid login response');
-      }
+      // Use auth context login method instead of direct fetch
+      await login(email, password);
+      router.push("/dashboard");
     } catch (err) {
       setError(err instanceof Error ? err.message : "Login failed");
     } finally {
