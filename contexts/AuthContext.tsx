@@ -6,7 +6,7 @@ import { authAPI, type User } from "@/lib/api";
 interface AuthContextType {
   user: User | null;
   loading: boolean;
-  login: (email: string, password: string, recaptchaToken?: string) => Promise<void>;
+  login: (email: string, password: string) => Promise<void>;
   register: (data: { email: string; password: string; full_name: string; phone?: string; address?: string; preferred_brand?: string }) => Promise<void>;
   logout: () => Promise<void>;
   refreshUser: () => Promise<void>;
@@ -36,8 +36,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     refreshUser().finally(() => setLoading(false));
   }, []);
 
-  const login = async (email: string, password: string, recaptchaToken?: string) => {
-    const response = await authAPI.login({ email, password, recaptcha_token: recaptchaToken });
+  const login = async (email: string, password: string) => {
+    const response = await authAPI.login({ email, password });
     if (response.error) {
       throw new Error(response.error);
     }

@@ -5,7 +5,6 @@ import { useRouter } from "next/navigation";
 import Link from "next/link";
 import Image from "next/image";
 import { useAuth } from "@/contexts/AuthContext";
-import ReCaptcha, { executeRecaptcha } from "@/components/ReCaptcha";
 import TwoFactorVerification from "@/components/TwoFactorVerification";
 import BackupCodeVerification from "@/components/BackupCodeVerification";
 import { twoFactorAPI } from "@/lib/api";
@@ -39,14 +38,6 @@ export default function LoginPage() {
     setLoading(true);
 
     try {
-      // Execute reCAPTCHA verification (anti-bot protection)
-      let recaptchaToken = '';
-      try {
-        recaptchaToken = await executeRecaptcha('login');
-      } catch (recaptchaError) {
-        console.warn('reCAPTCHA verification failed:', recaptchaError);
-      }
-
       // Custom login logic to handle 2FA
       const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000"}/api/auth/login`, {
         method: 'POST',
@@ -56,7 +47,6 @@ export default function LoginPage() {
         body: JSON.stringify({
           email,
           password,
-          recaptcha_token: recaptchaToken,
         }),
       });
 
@@ -152,8 +142,6 @@ export default function LoginPage() {
     setTwoFAError("");
   };
 
-  const siteKey = process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY || '';
-
   // Show 2FA verification screen
   if (loginStep === '2fa' && twoFAData) {
     return (
@@ -185,11 +173,7 @@ export default function LoginPage() {
 
   // Show credentials login form
   return (
-    <>
-      {/* Load reCAPTCHA script */}
-      {siteKey && <ReCaptcha siteKey={siteKey} />}
-
-      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-light-50 via-light-100 to-light-200 px-4">
+    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-light-50 via-light-100 to-light-200 px-4">
       <div className="w-full max-w-md">
         <div className="text-center mb-8">
           <Link href="/" className="inline-flex items-center space-x-3 mb-6 group">
@@ -290,6 +274,5 @@ export default function LoginPage() {
         </p>
       </div>
     </div>
-    </>
   );
 }

@@ -4,10 +4,8 @@ import { useState, FormEvent } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import Image from "next/image";
-import { Shield } from "lucide-react";
 import { useAuth } from "@/contexts/AuthContext";
 import type { RegisterData } from "@/lib/api";
-import ReCaptcha, { executeRecaptcha } from "@/components/ReCaptcha";
 
 export default function RegisterPage() {
   const [formData, setFormData] = useState({
@@ -17,7 +15,9 @@ export default function RegisterPage() {
     full_name: "",
     phone: "",
     preferred_brand: "Cartier",
+    website: "", // Honeypot field
   });
+  const [formLoadTime] = useState(Date.now() / 1000);
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
   const { register } = useAuth();
@@ -44,22 +44,14 @@ export default function RegisterPage() {
     setLoading(true);
 
     try {
-      // Execute reCAPTCHA verification (invisible bot protection)
-      let recaptchaToken = '';
-      try {
-        recaptchaToken = await executeRecaptcha('register');
-      } catch (recaptchaError) {
-        console.warn('reCAPTCHA verification failed:', recaptchaError);
-        // Continue without token in development, but log the error
-      }
-
       const registerPayload: Partial<RegisterData> = {
         email: formData.email,
         password: formData.password,
         full_name: formData.full_name,
         phone: formData.phone,
         preferred_brand: formData.preferred_brand,
-        recaptcha_token: recaptchaToken, // Anti-bot token
+        website: formData.website, // Honeypot for bot detection
+        form_load_time: formLoadTime, // Timing check for bot detection
       };
       await register(registerPayload as any);
       router.push("/dashboard");
@@ -70,14 +62,8 @@ export default function RegisterPage() {
     }
   };
 
-  const siteKey = process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY || '';
-
   return (
-    <>
-      {/* Load reCAPTCHA script */}
-      {siteKey && <ReCaptcha siteKey={siteKey} />}
-      
-      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-light-50 via-light-100 to-light-200 px-4 py-12">
+    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-light-50 via-light-100 to-light-200 px-4 py-12">
         <div className="w-full max-w-md">
         <div className="text-center mb-8">
           <Link href="/" className="inline-flex items-center space-x-3 mb-6 group">
@@ -206,6 +192,18 @@ export default function RegisterPage() {
               />
             </div>
 
+            {/* Honeypot field - hidden from humans, visible to bots */}
+            <input
+              type="text"
+              name="website"
+              value={formData.website}
+              onChange={handleChange}
+              style={{ display: 'none' }}
+              tabIndex={-1}
+              autoComplete="off"
+              aria-hidden="true"
+            />
+
             <button
               type="submit"
               disabled={loading}
@@ -214,12 +212,6 @@ export default function RegisterPage() {
               {loading ? "Creating Account..." : "Create Account"}
             </button>
           </form>
-
-          {/* Bot Protection Badge */}
-          <div className="mt-4 flex items-center justify-center space-x-2 text-xs text-neutral-500">
-            <Shield size={14} className="text-green-500" />
-            <span className="font-gruppo">Protected by Google reCAPTCHA</span>
-          </div>
 
           <div className="mt-6 text-center text-sm text-neutral-600 font-gruppo">
             Already have an account?{" "}
@@ -241,6 +233,5 @@ export default function RegisterPage() {
         </p>
       </div>
     </div>
-    </>
   );
 }

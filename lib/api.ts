@@ -68,7 +68,6 @@ export interface User {
 export interface LoginCredentials {
   email: string;
   password: string;
-  recaptcha_token?: string; // Anti-bot verification token
 }
 export interface RegisterData {
   email: string;
@@ -76,7 +75,8 @@ export interface RegisterData {
   full_name: string;
   phone?: string;
   preferred_brand?: string;
-  recaptcha_token?: string; // Anti-bot verification token
+  website?: string; // Honeypot field for bot detection
+  form_load_time?: number; // Form timing for bot detection
 }
 
 export const authAPI = {
