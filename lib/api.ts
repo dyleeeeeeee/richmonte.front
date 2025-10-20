@@ -537,6 +537,7 @@ export interface UpdateUserData {
   address?: any;
   preferred_brand?: string;
   role?: 'admin' | 'user';
+  account_status?: 'active' | 'blocked' | 'suspended';
 }
 
 export interface CreateBillForUserData {
@@ -610,6 +611,18 @@ export const adminAPI = {
     });
   },
 
+  async blockUser(userId: string): Promise<ApiResponse<User>> {
+    return fetchAPI<User>(`/api/admin/users/${userId}/block`, {
+      method: "POST",
+    });
+  },
+
+  async unblockUser(userId: string): Promise<ApiResponse<User>> {
+    return fetchAPI<User>(`/api/admin/users/${userId}/unblock`, {
+      method: "POST",
+    });
+  },
+
   async updateAccountBalance(accountId: string, balance: number): Promise<ApiResponse<Account>> {
     return fetchAPI<Account>(`/api/admin/accounts/${accountId}/balance`, {
       method: "PUT",
@@ -618,14 +631,14 @@ export const adminAPI = {
   },
 
   async createBillForUser(data: CreateBillForUserData): Promise<ApiResponse<Bill>> {
-    return fetchAPI<Bill>("/api/admin/bills", {
+    return fetchAPI<Bill>("/api/admin/bills/create", {
       method: "POST",
       body: JSON.stringify(data),
     });
   },
 
   async sendNotification(data: SendNotificationData): Promise<ApiResponse<void>> {
-    return fetchAPI<void>("/api/admin/notifications", {
+    return fetchAPI<void>("/api/admin/notifications/send", {
       method: "POST",
       body: JSON.stringify(data),
     });

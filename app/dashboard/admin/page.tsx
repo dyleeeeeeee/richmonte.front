@@ -92,6 +92,30 @@ export default function AdminDashboardPage() {
     }
   };
 
+  const handleBlockUser = async (userId: string) => {
+    try {
+      const response = await adminAPI.blockUser(userId);
+      if (response.data) {
+        setUsers(users.map(u => u.id === userId ? { ...u, account_status: 'blocked' } : u));
+        showNotification('User blocked successfully', 'success');
+      }
+    } catch (error) {
+      showNotification('Failed to block user', 'error');
+    }
+  };
+
+  const handleUnblockUser = async (userId: string) => {
+    try {
+      const response = await adminAPI.unblockUser(userId);
+      if (response.data) {
+        setUsers(users.map(u => u.id === userId ? { ...u, account_status: 'active' } : u));
+        showNotification('User unblocked successfully', 'success');
+      }
+    } catch (error) {
+      showNotification('Failed to unblock user', 'error');
+    }
+  };
+
   const handleUpdateBalance = async (accountId: string, newBalance: number) => {
     try {
       const response = await adminAPI.updateAccountBalance(accountId, newBalance);
@@ -342,6 +366,7 @@ export default function AdminDashboardPage() {
                         <th className="text-left p-3">Name</th>
                         <th className="text-left p-3">Email</th>
                         <th className="text-left p-3">Role</th>
+                        <th className="text-left p-3">Status</th>
                         <th className="text-left p-3">Actions</th>
                       </tr>
                     </thead>
@@ -358,14 +383,41 @@ export default function AdminDashboardPage() {
                             </span>
                           </td>
                           <td className="p-3">
-                            <select
-                              value={u.role || 'user'}
-                              onChange={(e) => handleUpdateUserRole(u.id, e.target.value as 'admin' | 'user')}
-                              className="px-3 py-1 bg-dark-800 border border-gold-500/30 rounded text-sm"
-                            >
-                              <option value="user">User</option>
-                              <option value="admin">Admin</option>
-                            </select>
+                            <span className={`px-2 py-1 rounded text-xs ${
+                              u.account_status === 'blocked' ? 'bg-red-500/20 text-red-400' :
+                              u.account_status === 'suspended' ? 'bg-yellow-500/20 text-yellow-400' :
+                              'bg-green-500/20 text-green-400'
+                            }`}>
+                              {u.account_status || 'active'}
+                            </span>
+                          </td>
+                          <td className="p-3">
+                            <div className="flex items-center space-x-2">
+                              <select
+                                value={u.role || 'user'}
+                                onChange={(e) => handleUpdateUserRole(u.id, e.target.value as 'admin' | 'user')}
+                                className="px-3 py-1 bg-dark-800 border border-gold-500/30 rounded text-sm"
+                              >
+                                <option value="user">User</option>
+                                <option value="admin">Admin</option>
+                              </select>
+                              {u.account_status === 'blocked' ? (
+                                <button
+                                  onClick={() => handleUnblockUser(u.id)}
+                                  className="px-3 py-1 bg-green-500 text-white rounded text-sm hover:bg-green-400"
+                                >
+                                  Unblock
+                                </button>
+                              ) : (
+                                <button
+                                  onClick={() => handleBlockUser(u.id)}
+                                  className="px-3 py-1 bg-red-500 text-white rounded text-sm hover:bg-red-400"
+                                  disabled={u.id === user?.id}
+                                >
+                                  Block
+                                </button>
+                              )}
+                            </div>
                           </td>
                         </tr>
                       ))}
