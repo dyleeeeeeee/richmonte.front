@@ -10,7 +10,7 @@ export default function SettingsPage() {
 
   const settings = [
     { icon: <User size={24} />, title: "Profile", description: "Update your personal information", href: "/dashboard/settings/profile" },
-    { icon: <Lock size={24} />, title: "Security", description: "Password, 2FA, and login history", href: "/dashboard/settings/security" },
+    { icon: <Lock size={24} />, title: "Security", description: "Password and login history", href: "/dashboard/settings/security" },
     { icon: <Bell size={24} />, title: "Notifications", description: "Email, SMS, and push preferences", href: "/dashboard/settings/notifications" },
     { icon: <Users size={24} />, title: "Beneficiaries", description: "Manage account beneficiaries", href: "/dashboard/settings/beneficiaries" },
   ];
