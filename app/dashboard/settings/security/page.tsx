@@ -4,9 +4,7 @@ import { useState, useEffect, FormEvent } from "react";
 import { useRouter } from "next/navigation";
 import ProtectedRoute from "@/components/ProtectedRoute";
 import DashboardLayout from "@/components/DashboardLayout";
-import TwoFactorSetupModal from "@/components/TwoFactorSetupModal";
-import { ArrowLeft, Lock, Shield, Smartphone, Monitor, Key, RotateCcw } from "lucide-react";
-import { twoFactorAPI } from "@/lib/api";
+import { ArrowLeft, Lock, Smartphone, Monitor } from "lucide-react";
 
 export default function SecuritySettingsPage() {
   const router = useRouter();
@@ -16,10 +14,6 @@ export default function SecuritySettingsPage() {
     confirm: "",
   });
   const [loginHistory, setLoginHistory] = useState<any[]>([]);
-  const [twoFAEnabled, setTwoFAEnabled] = useState(false);
-  const [twoFAStatus, setTwoFAStatus] = useState<any>(null);
-  const [showSetupModal, setShowSetupModal] = useState(false);
-  const [backupCodes, setBackupCodes] = useState<string[]>([]);
   const [saving, setSaving] = useState(false);
 
   useEffect(() => {
@@ -78,23 +72,6 @@ export default function SecuritySettingsPage() {
     };
 
     generateLoginHistory();
-  }, []);
-
-  // Load 2FA status
-  useEffect(() => {
-    const loadTwoFAStatus = async () => {
-      try {
-        const response = await twoFactorAPI.getTwoFactorStatus();
-        if (response.data) {
-          setTwoFAStatus(response.data);
-          setTwoFAEnabled(response.data.enabled);
-        }
-      } catch (error) {
-        console.error("Failed to load 2FA status:", error);
-      }
-    };
-
-    loadTwoFAStatus();
   }, []);
 
   // Helper functions to detect browser/OS
