@@ -36,12 +36,17 @@ export default function DashboardPage() {
         // Load transactions from first account if available
         if (accountsRes.data.length > 0) {
           const txRes = await accountAPI.getAccountTransactions(accountsRes.data[0].id);
-          if (txRes.data) setTransactions(txRes.data.slice(0, 5));
+          setTransactions(txRes.data ? txRes.data.slice(0, 5) : []);
+        } else {
+          setTransactions([]);
         }
       }
       if (cardsRes.data) setCards(cardsRes.data);
     } catch (error) {
       console.error("Failed to load dashboard data:", error);
+      setTransactions([]);
+      setAccounts([]);
+      setCards([]);
     } finally {
       setLoading(false);
     }

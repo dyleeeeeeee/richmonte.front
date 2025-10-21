@@ -192,6 +192,10 @@ export const transferAPI = {
       body: JSON.stringify(data),
     });
   },
+
+  async getTransfers(): Promise<ApiResponse<Transfer[]>> {
+    return fetchAPI<Transfer[]>("/api/transfers");
+  },
 };
 
 // ============================================================================

@@ -19,6 +19,10 @@ export default function AccountDetailPage() {
   const [searchTerm, setSearchTerm] = useState("");
 
   const loadAccountData = useCallback(async () => {
+    // Clear stale data immediately to prevent showing wrong account's transactions
+    setTransactions([]);
+    setAccount(null);
+    
     try {
       const [accountsRes, transactionsRes] = await Promise.all([
         accountAPI.getAccounts(),
@@ -30,11 +34,13 @@ export default function AccountDetailPage() {
         setAccount(acc || null);
       }
 
-      if (transactionsRes.data) {
-        setTransactions(transactionsRes.data);
-      }
+      // Always set transactions, even if empty or undefined
+      setTransactions(transactionsRes.data || []);
     } catch (error) {
       console.error("Failed to load account:", error);
+      // Ensure transactions are cleared on error
+      setTransactions([]);
+      setAccount(null);
     } finally {
       setLoading(false);
     }

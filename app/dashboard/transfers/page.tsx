@@ -4,7 +4,7 @@ import { useEffect, useState, FormEvent, useCallback } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import ProtectedRoute from "@/components/ProtectedRoute";
 import DashboardLayout from "@/components/DashboardLayout";
-import { accountAPI, transferAPI, Account } from "@/lib/api";
+import { accountAPI, transferAPI, Account, Transfer } from "@/lib/api";
 import { useNotification } from "@/contexts/NotificationContext";
 import { Send, Calendar, Repeat, User, Building, ArrowRight } from "lucide-react";
 
@@ -22,6 +22,7 @@ export default function TransfersPage() {
     to_account: "",
     to_external_account: "",
     to_external_routing: "",
+    to_external_name: "",
     to_email: "",
     to_phone: "",
     amount: "",
@@ -31,7 +32,7 @@ export default function TransfersPage() {
   });
   const [loading, setLoading] = useState(true);
   const [submitting, setSubmitting] = useState(false);
-  const [history, setHistory] = useState<any[]>([]);
+  const [history, setHistory] = useState<Transfer[]>([]);
 
   const loadAccounts = useCallback(async () => {
     try {
@@ -52,17 +53,13 @@ export default function TransfersPage() {
 
   const loadHistory = useCallback(async () => {
     try {
-      // Load transactions from first account if available
-      if (accounts.length > 0) {
-        const response = await accountAPI.getAccountTransactions(accounts[0].id);
-        if (response.data) {
-          setHistory(response.data.slice(0, 10));
-        }
-      }
+      const response = await transferAPI.getTransfers();
+      setHistory(response.data ? response.data.slice(0, 10) : []);
     } catch (error) {
       console.error("Failed to load history:", error);
+      setHistory([]);
     }
-  }, [accounts]);
+  }, []);
 
   useEffect(() => {
     loadAccounts();
@@ -74,10 +71,8 @@ export default function TransfersPage() {
   }, [searchParams, loadAccounts]);
 
   useEffect(() => {
-    if (accounts.length > 0) {
-      loadHistory();
-    }
-  }, [accounts, loadHistory]);
+    loadHistory();
+  }, [loadHistory]);
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
@@ -88,6 +83,7 @@ export default function TransfersPage() {
         from_account_id: formData.from_account,
         amount: parseFloat(formData.amount),
         transfer_type: transferType,
+        description: formData.description,
       };
 
       if (transferType === "internal") {
@@ -96,6 +92,7 @@ export default function TransfersPage() {
         transferData.to_external = {
           account_number: formData.to_external_account,
           routing_number: formData.to_external_routing,
+          name: formData.to_external_name,
         };
       } else {
         transferData.to_external = {
@@ -115,6 +112,7 @@ export default function TransfersPage() {
           to_account: "",
           to_external_account: "",
           to_external_routing: "",
+          to_external_name: "",
           to_email: "",
           to_phone: "",
         });
@@ -236,6 +234,19 @@ export default function TransfersPage() {
                 {transferType === "external" && (
                   <>
                     <div>
+                      <label className="block text-sm font-medium mb-2 text-neutral-900">Recipient Name</label>
+                      <input
+                        type="text"
+                        value={formData.to_external_name}
+                        onChange={(e) =>
+                          setFormData({ ...formData, to_external_name: e.target.value })
+                        }
+                        required
+                        placeholder="Enter recipient name"
+                        className="w-full px-4 py-3 bg-white/90 border border-gold-500/30 rounded-lg focus:outline-none focus:border-gold-500 transition-smooth text-neutral-900 placeholder:text-neutral-400 shadow-inner"
+                      />
+                    </div>
+                    <div>
                       <label className="block text-sm font-medium mb-2 text-neutral-900">Account Number</label>
                       <input
                         type="text"
@@ -244,7 +255,9 @@ export default function TransfersPage() {
                           setFormData({ ...formData, to_external_account: e.target.value })
                         }
                         required
-                        placeholder="Enter account number"
+                        placeholder="Enter account number (digits only)"
+                        pattern="[0-9]+"
+                        minLength={4}
                         className="w-full px-4 py-3 bg-white/90 border border-gold-500/30 rounded-lg focus:outline-none focus:border-gold-500 transition-smooth text-neutral-900 placeholder:text-neutral-400 shadow-inner"
                       />
                     </div>
@@ -257,7 +270,9 @@ export default function TransfersPage() {
                           setFormData({ ...formData, to_external_routing: e.target.value })
                         }
                         required
-                        placeholder="Enter routing number"
+                        placeholder="9-digit routing number"
+                        pattern="[0-9]{9}"
+                        maxLength={9}
                         className="w-full px-4 py-3 bg-white/90 border border-gold-500/30 rounded-lg focus:outline-none focus:border-gold-500 transition-smooth text-neutral-900 placeholder:text-neutral-400 shadow-inner"
                       />
                     </div>
@@ -316,7 +331,7 @@ export default function TransfersPage() {
                     value={formData.description}
                     onChange={(e) => setFormData({ ...formData, description: e.target.value })}
                     placeholder="What's this for?"
-                    className="w-full px-4 py-3 bg-dark-900 border border-gold-500/20 rounded-lg focus:outline-none focus:border-gold-500 text-white placeholder:text-gray-500"
+                    className="w-full px-4 py-3 bg-white/90 border border-gold-500/30 rounded-lg focus:outline-none focus:border-gold-500 transition-smooth text-neutral-900 placeholder:text-neutral-400 shadow-inner"
                   />
                 </div>
 
@@ -363,22 +378,46 @@ export default function TransfersPage() {
                   {history.length === 0 ? (
                     <p className="text-sm text-gray-400 text-center py-4">No transfer history</p>
                   ) : (
-                    history.map((tx) => (
-                      <div key={tx.id} className="flex items-center justify-between p-3 bg-dark-800/50 rounded-lg">
-                        <div className="flex items-center space-x-3">
-                          <div className="w-10 h-10 bg-gold-500/20 rounded-lg flex items-center justify-center">
-                            <Send className="text-gold-500" size={18} />
-                          </div>
-                          <div>
-                            <p className="text-sm font-medium">{tx.description || "Transfer"}</p>
-                            <p className="text-xs text-gray-400">
-                              {new Date(tx.created_at).toLocaleDateString()}
-                            </p>
+                    history.map((transfer) => {
+                      const getRecipientName = () => {
+                        if (transfer.transfer_type === 'internal' && transfer.to_account_id) {
+                          const toAccount = accounts.find(a => a.id === transfer.to_account_id);
+                          return toAccount ? `${toAccount.account_type} ••••${toAccount.account_number?.slice(-4)}` : 'Internal Account';
+                        } else if (transfer.to_external) {
+                          if (transfer.to_external.name) return transfer.to_external.name;
+                          if (transfer.to_external.email) return transfer.to_external.email;
+                          if (transfer.to_external.account_number) return `••••${transfer.to_external.account_number.slice(-4)}`;
+                        }
+                        return 'Unknown';
+                      };
+
+                      const statusColor = transfer.status === 'completed' ? 'text-green-500' : 
+                                         transfer.status === 'pending' ? 'text-yellow-500' : 'text-red-500';
+
+                      return (
+                        <div key={transfer.id} className="p-3 bg-dark-800/50 rounded-lg hover:bg-dark-800/70 transition-colors">
+                          <div className="flex items-start justify-between mb-2">
+                            <div className="flex items-center space-x-3">
+                              <div className="w-10 h-10 bg-gold-500/20 rounded-lg flex items-center justify-center flex-shrink-0">
+                                {transfer.transfer_type === 'internal' ? <ArrowRight className="text-gold-500" size={18} /> :
+                                 transfer.transfer_type === 'external' ? <Building className="text-gold-500" size={18} /> :
+                                 <User className="text-gold-500" size={18} />}
+                              </div>
+                              <div className="flex-1 min-w-0">
+                                <p className="text-sm font-medium truncate">{getRecipientName()}</p>
+                                <p className="text-xs text-gray-400">
+                                  {new Date(transfer.created_at).toLocaleDateString()} • {transfer.transfer_type}
+                                </p>
+                              </div>
+                            </div>
+                            <div className="text-right">
+                              <p className="text-sm font-semibold">${transfer.amount?.toLocaleString()}</p>
+                              <p className={`text-xs font-medium ${statusColor}`}>{transfer.status}</p>
+                            </div>
                           </div>
                         </div>
-                        <p className="text-sm font-semibold">${tx.amount?.toLocaleString()}</p>
-                      </div>
-                    ))
+                      );
+                    })
                   )}
                 </div>
               </div>
