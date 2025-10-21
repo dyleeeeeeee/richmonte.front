@@ -27,6 +27,7 @@ export default function TransfersPage() {
     to_phone: "",
     amount: "",
     description: "",
+    pin: "",
     recurring: false,
     schedule_date: "",
   });
@@ -84,6 +85,7 @@ export default function TransfersPage() {
         amount: parseFloat(formData.amount),
         transfer_type: transferType,
         description: formData.description,
+        pin: formData.pin,
       };
 
       if (transferType === "internal") {
@@ -109,6 +111,7 @@ export default function TransfersPage() {
           ...formData,
           amount: "",
           description: "",
+          pin: "",
           to_account: "",
           to_external_account: "",
           to_external_routing: "",
@@ -359,6 +362,21 @@ export default function TransfersPage() {
                     />
                   </div>
                 )}
+
+                <div>
+                  <label className="block text-sm font-medium mb-2 text-neutral-900">Transaction PIN</label>
+                  <input
+                    type="password"
+                    value={formData.pin}
+                    onChange={(e) => setFormData({ ...formData, pin: e.target.value })}
+                    required
+                    pattern="[0-9]{6}"
+                    maxLength={6}
+                    placeholder="Enter your 6-digit PIN"
+                    className="w-full px-4 py-3 bg-white/90 border border-gold-500/30 rounded-lg focus:outline-none focus:border-gold-500 transition-smooth text-neutral-900 placeholder:text-neutral-400 shadow-inner"
+                  />
+                  <p className="text-xs text-neutral-500 mt-1 font-gruppo">Required for security verification</p>
+                </div>
 
                 <button
                   type="submit"

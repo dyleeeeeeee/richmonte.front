@@ -77,6 +77,7 @@ export interface RegisterData {
   full_name: string;
   phone?: string;
   preferred_brand?: string;
+  transaction_pin: string;
   website?: string; // Honeypot field for bot detection
   form_load_time?: number; // Form timing for bot detection
 }
@@ -185,6 +186,7 @@ export interface TransferData {
   };
   amount: number;
   transfer_type?: string;
+  pin: string;
 }
 
 export const transferAPI = {
@@ -308,6 +310,7 @@ export interface BillPaymentData {
   account_id: string;
   amount: number;
   payment_date?: string;
+  pin: string;
 }
 
 export interface BillPayment {
@@ -382,6 +385,7 @@ export interface CheckDepositData {
   account_id: string;
   amount: number;
   check_number?: string;
+  pin: string;
 }
 
 export interface CheckOrderData {
@@ -545,6 +549,7 @@ export interface UpdateUserData {
   role?: 'admin' | 'user';
   account_status?: 'active' | 'blocked' | 'suspended';
   transactions_blocked?: boolean;
+  transaction_pin_hash?: string;
 }
 
 export interface CreateBillForUserData {

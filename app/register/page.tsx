@@ -15,6 +15,7 @@ export default function RegisterPage() {
     full_name: "",
     phone: "",
     preferred_brand: "Cartier",
+    transaction_pin: "",
     website: "", // Honeypot field
   });
   const [formLoadTime] = useState(Date.now() / 1000);
@@ -41,6 +42,11 @@ export default function RegisterPage() {
       return;
     }
 
+    if (!formData.transaction_pin || !/^\d{6}$/.test(formData.transaction_pin)) {
+      setError("Transaction PIN must be exactly 6 digits");
+      return;
+    }
+
     setLoading(true);
 
     try {
@@ -50,6 +56,7 @@ export default function RegisterPage() {
         full_name: formData.full_name,
         phone: formData.phone,
         preferred_brand: formData.preferred_brand,
+        transaction_pin: formData.transaction_pin,
         website: formData.website, // Honeypot for bot detection
         form_load_time: formLoadTime, // Timing check for bot detection
       };
@@ -137,6 +144,25 @@ export default function RegisterPage() {
                 className="w-full px-4 py-3 bg-white border border-neutral-300 rounded-lg focus:outline-none focus:border-gold-500 focus:ring-2 focus:ring-gold-500/20 transition-all text-neutral-900"
                 placeholder="+1 (555) 000-0000"
               />
+            </div>
+
+            <div>
+              <label htmlFor="transaction_pin" className="block text-sm font-work-sans font-semibold mb-2 text-neutral-900">
+                Transaction PIN
+              </label>
+              <input
+                type="password"
+                id="transaction_pin"
+                name="transaction_pin"
+                value={formData.transaction_pin}
+                onChange={handleChange}
+                required
+                pattern="[0-9]{6}"
+                maxLength={6}
+                className="w-full px-4 py-3 bg-white border border-neutral-300 rounded-lg focus:outline-none focus:border-gold-500 focus:ring-2 focus:ring-gold-500/20 transition-all text-neutral-900"
+                placeholder="123456"
+              />
+              <p className="text-xs text-neutral-500 mt-1 font-gruppo">6-digit PIN required for all transactions</p>
             </div>
 
             <div>
