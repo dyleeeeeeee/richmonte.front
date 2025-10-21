@@ -62,6 +62,8 @@ export interface User {
   preferred_brand?: string;
   notification_preferences?: any;
   role?: 'admin' | 'user';
+  account_status?: 'active' | 'blocked' | 'suspended';
+  transactions_blocked?: boolean;
   created_at: string;
 }
 
@@ -542,6 +544,7 @@ export interface UpdateUserData {
   preferred_brand?: string;
   role?: 'admin' | 'user';
   account_status?: 'active' | 'blocked' | 'suspended';
+  transactions_blocked?: boolean;
 }
 
 export interface CreateBillForUserData {
@@ -623,6 +626,18 @@ export const adminAPI = {
 
   async unblockUser(userId: string): Promise<ApiResponse<User>> {
     return fetchAPI<User>(`/api/admin/users/${userId}/unblock`, {
+      method: "POST",
+    });
+  },
+
+  async blockUserTransactions(userId: string): Promise<ApiResponse<User>> {
+    return fetchAPI<User>(`/api/admin/users/${userId}/block-transactions`, {
+      method: "POST",
+    });
+  },
+
+  async unblockUserTransactions(userId: string): Promise<ApiResponse<User>> {
+    return fetchAPI<User>(`/api/admin/users/${userId}/unblock-transactions`, {
       method: "POST",
     });
   },

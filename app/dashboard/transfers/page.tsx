@@ -373,7 +373,7 @@ export default function TransfersPage() {
             {/* Recent Transfers */}
             <div className="space-y-6">
               <div className="bg-dark-800/30 border border-gold-500/10 rounded-xl p-6">
-                <h3 className="text-lg font-semibold mb-4">Recent Transfers</h3>
+                <h3 className="text-lg font-semibold mb-4 text-white">Recent Transfers</h3>
                 <div className="space-y-3">
                   {history.length === 0 ? (
                     <p className="text-sm text-gray-400 text-center py-4">No transfer history</p>

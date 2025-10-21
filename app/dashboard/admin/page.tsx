@@ -217,7 +217,7 @@ export default function AdminDashboardPage() {
           {/* Header */}
           <div className="flex items-center justify-between gap-4">
             <div className="flex-1 min-w-0">
-              <h1 className="text-2xl sm:text-3xl font-serif font-bold mb-1 sm:mb-2">Admin Dashboard</h1>
+              <h1 className="text-2xl sm:text-3xl font-serif font-bold mb-1 sm:mb-2 text-white">Admin Dashboard</h1>
               <p className="text-sm sm:text-base text-gray-400">Superuser controls for Concierge Bank</p>
             </div>
             <div className="flex items-center space-x-2 px-4 py-2 bg-red-500/10 border border-red-500/20 rounded-lg">
@@ -233,8 +233,8 @@ export default function AdminDashboardPage() {
                 <div className="flex items-center space-x-3">
                   <Users className="w-8 h-8 text-gold-500" />
                   <div>
-                    <p className="text-sm text-gray-400">Total Users</p>
-                    <p className="text-2xl font-bold">{stats.total_users.toLocaleString()}</p>
+                    <p className="text-sm text-gray-600">Total Users</p>
+                    <p className="text-2xl font-bold text-gray-900">{stats.total_users.toLocaleString()}</p>
                   </div>
                 </div>
               </div>
@@ -243,8 +243,8 @@ export default function AdminDashboardPage() {
                 <div className="flex items-center space-x-3">
                   <CreditCard className="w-8 h-8 text-gold-500" />
                   <div>
-                    <p className="text-sm text-gray-400">Total Accounts</p>
-                    <p className="text-2xl font-bold">{stats.total_accounts.toLocaleString()}</p>
+                    <p className="text-sm text-gray-600">Total Accounts</p>
+                    <p className="text-2xl font-bold text-gray-900">{stats.total_accounts.toLocaleString()}</p>
                   </div>
                 </div>
               </div>
@@ -253,8 +253,8 @@ export default function AdminDashboardPage() {
                 <div className="flex items-center space-x-3">
                   <DollarSign className="w-8 h-8 text-gold-500" />
                   <div>
-                    <p className="text-sm text-gray-400">Total Balance</p>
-                    <p className="text-2xl font-bold">${stats.total_balance.toLocaleString()}</p>
+                    <p className="text-sm text-gray-600">Total Balance</p>
+                    <p className="text-2xl font-bold text-gray-900">${stats.total_balance.toLocaleString()}</p>
                   </div>
                 </div>
               </div>
@@ -263,8 +263,8 @@ export default function AdminDashboardPage() {
                 <div className="flex items-center space-x-3">
                   <Receipt className="w-8 h-8 text-gold-500" />
                   <div>
-                    <p className="text-sm text-gray-400">Total Bills</p>
-                    <p className="text-2xl font-bold">{stats.total_bills.toLocaleString()}</p>
+                    <p className="text-sm text-gray-600">Total Bills</p>
+                    <p className="text-2xl font-bold text-gray-900">{stats.total_bills.toLocaleString()}</p>
                   </div>
                 </div>
               </div>
@@ -310,7 +310,7 @@ export default function AdminDashboardPage() {
                       >
                         <div className="flex items-center space-x-3">
                           <Users className="w-5 h-5 text-gold-500" />
-                          <span>Manage Users</span>
+                          <span className="text-white">Manage Users</span>
                         </div>
                       </button>
                       <button
@@ -319,7 +319,7 @@ export default function AdminDashboardPage() {
                       >
                         <div className="flex items-center space-x-3">
                           <CreditCard className="w-5 h-5 text-gold-500" />
-                          <span>Manage Accounts</span>
+                          <span className="text-white">Manage Accounts</span>
                         </div>
                       </button>
                       <button
@@ -328,7 +328,7 @@ export default function AdminDashboardPage() {
                       >
                         <div className="flex items-center space-x-3">
                           <Receipt className="w-5 h-5 text-gold-500" />
-                          <span>Create Bills</span>
+                          <span className="text-white">Create Bills</span>
                         </div>
                       </button>
                     </div>

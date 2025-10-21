@@ -111,7 +111,7 @@ export default function BeneficiariesPage() {
               <ArrowLeft size={20} />
             </button>
             <div>
-              <h1 className="text-3xl font-serif font-bold">Beneficiaries</h1>
+              <h1 className="text-3xl font-serif font-bold text-white">Beneficiaries</h1>
               <p className="text-gray-300">Manage your account beneficiaries</p>
             </div>
           </div>
@@ -124,7 +124,7 @@ export default function BeneficiariesPage() {
                   <Users className="text-gold-500" size={24} />
                 </div>
                 <div>
-                  <h3 className="font-semibold mb-1">Estate Planning</h3>
+                  <h3 className="font-semibold mb-1 text-white">Estate Planning</h3>
                   <p className="text-sm text-gray-300">
                     Designate beneficiaries for your accounts. Total allocation: {totalPercentage}%
                   </p>

@@ -20,7 +20,7 @@ export default function SettingsPage() {
       <DashboardLayout>
         <div className="space-y-6 sm:space-y-8 pb-4">
           <div className="px-1">
-            <h1 className="text-2xl sm:text-3xl font-serif font-bold mb-1 sm:mb-2">Settings</h1>
+            <h1 className="text-2xl sm:text-3xl font-serif font-bold mb-1 sm:mb-2 text-white">Settings</h1>
             <p className="text-sm sm:text-base text-gray-400">Manage your account preferences</p>
           </div>
 
@@ -37,7 +37,7 @@ export default function SettingsPage() {
                       {setting.icon}
                     </div>
                     <div>
-                      <h3 className="text-lg font-semibold mb-1">{setting.title}</h3>
+                      <h3 className="text-lg font-semibold mb-1 text-white">{setting.title}</h3>
                       <p className="text-sm text-gray-400">{setting.description}</p>
                     </div>
                   </div>

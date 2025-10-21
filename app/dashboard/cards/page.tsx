@@ -89,7 +89,7 @@ export default function CardsPage() {
         <div className="space-y-6 sm:space-y-8 pb-4">
           <div className="flex items-center justify-between gap-4">
             <div className="flex-1 min-w-0">
-              <h1 className="text-2xl sm:text-3xl font-serif font-bold mb-1 sm:mb-2">Your Cards</h1>
+              <h1 className="text-2xl sm:text-3xl font-serif font-bold mb-1 sm:mb-2 text-neutral-900">Your Cards</h1>
               <p className="text-sm sm:text-base text-neutral-600">Maison Richemont&apos;s legacy of excellence</p>
             </div>
             <button

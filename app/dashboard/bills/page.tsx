@@ -157,7 +157,7 @@ export default function BillsPage() {
         <div className="space-y-6 sm:space-y-8 pb-4">
           <div className="flex items-center justify-between gap-4">
             <div className="flex-1 min-w-0">
-              <h1 className="text-2xl sm:text-3xl font-serif font-bold mb-1 sm:mb-2">Bill Pay</h1>
+              <h1 className="text-2xl sm:text-3xl font-serif font-bold mb-1 sm:mb-2 text-white">Bill Pay</h1>
               <p className="text-sm sm:text-base text-gray-400">Manage and pay your bills</p>
             </div>
             <button
@@ -173,8 +173,8 @@ export default function BillsPage() {
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
             {bills.map((bill) => (
               <div key={bill.id} className="bg-dark-800/30 border border-gold-500/10 rounded-xl p-6">
-                <h3 className="text-lg font-semibold mb-2">{bill.payee_name}</h3>
-                <p className="text-2xl font-bold mb-4">${bill.amount}</p>
+                <h3 className="text-lg font-semibold mb-2 text-white">{bill.payee_name}</h3>
+                <p className="text-2xl font-bold mb-4 text-white">${bill.amount}</p>
                 <div className="flex items-center space-x-2 text-sm text-gray-400 mb-4">
                   <Calendar size={16} />
                   <span>Due: {new Date(bill.due_date).toLocaleDateString()}</span>

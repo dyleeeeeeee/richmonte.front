@@ -96,7 +96,7 @@ export default function AccountDetailPage() {
       <ProtectedRoute>
         <DashboardLayout>
           <div className="text-center py-12">
-            <h2 className="text-2xl font-bold mb-4">Account not found</h2>
+            <h2 className="text-2xl font-bold mb-4 text-neutral-900">Account not found</h2>
             <button
               onClick={() => router.push("/dashboard/accounts")}
               className="px-6 py-3 bg-gold-500 text-dark-900 rounded-lg font-semibold hover:bg-gold-400"

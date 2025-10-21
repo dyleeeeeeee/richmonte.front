@@ -43,7 +43,7 @@ export default function ChecksPage() {
         <div className="space-y-6 pb-8">
           {/* Header - Mobile Optimized */}
           <div className="px-1">
-            <h1 className="text-2xl sm:text-3xl font-serif font-bold mb-1">Checks</h1>
+            <h1 className="text-2xl sm:text-3xl font-serif font-bold mb-1 text-white">Checks</h1>
             <p className="text-sm sm:text-base text-gray-400">Deposit checks instantly</p>
           </div>
 

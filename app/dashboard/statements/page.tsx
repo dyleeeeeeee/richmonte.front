@@ -17,7 +17,7 @@ export default function StatementsPage() {
       <DashboardLayout>
         <div className="space-y-6 sm:space-y-8 pb-4">
           <div className="px-1">
-            <h1 className="text-2xl sm:text-3xl font-serif font-bold mb-1 sm:mb-2">Statements</h1>
+            <h1 className="text-2xl sm:text-3xl font-serif font-bold mb-1 sm:mb-2 text-white">Statements</h1>
             <p className="text-sm sm:text-base text-gray-400">View and download your account statements</p>
           </div>
 
@@ -26,10 +26,10 @@ export default function StatementsPage() {
               <table className="w-full">
                 <thead className="bg-dark-800/50 border-b border-gold-500/10">
                   <tr>
-                    <th className="px-6 py-4 text-left text-sm font-semibold">Statement Period</th>
-                    <th className="px-6 py-4 text-left text-sm font-semibold">Date</th>
-                    <th className="px-6 py-4 text-left text-sm font-semibold">Size</th>
-                    <th className="px-6 py-4 text-right text-sm font-semibold">Actions</th>
+                    <th className="px-6 py-4 text-left text-sm font-semibold text-white">Statement Period</th>
+                    <th className="px-6 py-4 text-left text-sm font-semibold text-white">Date</th>
+                    <th className="px-6 py-4 text-left text-sm font-semibold text-white">Size</th>
+                    <th className="px-6 py-4 text-right text-sm font-semibold text-white">Actions</th>
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-gold-500/10">
@@ -38,7 +38,7 @@ export default function StatementsPage() {
                       <td className="px-6 py-4">
                         <div className="flex items-center space-x-3">
                           <FileText className="text-gold-500" size={20} />
-                          <span className="font-medium">{statement.month}</span>
+                          <span className="font-medium text-white">{statement.month}</span>
                         </div>
                       </td>
                       <td className="px-6 py-4 text-gray-400">{statement.date}</td>
@@ -62,7 +62,7 @@ export default function StatementsPage() {
 
           <div className="bg-gold-500/10 border border-gold-500/30 rounded-xl p-6">
             <Calendar className="text-gold-500 mb-3" size={32} />
-            <h3 className="font-semibold mb-2">Go Paperless</h3>
+            <h3 className="font-semibold mb-2 text-white">Go Paperless</h3>
             <p className="text-sm text-gray-300 mb-4">
               Switch to e-statements and help the environment. You&apos;ll receive email notifications when new statements are available.
             </p>

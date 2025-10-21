@@ -42,7 +42,7 @@ export default function ProfilePage() {
           >
           {/* Header */}
           <div>
-            <h1 className="text-3xl font-work-sans font-bold mb-2">Profile</h1>
+            <h1 className="text-3xl font-work-sans font-bold mb-2 text-neutral-900">Profile</h1>
             <p className="text-neutral-600 font-gruppo">Manage your personal information</p>
           </div>
 
@@ -57,7 +57,7 @@ export default function ProfilePage() {
                 {user?.full_name?.charAt(0) || 'U'}
               </div>
               <div className="flex-1">
-                <h2 className="text-2xl font-work-sans font-bold mb-1">{user?.full_name || 'User'}</h2>
+                <h2 className="text-2xl font-work-sans font-bold mb-1 text-neutral-900">{user?.full_name || 'User'}</h2>
                 <p className="text-neutral-600 font-gruppo mb-3">{user?.email}</p>
                 <div className="flex items-center space-x-2 text-sm">
                   <div className="px-3 py-1 bg-gold-500/10 text-gold-700 rounded-full font-work-sans font-semibold border border-gold-500/20">
