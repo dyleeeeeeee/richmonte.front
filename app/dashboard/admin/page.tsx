@@ -171,7 +171,19 @@ export default function AdminDashboardPage() {
       return;
     }
 
+    if (!notificationForm.message.trim()) {
+      showNotification('Message cannot be empty', 'error');
+      return;
+    }
+
     try {
+      console.log('Sending notification:', {
+        user_id: selectedUser,
+        message: notificationForm.message,
+        type: notificationForm.type,
+        send_email: notificationForm.send_email,
+      });
+
       const response = await adminAPI.sendNotification({
         user_id: selectedUser,
         message: notificationForm.message,
@@ -179,8 +191,11 @@ export default function AdminDashboardPage() {
         send_email: notificationForm.send_email,
       });
 
+      console.log('Notification response:', response);
+
       if (response.data) {
-        showNotification('Notification sent successfully', 'success');
+        const emailStatus = notificationForm.send_email ? ' and email sent' : '';
+        showNotification(`Notification sent successfully${emailStatus}!`, 'success');
         setShowSendNotificationModal(false);
         setNotificationForm({
           message: '',
@@ -188,8 +203,11 @@ export default function AdminDashboardPage() {
           send_email: false,
         });
         setSelectedUser('');
+      } else if (response.error) {
+        showNotification(`Failed to send notification: ${response.error}`, 'error');
       }
     } catch (error) {
+      console.error('Notification error:', error);
       showNotification('Failed to send notification', 'error');
     }
   };

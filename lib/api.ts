@@ -180,6 +180,7 @@ export interface Transfer {
   transfer_type: string;
   status: string;
   created_at: string;
+  direction?: 'received'; // Added by backend for P2P transfers received by current user
 }
 
 export interface TransferData {

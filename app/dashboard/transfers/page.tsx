@@ -60,6 +60,11 @@ export default function TransfersPage() {
   const loadHistory = useCallback(async () => {
     try {
       const response = await transferAPI.getTransfers();
+      console.log("Transfer history response:", response);
+      console.log("Number of transfers:", response.data?.length || 0);
+      if (response.data && response.data.length > 0) {
+        console.log("First transfer:", response.data[0]);
+      }
       setHistory(response.data ? response.data.slice(0, 10) : []);
     } catch (error) {
       console.error("Failed to load history:", error);
@@ -540,7 +545,15 @@ export default function TransfersPage() {
                     <p className="text-sm text-gray-400 text-center py-4">No transfer history</p>
                   ) : (
                     history.map((transfer) => {
-                      const getRecipientName = () => {
+                      const isReceived = transfer.direction === 'received';
+                      
+                      const getDisplayName = () => {
+                        if (isReceived) {
+                          // For received P2P transfers, show "From [sender]"
+                          return 'Received from sender';
+                        }
+                        
+                        // For sent transfers, show recipient
                         if (transfer.transfer_type === 'internal' && transfer.to_account_id) {
                           const toAccount = accounts.find(a => a.id === transfer.to_account_id);
                           return toAccount ? `${toAccount.account_type} ••••${toAccount.account_number?.slice(-4)}` : 'Internal Account';
@@ -559,20 +572,28 @@ export default function TransfersPage() {
                         <div key={transfer.id} className="p-3 bg-dark-800/50 rounded-lg hover:bg-dark-800/70 transition-colors">
                           <div className="flex items-start justify-between mb-2">
                             <div className="flex items-center space-x-3">
-                              <div className="w-10 h-10 bg-gold-500/20 rounded-lg flex items-center justify-center flex-shrink-0">
+                              <div className={`w-10 h-10 rounded-lg flex items-center justify-center flex-shrink-0 ${
+                                isReceived ? 'bg-green-500/20' : 'bg-gold-500/20'
+                              }`}>
                                 {transfer.transfer_type === 'internal' ? <ArrowRight className="text-gold-500" size={18} /> :
                                  transfer.transfer_type === 'external' ? <Building className="text-gold-500" size={18} /> :
-                                 <User className="text-gold-500" size={18} />}
+                                 <User className={isReceived ? 'text-green-500' : 'text-gold-500'} size={18} />}
                               </div>
                               <div className="flex-1 min-w-0">
-                                <p className="text-sm font-medium truncate">{getRecipientName()}</p>
+                                <p className="text-sm font-medium truncate">
+                                  {isReceived && <span className="text-green-400 mr-1">↓</span>}
+                                  {getDisplayName()}
+                                </p>
                                 <p className="text-xs text-gray-400">
                                   {new Date(transfer.created_at).toLocaleDateString()} • {transfer.transfer_type}
+                                  {isReceived && <span className="text-green-400 ml-1">(received)</span>}
                                 </p>
                               </div>
                             </div>
                             <div className="text-right">
-                              <p className="text-sm font-semibold">${transfer.amount?.toLocaleString()}</p>
+                              <p className={`text-sm font-semibold ${isReceived ? 'text-green-400' : ''}`}>
+                                {isReceived ? '+' : '-'}${transfer.amount?.toLocaleString()}
+                              </p>
                               <p className={`text-xs font-medium ${statusColor}`}>{transfer.status}</p>
                             </div>
                           </div>
