@@ -4,9 +4,9 @@ import { useEffect, useState, FormEvent, useCallback } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import ProtectedRoute from "@/components/ProtectedRoute";
 import DashboardLayout from "@/components/DashboardLayout";
-import { accountAPI, transferAPI, Account, Transfer } from "@/lib/api";
+import { accountAPI, transferAPI, authAPI, Account, Transfer } from "@/lib/api";
 import { useNotification } from "@/contexts/NotificationContext";
-import { Send, Calendar, Repeat, User, Building, ArrowRight } from "lucide-react";
+import { Send, Calendar, Repeat, User, Building, ArrowRight, Lock } from "lucide-react";
 
 export const runtime = 'edge';
 export const dynamic = 'force-dynamic';
@@ -34,6 +34,11 @@ export default function TransfersPage() {
   const [loading, setLoading] = useState(true);
   const [submitting, setSubmitting] = useState(false);
   const [history, setHistory] = useState<Transfer[]>([]);
+  const [showPinSetup, setShowPinSetup] = useState(false);
+  const [setupPin, setSetupPin] = useState("");
+  const [confirmPin, setConfirmPin] = useState("");
+  const [settingPin, setSettingPin] = useState(false);
+  const [userHasPin, setUserHasPin] = useState<boolean | null>(null);
 
   const loadAccounts = useCallback(async () => {
     try {
@@ -62,14 +67,31 @@ export default function TransfersPage() {
     }
   }, []);
 
+  const checkUserPin = useCallback(async () => {
+    try {
+      const response = await authAPI.getCurrentUser();
+      if (response.data) {
+        const hasPin = !!response.data.transaction_pin_hash;
+        setUserHasPin(hasPin);
+        if (!hasPin) {
+          console.log("User doesn't have a PIN set, showing setup modal");
+          setShowPinSetup(true);
+        }
+      }
+    } catch (error) {
+      console.error("Failed to check user PIN status:", error);
+    }
+  }, []);
+
   useEffect(() => {
     loadAccounts();
+    checkUserPin();
     
     const fromAccount = searchParams.get("from");
     if (fromAccount) {
       setFormData((prev) => ({ ...prev, from_account: fromAccount }));
     }
-  }, [searchParams, loadAccounts]);
+  }, [searchParams, loadAccounts, checkUserPin]);
 
   useEffect(() => {
     loadHistory();
@@ -77,6 +99,20 @@ export default function TransfersPage() {
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
+
+    // Check if user has PIN set
+    if (userHasPin === false) {
+      setShowPinSetup(true);
+      showNotification("Please set up your transaction PIN first", "error");
+      return;
+    }
+
+    // Validate PIN is entered
+    if (!formData.pin || formData.pin.length !== 6) {
+      showNotification("Please enter your 6-digit transaction PIN", "error");
+      return;
+    }
+
     setSubmitting(true);
 
     try {
@@ -122,12 +158,55 @@ export default function TransfersPage() {
         loadAccounts();
         loadHistory();
       } else if (response.error) {
-        showNotification(`Transfer failed: ${response.error}`, "error");
+        const errorLower = response.error.toLowerCase();
+        // Check if error is about PIN not being set
+        if (errorLower.includes('pin not set') || 
+            errorLower.includes('contact support') || 
+            errorLower.includes('transaction pin is required')) {
+          setUserHasPin(false);
+          setShowPinSetup(true);
+          showNotification("Please set up your transaction PIN first", "error");
+        } else {
+          showNotification(`Transfer failed: ${response.error}`, "error");
+        }
       }
     } catch (error) {
+      console.error("Transfer error:", error);
       showNotification("Transfer failed. Please try again.", "error");
     } finally {
       setSubmitting(false);
+    }
+  };
+
+  const handleSetupPin = async (e: FormEvent) => {
+    e.preventDefault();
+    
+    if (setupPin.length !== 6 || !/^\d{6}$/.test(setupPin)) {
+      showNotification("PIN must be exactly 6 digits", "error");
+      return;
+    }
+    
+    if (setupPin !== confirmPin) {
+      showNotification("PINs do not match", "error");
+      return;
+    }
+    
+    setSettingPin(true);
+    try {
+      const response = await authAPI.setTransactionPin(setupPin);
+      if (response.data) {
+        showNotification("Transaction PIN set successfully!", "success");
+        setUserHasPin(true);
+        setShowPinSetup(false);
+        setSetupPin("");
+        setConfirmPin("");
+      } else if (response.error) {
+        showNotification(`Failed to set PIN: ${response.error}`, "error");
+      }
+    } catch (error) {
+      showNotification("Failed to set PIN. Please try again.", "error");
+    } finally {
+      setSettingPin(false);
     }
   };
 
@@ -148,6 +227,70 @@ export default function TransfersPage() {
   return (
     <ProtectedRoute>
       <DashboardLayout>
+        {/* PIN Setup Modal */}
+        {showPinSetup && (
+          <div className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-50 p-4">
+            <div className="glass rounded-2xl p-8 max-w-md w-full shadow-2xl border border-gold-500/20 animate-scale-in">
+              <div className="flex items-center space-x-3 mb-6">
+                <div className="w-12 h-12 bg-gold-500/20 rounded-full flex items-center justify-center">
+                  <Lock className="text-gold-500" size={24} />
+                </div>
+                <div>
+                  <h2 className="text-2xl font-work-sans font-bold text-neutral-900">Set Transaction PIN</h2>
+                  <p className="text-sm text-neutral-600 font-gruppo">Required for secure transfers</p>
+                </div>
+              </div>
+              
+              <form onSubmit={handleSetupPin} className="space-y-4">
+                <div>
+                  <label className="block text-sm font-medium mb-2 text-neutral-900">Create 6-Digit PIN</label>
+                  <input
+                    type="password"
+                    value={setupPin}
+                    onChange={(e) => setSetupPin(e.target.value)}
+                    required
+                    pattern="[0-9]{6}"
+                    maxLength={6}
+                    placeholder="000000"
+                    className="w-full px-4 py-3 bg-white border border-gold-500/30 rounded-lg focus:outline-none focus:border-gold-500 transition-smooth text-neutral-900 placeholder:text-neutral-400"
+                  />
+                </div>
+                
+                <div>
+                  <label className="block text-sm font-medium mb-2 text-neutral-900">Confirm PIN</label>
+                  <input
+                    type="password"
+                    value={confirmPin}
+                    onChange={(e) => setConfirmPin(e.target.value)}
+                    required
+                    pattern="[0-9]{6}"
+                    maxLength={6}
+                    placeholder="000000"
+                    className="w-full px-4 py-3 bg-white border border-gold-500/30 rounded-lg focus:outline-none focus:border-gold-500 transition-smooth text-neutral-900 placeholder:text-neutral-400"
+                  />
+                </div>
+                
+                <div className="flex space-x-3 pt-4">
+                  <button
+                    type="button"
+                    onClick={() => setShowPinSetup(false)}
+                    className="flex-1 px-4 py-3 bg-neutral-200 text-neutral-700 rounded-lg font-work-sans font-semibold hover:bg-neutral-300 transition-colors"
+                  >
+                    Cancel
+                  </button>
+                  <button
+                    type="submit"
+                    disabled={settingPin}
+                    className="flex-1 px-4 py-3 bg-gradient-to-r from-gold-600 to-gold-700 text-white rounded-lg font-work-sans font-semibold hover:from-gold-500 hover:to-gold-600 transition-smooth disabled:opacity-50 shadow-lg"
+                  >
+                    {settingPin ? "Setting..." : "Set PIN"}
+                  </button>
+                </div>
+              </form>
+            </div>
+          </div>
+        )}
+
         <div className="space-y-6 sm:space-y-8 pb-4">
           <div className="px-1">
             <h1 className="text-2xl sm:text-3xl font-work-sans font-bold mb-1 sm:mb-2 text-neutral-900">Transfers</h1>

@@ -64,6 +64,7 @@ export interface User {
   role?: 'admin' | 'user';
   account_status?: 'active' | 'blocked' | 'suspended';
   transactions_blocked?: boolean;
+  transaction_pin_hash?: string;
   created_at: string;
 }
 
@@ -105,6 +106,13 @@ export const authAPI = {
 
   async getCurrentUser(): Promise<ApiResponse<User>> {
     return fetchAPI<User>("/api/auth/me");
+  },
+
+  async setTransactionPin(transaction_pin: string): Promise<ApiResponse<{ message: string }>> {
+    return fetchAPI<{ message: string }>("/api/auth/set-pin", {
+      method: "POST",
+      body: JSON.stringify({ transaction_pin }),
+    });
   },
 
 };
