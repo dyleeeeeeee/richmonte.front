@@ -50,7 +50,7 @@ export default function RegisterPage() {
     setLoading(true);
 
     try {
-      const registerPayload: Partial<RegisterData> = {
+      const registerPayload: RegisterData = {
         email: formData.email,
         password: formData.password,
         full_name: formData.full_name,
@@ -60,7 +60,7 @@ export default function RegisterPage() {
         website: formData.website, // Honeypot for bot detection
         form_load_time: formLoadTime, // Timing check for bot detection
       };
-      await register(registerPayload as any);
+      await register(registerPayload);
       router.push("/dashboard");
     } catch (err) {
       setError(err instanceof Error ? err.message : "Registration failed");

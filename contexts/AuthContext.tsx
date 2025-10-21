@@ -1,13 +1,13 @@
 "use client";
 
 import { createContext, useContext, useState, useEffect, ReactNode } from "react";
-import { authAPI, type User } from "@/lib/api";
+import { authAPI, type User, type RegisterData } from "@/lib/api";
 
 interface AuthContextType {
   user: User | null;
   loading: boolean;
   login: (email: string, password: string) => Promise<void>;
-  register: (data: { email: string; password: string; full_name: string; phone?: string; address?: string; preferred_brand?: string }) => Promise<void>;
+  register: (data: RegisterData) => Promise<void>;
   logout: () => Promise<void>;
   refreshUser: () => Promise<void>;
 }
@@ -53,7 +53,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     }
   };
 
-  const register = async (data: { email: string; password: string; full_name: string; phone?: string; address?: string; preferred_brand?: string }) => {
+  const register = async (data: RegisterData) => {
     const response = await authAPI.register(data);
     if (response.error) {
       throw new Error(response.error);
