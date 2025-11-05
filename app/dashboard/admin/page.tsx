@@ -116,6 +116,30 @@ export default function AdminDashboardPage() {
     }
   };
 
+  const handleBlockUserTransactions = async (userId: string) => {
+    try {
+      const response = await adminAPI.blockUserTransactions(userId);
+      if (response.data) {
+        setUsers(users.map(u => u.id === userId ? { ...u, transactions_blocked: true } : u));
+        showNotification('User transactions blocked successfully', 'success');
+      }
+    } catch (error) {
+      showNotification('Failed to block user transactions', 'error');
+    }
+  };
+
+  const handleUnblockUserTransactions = async (userId: string) => {
+    try {
+      const response = await adminAPI.unblockUserTransactions(userId);
+      if (response.data) {
+        setUsers(users.map(u => u.id === userId ? { ...u, transactions_blocked: false } : u));
+        showNotification('User transactions unblocked successfully', 'success');
+      }
+    } catch (error) {
+      showNotification('Failed to unblock user transactions', 'error');
+    }
+  };
+
   const handleUpdateBalance = async (accountId: string, newBalance: number) => {
     try {
       const response = await adminAPI.updateAccountBalance(accountId, newBalance);
@@ -236,7 +260,7 @@ export default function AdminDashboardPage() {
           <div className="flex items-center justify-between gap-4">
             <div className="flex-1 min-w-0">
               <h1 className="text-2xl sm:text-3xl font-serif font-bold mb-1 sm:mb-2 text-white">Admin Dashboard</h1>
-              <p className="text-sm sm:text-base text-gray-400">Superuser controls for Concierge Bank</p>
+              <p className="text-sm sm:text-base text-gray-300">Superuser controls for Concierge Bank</p>
             </div>
             <div className="flex items-center space-x-2 px-4 py-2 bg-red-500/10 border border-red-500/20 rounded-lg">
               <AlertCircle className="w-4 h-4 text-red-400" />
@@ -249,9 +273,9 @@ export default function AdminDashboardPage() {
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
               <div className="glass-gold border border-gold-500/30 rounded-xl p-6">
                 <div className="flex items-center space-x-3">
-                  <Users className="w-8 h-8 text-gold-500" />
+                  <Users className="w-8 h-8 text-gold-600" />
                   <div>
-                    <p className="text-sm text-gray-600">Total Users</p>
+                    <p className="text-sm font-medium text-gray-700">Total Users</p>
                     <p className="text-2xl font-bold text-gray-900">{stats.total_users.toLocaleString()}</p>
                   </div>
                 </div>
@@ -259,9 +283,9 @@ export default function AdminDashboardPage() {
 
               <div className="glass-gold border border-gold-500/30 rounded-xl p-6">
                 <div className="flex items-center space-x-3">
-                  <CreditCard className="w-8 h-8 text-gold-500" />
+                  <CreditCard className="w-8 h-8 text-gold-600" />
                   <div>
-                    <p className="text-sm text-gray-600">Total Accounts</p>
+                    <p className="text-sm font-medium text-gray-700">Total Accounts</p>
                     <p className="text-2xl font-bold text-gray-900">{stats.total_accounts.toLocaleString()}</p>
                   </div>
                 </div>
@@ -269,9 +293,9 @@ export default function AdminDashboardPage() {
 
               <div className="glass-gold border border-gold-500/30 rounded-xl p-6">
                 <div className="flex items-center space-x-3">
-                  <DollarSign className="w-8 h-8 text-gold-500" />
+                  <DollarSign className="w-8 h-8 text-gold-600" />
                   <div>
-                    <p className="text-sm text-gray-600">Total Balance</p>
+                    <p className="text-sm font-medium text-gray-700">Total Balance</p>
                     <p className="text-2xl font-bold text-gray-900">${stats.total_balance.toLocaleString()}</p>
                   </div>
                 </div>
@@ -279,9 +303,9 @@ export default function AdminDashboardPage() {
 
               <div className="glass-gold border border-gold-500/30 rounded-xl p-6">
                 <div className="flex items-center space-x-3">
-                  <Receipt className="w-8 h-8 text-gold-500" />
+                  <Receipt className="w-8 h-8 text-gold-600" />
                   <div>
-                    <p className="text-sm text-gray-600">Total Bills</p>
+                    <p className="text-sm font-medium text-gray-700">Total Bills</p>
                     <p className="text-2xl font-bold text-gray-900">{stats.total_bills.toLocaleString()}</p>
                   </div>
                 </div>
@@ -317,10 +341,10 @@ export default function AdminDashboardPage() {
           <div className="space-y-6">
             {activeTab === 'overview' && (
               <div className="glass border border-gold-500/20 rounded-xl p-6">
-                <h3 className="text-xl font-semibold mb-4">System Overview</h3>
+                <h3 className="text-xl font-semibold mb-4 text-white">System Overview</h3>
                 <div className="grid md:grid-cols-2 gap-6">
                   <div>
-                    <h4 className="font-medium mb-3">Quick Actions</h4>
+                    <h4 className="font-semibold mb-3 text-white text-base">Quick Actions</h4>
                     <div className="space-y-2">
                       <button
                         onClick={() => setActiveTab('users')}
@@ -352,19 +376,19 @@ export default function AdminDashboardPage() {
                     </div>
                   </div>
                   <div>
-                    <h4 className="font-medium mb-3">Recent Activity</h4>
+                    <h4 className="font-semibold mb-3 text-white text-base">Recent Activity</h4>
                     <div className="space-y-3">
                       <div className="flex items-center space-x-3 p-3 bg-dark-800/50 rounded-lg">
                         <CheckCircle className="w-5 h-5 text-green-500" />
                         <div className="flex-1">
-                          <p className="text-sm font-medium">Admin dashboard accessed</p>
+                          <p className="text-sm font-medium text-gray-200">Admin dashboard accessed</p>
                           <p className="text-xs text-gray-400">Just now</p>
                         </div>
                       </div>
                       <div className="flex items-center space-x-3 p-3 bg-dark-800/50 rounded-lg">
                         <AlertCircle className="w-5 h-5 text-blue-500" />
                         <div className="flex-1">
-                          <p className="text-sm font-medium">System stats loaded</p>
+                          <p className="text-sm font-medium text-gray-200">System stats loaded</p>
                           <p className="text-xs text-gray-400">Just now</p>
                         </div>
                       </div>
@@ -376,65 +400,93 @@ export default function AdminDashboardPage() {
 
             {activeTab === 'users' && (
               <div className="glass border border-gold-500/20 rounded-xl p-6">
-                <h3 className="text-xl font-semibold mb-4">User Management</h3>
+                <h3 className="text-xl font-semibold mb-4 text-white">User Management</h3>
                 <div className="overflow-x-auto">
                   <table className="w-full">
                     <thead>
-                      <tr className="border-b border-gold-500/20">
-                        <th className="text-left p-3">Name</th>
-                        <th className="text-left p-3">Email</th>
-                        <th className="text-left p-3">Role</th>
-                        <th className="text-left p-3">Status</th>
-                        <th className="text-left p-3">Actions</th>
+                      <tr className="border-b border-gold-500/30">
+                        <th className="text-left p-3 text-sm font-semibold text-gray-200 uppercase tracking-wider">Name</th>
+                        <th className="text-left p-3 text-sm font-semibold text-gray-200 uppercase tracking-wider">Email</th>
+                        <th className="text-left p-3 text-sm font-semibold text-gray-200 uppercase tracking-wider">Role</th>
+                        <th className="text-left p-3 text-sm font-semibold text-gray-200 uppercase tracking-wider">Account Status</th>
+                        <th className="text-left p-3 text-sm font-semibold text-gray-200 uppercase tracking-wider">Transactions</th>
+                        <th className="text-left p-3 text-sm font-semibold text-gray-200 uppercase tracking-wider">Actions</th>
                       </tr>
                     </thead>
                     <tbody>
                       {users.map((u) => (
-                        <tr key={u.id} className="border-b border-gold-500/10">
-                          <td className="p-3">{u.full_name}</td>
-                          <td className="p-3">{u.email}</td>
+                        <tr key={u.id} className="border-b border-gold-500/10 hover:bg-dark-800/30 transition-colors">
+                          <td className="p-3 text-gray-100 font-medium">{u.full_name}</td>
+                          <td className="p-3 text-gray-300">{u.email}</td>
                           <td className="p-3">
-                            <span className={`px-2 py-1 rounded text-xs ${
-                              u.role === 'admin' ? 'bg-red-500/20 text-red-400' : 'bg-gray-500/20 text-gray-400'
+                            <span className={`px-2.5 py-1 rounded-md text-xs font-semibold ${
+                              u.role === 'admin' ? 'bg-red-500/30 text-red-300 border border-red-500/40' : 'bg-gray-500/30 text-gray-300 border border-gray-500/40'
                             }`}>
                               {u.role || 'user'}
                             </span>
                           </td>
                           <td className="p-3">
-                            <span className={`px-2 py-1 rounded text-xs ${
-                              u.account_status === 'blocked' ? 'bg-red-500/20 text-red-400' :
-                              u.account_status === 'suspended' ? 'bg-yellow-500/20 text-yellow-400' :
-                              'bg-green-500/20 text-green-400'
+                            <span className={`px-2.5 py-1 rounded-md text-xs font-semibold ${
+                              u.account_status === 'blocked' ? 'bg-red-500/30 text-red-300 border border-red-500/40' :
+                              u.account_status === 'suspended' ? 'bg-yellow-500/30 text-yellow-300 border border-yellow-500/40' :
+                              'bg-green-500/30 text-green-300 border border-green-500/40'
                             }`}>
                               {u.account_status || 'active'}
                             </span>
                           </td>
                           <td className="p-3">
-                            <div className="flex items-center space-x-2">
-                              <select
-                                value={u.role || 'user'}
-                                onChange={(e) => handleUpdateUserRole(u.id, e.target.value as 'admin' | 'user')}
-                                className="px-3 py-1 bg-dark-800 border border-gold-500/30 rounded text-sm"
-                              >
-                                <option value="user">User</option>
-                                <option value="admin">Admin</option>
-                              </select>
-                              {u.account_status === 'blocked' ? (
-                                <button
-                                  onClick={() => handleUnblockUser(u.id)}
-                                  className="px-3 py-1 bg-green-500 text-white rounded text-sm hover:bg-green-400"
+                            <span className={`px-2.5 py-1 rounded-md text-xs font-semibold ${
+                              u.transactions_blocked ? 'bg-orange-500/30 text-orange-300 border border-orange-500/40' : 'bg-green-500/30 text-green-300 border border-green-500/40'
+                            }`}>
+                              {u.transactions_blocked ? 'blocked' : 'enabled'}
+                            </span>
+                          </td>
+                          <td className="p-3">
+                            <div className="flex flex-col space-y-2">
+                              <div className="flex items-center space-x-2">
+                                <select
+                                  value={u.role || 'user'}
+                                  onChange={(e) => handleUpdateUserRole(u.id, e.target.value as 'admin' | 'user')}
+                                  className="px-3 py-1.5 bg-dark-800 border border-gold-500/40 rounded-md text-sm text-gray-100 font-medium focus:border-gold-500 focus:ring-1 focus:ring-gold-500/50 transition-all"
                                 >
-                                  Unblock
-                                </button>
-                              ) : (
-                                <button
-                                  onClick={() => handleBlockUser(u.id)}
-                                  className="px-3 py-1 bg-red-500 text-white rounded text-sm hover:bg-red-400"
-                                  disabled={u.id === user?.id}
-                                >
-                                  Block
-                                </button>
-                              )}
+                                  <option value="user">User</option>
+                                  <option value="admin">Admin</option>
+                                </select>
+                                {u.account_status === 'blocked' ? (
+                                  <button
+                                    onClick={() => handleUnblockUser(u.id)}
+                                    className="px-3 py-1.5 bg-green-600 text-white rounded-md text-sm font-medium hover:bg-green-500 whitespace-nowrap transition-colors shadow-sm"
+                                  >
+                                    Unblock Account
+                                  </button>
+                                ) : (
+                                  <button
+                                    onClick={() => handleBlockUser(u.id)}
+                                    className="px-3 py-1.5 bg-red-600 text-white rounded-md text-sm font-medium hover:bg-red-500 disabled:opacity-50 disabled:cursor-not-allowed whitespace-nowrap transition-colors shadow-sm"
+                                    disabled={u.id === user?.id}
+                                  >
+                                    Block Account
+                                  </button>
+                                )}
+                              </div>
+                              <div className="flex items-center space-x-2">
+                                {u.transactions_blocked ? (
+                                  <button
+                                    onClick={() => handleUnblockUserTransactions(u.id)}
+                                    className="px-3 py-1.5 bg-green-600 text-white rounded-md text-sm font-medium hover:bg-green-500 whitespace-nowrap transition-colors shadow-sm"
+                                  >
+                                    Enable Transactions
+                                  </button>
+                                ) : (
+                                  <button
+                                    onClick={() => handleBlockUserTransactions(u.id)}
+                                    className="px-3 py-1.5 bg-orange-600 text-white rounded-md text-sm font-medium hover:bg-orange-500 disabled:opacity-50 disabled:cursor-not-allowed whitespace-nowrap transition-colors shadow-sm"
+                                    disabled={u.id === user?.id}
+                                  >
+                                    Block Transactions
+                                  </button>
+                                )}
+                              </div>
                             </div>
                           </td>
                         </tr>
@@ -447,42 +499,42 @@ export default function AdminDashboardPage() {
 
             {activeTab === 'accounts' && (
               <div className="glass border border-gold-500/20 rounded-xl p-6">
-                <h3 className="text-xl font-semibold mb-4">Account Management</h3>
+                <h3 className="text-xl font-semibold mb-4 text-white">Account Management</h3>
                 <div className="overflow-x-auto">
                   <table className="w-full">
                     <thead>
-                      <tr className="border-b border-gold-500/20">
-                        <th className="text-left p-3">Account #</th>
-                        <th className="text-left p-3">Owner</th>
-                        <th className="text-left p-3">Type</th>
-                        <th className="text-left p-3">Balance</th>
-                        <th className="text-left p-3">Status</th>
-                        <th className="text-left p-3">Actions</th>
+                      <tr className="border-b border-gold-500/30">
+                        <th className="text-left p-3 text-sm font-semibold text-gray-200 uppercase tracking-wider">Account #</th>
+                        <th className="text-left p-3 text-sm font-semibold text-gray-200 uppercase tracking-wider">Owner</th>
+                        <th className="text-left p-3 text-sm font-semibold text-gray-200 uppercase tracking-wider">Type</th>
+                        <th className="text-left p-3 text-sm font-semibold text-gray-200 uppercase tracking-wider">Balance</th>
+                        <th className="text-left p-3 text-sm font-semibold text-gray-200 uppercase tracking-wider">Status</th>
+                        <th className="text-left p-3 text-sm font-semibold text-gray-200 uppercase tracking-wider">Actions</th>
                       </tr>
                     </thead>
                     <tbody>
                       {accounts.map((account) => (
-                        <tr key={account.id} className="border-b border-gold-500/10">
+                        <tr key={account.id} className="border-b border-gold-500/10 hover:bg-dark-800/30 transition-colors">
                           <td className="p-3">
                             <button
                               onClick={() => {
                                 navigator.clipboard.writeText(account.account_number);
                                 showNotification('Account number copied to clipboard', 'success');
                               }}
-                              className="text-left hover:text-gold-400 transition-colors group"
+                              className="text-left text-gray-100 hover:text-gold-400 transition-colors group"
                               title="Click to copy full account number"
                             >
-                              <span className="font-mono">••••{account.account_number?.slice(-4)}</span>
+                              <span className="font-mono font-medium">••••{account.account_number?.slice(-4)}</span>
                               <span className="ml-2 text-xs opacity-0 group-hover:opacity-100 transition-opacity">📋</span>
                             </button>
                           </td>
                           <td className="p-3">
                             <div>
-                              <p className="font-medium">{account.users?.full_name || 'Unknown'}</p>
+                              <p className="font-medium text-gray-100">{account.users?.full_name || 'Unknown'}</p>
                               <p className="text-xs text-gray-400">{account.users?.email || 'N/A'}</p>
                             </div>
                           </td>
-                          <td className="p-3">{account.account_type}</td>
+                          <td className="p-3 text-gray-200">{account.account_type}</td>
                           <td className="p-3">
                             <input
                               type="number"
@@ -493,19 +545,19 @@ export default function AdminDashboardPage() {
                                   handleUpdateBalance(account.id, newBalance);
                                 }
                               }}
-                              className="px-3 py-1 bg-dark-800 border border-gold-500/30 rounded text-sm w-24"
+                              className="px-3 py-1.5 bg-dark-800 border border-gold-500/40 rounded-md text-sm text-gray-100 font-medium w-28 focus:border-gold-500 focus:ring-1 focus:ring-gold-500/50 transition-all"
                               step="0.01"
                             />
                           </td>
                           <td className="p-3">
-                            <span className={`px-2 py-1 rounded text-xs ${
-                              account.status === 'active' ? 'bg-green-500/20 text-green-400' : 'bg-red-500/20 text-red-400'
+                            <span className={`px-2.5 py-1 rounded-md text-xs font-semibold ${
+                              account.status === 'active' ? 'bg-green-500/30 text-green-300 border border-green-500/40' : 'bg-red-500/30 text-red-300 border border-red-500/40'
                             }`}>
                               {account.status}
                             </span>
                           </td>
                           <td className="p-3">
-                            <button className="px-3 py-1 bg-gold-500 text-dark-900 rounded text-sm hover:bg-gold-400">
+                            <button className="px-3 py-1.5 bg-gold-600 text-white rounded-md text-sm font-medium hover:bg-gold-500 transition-colors shadow-sm">
                               Edit
                             </button>
                           </td>
@@ -519,12 +571,12 @@ export default function AdminDashboardPage() {
 
             {activeTab === 'bills' && (
               <div className="glass border border-gold-500/20 rounded-xl p-6">
-                <h3 className="text-xl font-semibold mb-4">Create Bills for Users</h3>
+                <h3 className="text-xl font-semibold mb-4 text-white">Create Bills for Users</h3>
                 <div className="max-w-md">
-                  <p className="text-gray-400 mb-4">Select a user and create a bill that will appear in their account.</p>
+                  <p className="text-gray-300 mb-4">Select a user and create a bill that will appear in their account.</p>
                   <button
                     onClick={() => setShowCreateBillModal(true)}
-                    className="px-6 py-3 bg-gold-500 text-dark-900 rounded-lg font-semibold hover:bg-gold-400 transition-colors"
+                    className="px-6 py-3 bg-gold-600 text-white rounded-lg font-semibold hover:bg-gold-500 transition-colors shadow-md"
                   >
                     <Plus className="w-4 h-4 inline mr-2" />
                     Create New Bill
@@ -535,12 +587,12 @@ export default function AdminDashboardPage() {
 
             {activeTab === 'notifications' && (
               <div className="glass border border-gold-500/20 rounded-xl p-6">
-                <h3 className="text-xl font-semibold mb-4">Send Notifications</h3>
+                <h3 className="text-xl font-semibold mb-4 text-white">Send Notifications</h3>
                 <div className="max-w-md">
-                  <p className="text-gray-400 mb-4">Send custom notifications to users.</p>
+                  <p className="text-gray-300 mb-4">Send custom notifications to users.</p>
                   <button
                     onClick={() => setShowSendNotificationModal(true)}
-                    className="px-6 py-3 bg-gold-500 text-dark-900 rounded-lg font-semibold hover:bg-gold-400 transition-colors"
+                    className="px-6 py-3 bg-gold-600 text-white rounded-lg font-semibold hover:bg-gold-500 transition-colors shadow-md"
                   >
                     <Send className="w-4 h-4 inline mr-2" />
                     Send Notification
