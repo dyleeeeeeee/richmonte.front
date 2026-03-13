@@ -89,22 +89,26 @@ body {
 
 @layer base {
   h1 {
-    @apply text-5xl md:text-7xl lg:text-8xl font-bold tracking-tight;
-    font-family: var(--font-outfit), sans-serif;
+    @apply text-5xl md:text-7xl lg:text-8xl font-extrabold tracking-tight leading-[1.05];
+    font-family: var(--font-work-sans), sans-serif;
   }
   
   h2 {
-    @apply text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight;
-    font-family: var(--font-outfit), sans-serif;
+    @apply text-4xl md:text-5xl lg:text-6xl font-extrabold tracking-tight leading-tight;
+    font-family: var(--font-work-sans), sans-serif;
   }
   
   h3 {
-    @apply text-3xl md:text-4xl font-bold tracking-tight;
-    font-family: var(--font-outfit), sans-serif;
+    @apply text-2xl md:text-3xl font-bold tracking-tight;
+    font-family: var(--font-work-sans), sans-serif;
   }
   
   p {
     @apply text-base md:text-lg leading-relaxed;
+  }
+
+  a {
+    @apply transition-colors duration-200;
   }
 }
 
