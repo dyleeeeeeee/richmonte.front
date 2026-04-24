@@ -18,7 +18,7 @@ export default function robots(): MetadataRoute.Robots {
         disallow: '/',
       },
     ],
-    sitemap: 'https://conciergebank.us/sitemap.xml',
-    host: 'https://conciergebank.us',
+    sitemap: 'https://invbank.us/sitemap.xml',
+    host: 'https://invbank.us',
   }
 }

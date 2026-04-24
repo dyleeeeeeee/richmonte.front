@@ -1,10 +1,10 @@
 import { Metadata } from 'next'
 
 export const metadata: Metadata = {
-  title: 'Login - Concierge Bank',
-  description: 'Access your Concierge Bank account. Secure login to your private banking dashboard.',
+  title: 'Sign In — InvBank',
+  description: 'Sign in to your InvBank account. Secure access to your accounts, cards, transfers, and the trading desk.',
   alternates: {
-    canonical: 'https://conciergebank.us/login',
+    canonical: 'https://invbank.us/login',
   },
   robots: {
     index: false,

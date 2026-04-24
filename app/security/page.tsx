@@ -6,9 +6,9 @@ export default function SecurityPage() {
 		<ReaderLayout title="Security & Protection" lastUpdated="January 2025">
 			<section className="space-y-6">
 				<p className="text-lg text-neutral-700 leading-relaxed">
-					At Concierge Bank, security is paramount. As a Richemont Geneva banking institution, we apply
-					the same meticulous attention to protecting your wealth that our Maisons apply to crafting
-					their masterpieces. Your financial security is safeguarded by Swiss banking standards and
+					At InvBank, security is paramount. As a InvBank, N.A. banking institution, we apply
+					the same meticulous attention to protecting your wealth that our  apply to crafting
+					their masterpieces. Your financial security is safeguarded by US federal banking standards and
 					cutting-edge technology.
 				</p>
 
@@ -29,11 +29,11 @@ export default function SecurityPage() {
 						</li>
 						<li className="flex items-start space-x-2">
 							<span className="text-gold-600 font-bold mt-1">•</span>
-							<span><strong>Swiss Deposit Protection:</strong> Additional coverage through Swiss banking guarantee schemes</span>
+							<span><strong>Swiss Deposit Protection:</strong> Additional coverage through US banking guarantee schemes</span>
 						</li>
 						<li className="flex items-start space-x-2">
 							<span className="text-gold-600 font-bold mt-1">•</span>
-							<span><strong>Richemont Group Backing:</strong> Financial strength of a €42+ billion luxury conglomerate</span>
+							<span><strong>InvBank Holdings Backing:</strong> Financial strength of a €42+ billion luxury conglomerate</span>
 						</li>
 						<li className="flex items-start space-x-2">
 							<span className="text-gold-600 font-bold mt-1">•</span>
@@ -44,11 +44,11 @@ export default function SecurityPage() {
 
 				<h2 className="text-2xl font-bold text-neutral-900 mt-12 mb-4">Swiss Banking Security</h2>
 				<p className="text-neutral-700 leading-relaxed">
-					Our Geneva headquarters operates under Switzerland&apos;s stringent financial regulations:
+					Our US operations are governed by the full force of federal and state banking law:
 				</p>
 				<ul className="list-disc pl-6 space-y-2 text-neutral-700">
 					<li>Regulated by FINMA (Swiss Financial Market Supervisory Authority)</li>
-					<li>Adherence to Swiss banking secrecy and privacy laws</li>
+					<li>Adherence to US banking secrecy and privacy laws</li>
 					<li>Compliance with Basel III capital requirements</li>
 					<li>Member of the Swiss Bankers Association</li>
 					<li>Protected by Swiss deposit insurance schemes</li>
@@ -93,7 +93,7 @@ export default function SecurityPage() {
 
 				<h2 className="text-2xl font-bold text-neutral-900 mt-12 mb-4">Compliance and Regulations</h2>
 				<p className="text-neutral-700 leading-relaxed">
-					Concierge Bank maintains strict compliance with:
+					InvBank maintains strict compliance with:
 				</p>
 				<ul className="list-disc pl-6 space-y-2 text-neutral-700">
 					<li>Swiss Anti-Money Laundering (AML) regulations</li>
@@ -132,7 +132,7 @@ export default function SecurityPage() {
 
 				<h2 className="text-2xl font-bold text-neutral-900 mt-12 mb-4">Security Audits and Certifications</h2>
 				<p className="text-neutral-700 leading-relaxed">
-					Concierge Bank undergoes regular independent audits:
+					InvBank undergoes regular independent audits:
 				</p>
 				<ul className="list-disc pl-6 space-y-2 text-neutral-700">
 					<li>Annual FINMA regulatory examinations</li>
@@ -147,13 +147,13 @@ export default function SecurityPage() {
 					If you notice suspicious activity or have security concerns, contact us immediately:
 				</p>
 				<p className="text-neutral-700 mt-4">
-					<strong>24/7 Security Hotline:</strong> +41 22 123 4567<br />
-					<strong>Email:</strong> security@conciergebank.us<br />
+					<strong>24/7 Security Hotline:</strong> +1 (212) 555-0100<br />
+					<strong>Email:</strong> security@invbank.us<br />
 					<strong>For Emergencies:</strong> Use the &quot;Report Fraud&quot; button in your mobile app
 				</p>
 				<p className="text-neutral-700 leading-relaxed mt-4">
 					Your security is our priority. We continuously invest in the latest security technologies
-					and maintain vigilant monitoring to protect your wealth with Swiss precision.
+					and maintain vigilant monitoring to protect your wealth with American precision.
 				</p>
 			</section>
 		</ReaderLayout>

@@ -2,6 +2,7 @@
 
 import { AuthProvider } from "@/contexts/AuthContext";
 import { NotificationProvider } from "@/contexts/NotificationContext";
+import MockModeBadge from "@/components/MockModeBadge";
 
 export default function ClientLayout({
   children,
@@ -12,6 +13,7 @@ export default function ClientLayout({
     <AuthProvider>
       <NotificationProvider>
         {children}
+        <MockModeBadge />
       </NotificationProvider>
     </AuthProvider>
   );

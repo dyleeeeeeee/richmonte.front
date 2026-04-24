@@ -176,7 +176,7 @@ export default function CreditCard({
             <div className="absolute top-6 left-6">
               <div className="flex items-center space-x-2">
                 <p className={`text-xs font-medium ${tierConfig.textColor} opacity-80 uppercase tracking-[0.15em]`}>
-                  Concierge Bank
+                  InvBank
                 </p>
                 <div className="w-1 h-1 bg-current opacity-50 rounded-full" />
               </div>
@@ -310,9 +310,9 @@ export default function CreditCard({
             {/* Enhanced Terms */}
             <div className="absolute top-48 px-6 text-[10px] text-white/90 leading-relaxed">
               <p className="mb-2 font-medium">
-                This card is property of Concierge Bank, Geneva. A Richemont financial institution.
+                This card is issued by InvBank, N.A. Member FDIC.
               </p>
-              <p className="opacity-80">Unauthorized use is prosecutable under Swiss banking law. Terms apply.</p>
+              <p className="opacity-80">Unauthorized use is prosecutable under 18 U.S.C. § 1029. Cardholder agreement applies.</p>
             </div>
 
             {/* Holographic effect */}

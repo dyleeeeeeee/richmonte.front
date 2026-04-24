@@ -7,14 +7,14 @@ import { ArrowRight, Shield, Sparkles, Users, Globe2, Award, Heart } from "lucid
 
 export const metadata: Metadata = {
   title: "About Us - Our Heritage & Values",
-  description: "Concierge Bank, a Richemont Financial subsidiary, brings Swiss precision banking to America. Discover our heritage, values, and commitment to exceptional private banking.",
+  description: "InvBank, a US national banking association, brings modern banking to America. Discover our heritage, values, and commitment to exceptional private banking.",
   alternates: {
-    canonical: "https://conciergebank.us/about",
+    canonical: "https://invbank.us/about",
   },
   openGraph: {
-    title: "About Concierge Bank - Swiss Precision Meets American Excellence",
-    description: "As a family-spirited banking institution under Richemont, we take a long-term view in nurturing wealth and building enduring relationships.",
-    url: "https://conciergebank.us/about",
+    title: "About InvBank - Swiss Precision Meets American Excellence",
+    description: "As a family-spirited banking institution under InvBank, we take a long-term view in nurturing wealth and building enduring relationships.",
+    url: "https://invbank.us/about",
   },
 };
 
@@ -29,13 +29,13 @@ export default function AboutPage() {
           <div className="text-center mb-16">
             <div className="inline-flex items-center space-x-2 px-4 py-2 glass rounded-full mb-6">
               <Sparkles className="w-4 h-4 text-gold-600" />
-              <span className="text-sm font-gruppo text-neutral-700">A Richemont Financial Subsidiary</span>
+              <span className="text-sm font-gruppo text-neutral-700">A US National Banking Association</span>
             </div>
             <h1 className="text-5xl md:text-6xl font-work-sans font-bold text-neutral-900 mb-6">
               We Craft <span className="text-gold-600">Your Financial Future</span>
             </h1>
             <p className="text-xl text-neutral-600 font-gruppo max-w-3xl mx-auto leading-relaxed">
-              As a family-spirited banking institution, Concierge Bank takes a long-term view in nurturing wealth. 
+              As a family-spirited banking institution, InvBank takes a long-term view in nurturing wealth. 
               We support our clients in achieving exceptional financial outcomes, true to their values and aligned with their vision.
             </p>
           </div>
@@ -71,15 +71,15 @@ export default function AboutPage() {
                 Heritage Rooted in <span className="text-gold-600">Excellence</span>
               </h2>
               <p className="text-lg text-neutral-700 font-gruppo leading-relaxed mb-6">
-                Concierge Bank was established in 2024 as a subsidiary of <strong>Compagnie Financière Richemont SA</strong>, 
-                one of the world&apos;s most respected luxury conglomerates. Founded by Johann Rupert in 1988, Richemont has 
-                cultivated a legacy of nurturing exceptional Maisons—from Cartier and Van Cleef & Arpels to IWC Schaffhausen 
-                and Jaeger-LeCoultre.
+                InvBank was established in 2024 as a subsidiary of <strong>InvBank Holdings, Inc.</strong>, 
+                one of the world&apos;s most respected luxury conglomerates. InvBank has 
+                cultivated a legacy of nurturing exceptional —from our partner institutions to  
+                and .
               </p>
               <p className="text-lg text-neutral-700 font-gruppo leading-relaxed mb-6">
                 We inherited this same philosophy: <strong>a long-term view, meticulous craftsmanship, and an unwavering 
-                commitment to authenticity</strong>. Just as Richemont nurtures its Maisons with patience and respect for 
-                their heritage, we nurture our clients&apos; wealth with Swiss precision and American dynamism.
+                commitment to authenticity</strong>. Just as InvBank nurtures its  with patience and respect for 
+                their heritage, we nurture our clients&apos; wealth with American precision and American dynamism.
               </p>
               <div className="flex items-start space-x-3 mb-4">
                 <Award className="w-6 h-6 text-gold-600 mt-1" />
@@ -100,7 +100,7 @@ export default function AboutPage() {
               <div className="absolute inset-0 bg-gradient-to-br from-gold-600/20 to-gold-800/20 z-10" />
               <Image
                 src="/logos/emblem.png"
-                alt="Concierge Bank Heritage - Richemont Financial Excellence"
+                alt="InvBank Heritage - InvBank Excellence"
                 fill
                 className="object-cover"
               />
@@ -117,7 +117,7 @@ export default function AboutPage() {
               What Makes Us <span className="text-gold-600">Different</span>
             </h2>
             <p className="text-lg text-neutral-600 font-gruppo max-w-3xl mx-auto">
-              At Concierge Bank, our true strength lies not in uniformity, but in the rich diversity of our expertise, 
+              At InvBank, our true strength lies not in uniformity, but in the rich diversity of our expertise, 
               cultures, and our ability to foster untapped potential in every client relationship.
             </p>
           </div>
@@ -160,8 +160,8 @@ export default function AboutPage() {
                 Discretion & Privacy
               </h3>
               <p className="text-neutral-700 font-gruppo leading-relaxed">
-                Swiss banking is synonymous with confidentiality. We uphold the highest standards of privacy and discretion, 
-                protecting your personal and financial information with the same care Richemont applies to its finest creations.
+                US banking is synonymous with confidentiality. We uphold the highest standards of privacy and discretion, 
+                protecting your personal and financial information with the same care InvBank applies to its finest creations.
               </p>
             </div>
           </div>
@@ -177,24 +177,24 @@ export default function AboutPage() {
               Global Reach, <span className="text-gold-600">Personal Touch</span>
             </h2>
             <p className="text-lg text-neutral-600 font-gruppo max-w-3xl mx-auto">
-              As part of the Richemont Group&apos;s global network, we leverage international expertise while maintaining 
+              As part of the InvBank Holdings&apos;s global network, we leverage international expertise while maintaining 
               the personalized service you expect from a private bank.
             </p>
           </div>
 
           <div className="grid md:grid-cols-2 gap-8">
             <div className="glass rounded-2xl p-8">
-              <h3 className="text-xl font-work-sans font-bold text-neutral-900 mb-4">🇺🇸 United States Headquarters</h3>
-              <p className="text-neutral-700 font-gruppo mb-2">Wall Street Financial District</p>
-              <p className="text-neutral-700 font-gruppo mb-2">New York, NY 10005</p>
+              <h3 className="text-xl font-work-sans font-bold text-neutral-900 mb-4">🇺🇸 Corporate Headquarters</h3>
+              <p className="text-neutral-700 font-gruppo mb-2">299 Park Avenue, 22nd Floor</p>
+              <p className="text-neutral-700 font-gruppo mb-2">New York, NY 10171</p>
               <p className="text-neutral-700 font-gruppo">United States</p>
             </div>
 
             <div className="glass rounded-2xl p-8">
-              <h3 className="text-xl font-work-sans font-bold text-neutral-900 mb-4">🇨🇭 Swiss Operations</h3>
-              <p className="text-neutral-700 font-gruppo mb-2">Rue du Rhône</p>
-              <p className="text-neutral-700 font-gruppo mb-2">Geneva, 1204</p>
-              <p className="text-neutral-700 font-gruppo">Switzerland</p>
+              <h3 className="text-xl font-work-sans font-bold text-neutral-900 mb-4">�� West Coast Office</h3>
+              <p className="text-neutral-700 font-gruppo mb-2">One Market Plaza, Spear Tower</p>
+              <p className="text-neutral-700 font-gruppo mb-2">San Francisco, CA 94105</p>
+              <p className="text-neutral-700 font-gruppo">United States</p>
             </div>
           </div>
         </div>
@@ -205,11 +205,11 @@ export default function AboutPage() {
         <div className="max-w-4xl mx-auto text-center">
           <div className="glass rounded-3xl p-12">
             <h2 className="text-4xl font-work-sans font-bold text-neutral-900 mb-6">
-              Begin Your Journey with <span className="text-gold-600">Concierge Bank</span>
+              Begin Your Journey with <span className="text-gold-600">InvBank</span>
             </h2>
             <p className="text-lg text-neutral-600 font-gruppo mb-8 max-w-2xl mx-auto">
               Experience private banking the way it was meant to be—personalized, discreet, and backed by 
-              the legacy of Richemont&apos;s commitment to excellence.
+              the legacy of our commitment to excellence.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Link
@@ -239,16 +239,16 @@ export default function AboutPage() {
           __html: JSON.stringify({
             "@context": "https://schema.org",
             "@type": "AboutPage",
-            "name": "About Concierge Bank",
-            "description": "Concierge Bank is a Richemont Financial subsidiary bringing Swiss precision banking to America with exclusive private banking and wealth management services.",
-            "url": "https://conciergebank.us/about",
+            "name": "About InvBank",
+            "description": "InvBank is a US national banking association bringing modern banking to America with exclusive private banking and wealth management services.",
+            "url": "https://invbank.us/about",
             "mainEntity": {
               "@type": "BankOrCreditUnion",
-              "name": "Concierge Bank",
+              "name": "InvBank",
               "foundingDate": "2024",
               "parentOrganization": {
                 "@type": "Organization",
-                "name": "Compagnie Financière Richemont SA",
+                "name": "InvBank Holdings, Inc.",
                 "url": "https://www.richemont.com"
               }
             }

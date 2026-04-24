@@ -6,6 +6,7 @@ import ProtectedRoute from "@/components/ProtectedRoute";
 import DashboardLayout from "@/components/DashboardLayout";
 import { useAuth } from "@/contexts/AuthContext";
 import { useNotification } from "@/contexts/NotificationContext";
+import { settingsAPI } from "@/lib/api";
 import { Camera, ArrowLeft, Check } from "lucide-react";
 
 export default function ProfileSettingsPage() {
@@ -16,7 +17,7 @@ export default function ProfileSettingsPage() {
     full_name: user?.full_name || "",
     phone: user?.phone || "",
     address: "",
-    preferred_brand: user?.preferred_brand || "Cartier",
+    preferred_brand: user?.preferred_brand || "Everyday",
   });
   const [saving, setSaving] = useState(false);
   const [loading, setLoading] = useState(true);
@@ -25,19 +26,15 @@ export default function ProfileSettingsPage() {
   useEffect(() => {
     const loadProfile = async () => {
       try {
-        const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000"}/api/settings`, {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem('auth_token')}`,
-          },
-        });
+        const response = await settingsAPI.getSettings();
 
-        if (response.ok) {
-          const userData = await response.json();
+        if (response.data) {
+          const userData = response.data;
           setFormData({
             full_name: userData.full_name || "",
             phone: userData.phone || "",
-            address: userData.address || "",
-            preferred_brand: userData.preferred_brand || "Cartier",
+            address: (userData as any).address || "",
+            preferred_brand: userData.preferred_brand || "Everyday",
           });
         }
       } catch (error) {
@@ -55,17 +52,10 @@ export default function ProfileSettingsPage() {
     setSaving(true);
     
     try {
-      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000"}/api/settings/profile`, {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${localStorage.getItem('auth_token')}`,
-        },
-        body: JSON.stringify(formData),
-      });
+      const response = await settingsAPI.updateProfile(formData);
 
-      if (!response.ok) {
-        throw new Error("Failed to update profile");
+      if (response.error) {
+        throw new Error(response.error);
       }
 
       // Refresh user context to update the UI
@@ -156,18 +146,17 @@ export default function ProfileSettingsPage() {
               </div>
 
               <div>
-                <label className="block text-sm font-medium mb-2 text-neutral-900">Preferred Richemont Brand</label>
+                <label className="block text-sm font-medium mb-2 text-neutral-900">Primary account type</label>
                 <select
                   value={formData.preferred_brand}
                   onChange={(e) => setFormData({ ...formData, preferred_brand: e.target.value })}
                   className="w-full px-4 py-3 bg-white/90 border border-gold-500/30 rounded-lg focus:outline-none focus:border-gold-500 transition-smooth text-neutral-900 shadow-inner"
                 >
-                  <option value="Cartier" className="text-neutral-900">Cartier</option>
-                  <option value="Van Cleef & Arpels" className="text-neutral-900">Van Cleef & Arpels</option>
-                  <option value="Montblanc" className="text-neutral-900">Montblanc</option>
-                  <option value="Jaeger-LeCoultre" className="text-neutral-900">Jaeger-LeCoultre</option>
-                  <option value="IWC Schaffhausen" className="text-neutral-900">IWC Schaffhausen</option>
-                  <option value="Panerai" className="text-neutral-900">Panerai</option>
+                  <option value="Everyday"  className="text-neutral-900">Everyday Checking</option>
+                  <option value="Savings"   className="text-neutral-900">High-Yield Savings</option>
+                  <option value="Business"  className="text-neutral-900">Business Checking</option>
+                  <option value="Invest"    className="text-neutral-900">Invest & Trade</option>
+                  <option value="Wealth"    className="text-neutral-900">Wealth Management</option>
                 </select>
               </div>
 

@@ -1,11 +1,26 @@
 "use client";
 
 import { useEffect, useState, FormEvent } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 import ProtectedRoute from "@/components/ProtectedRoute";
 import DashboardLayout from "@/components/DashboardLayout";
 import { accountAPI, billAPI, Bill, Account } from "@/lib/api";
 import { useNotification } from "@/contexts/NotificationContext";
-import { Receipt, Plus, Calendar, Check, Search, Building, CreditCard, X, DollarSign } from "lucide-react";
+import { Receipt, Plus, Calendar, Check, Search, Building, CreditCard, X, DollarSign, Zap, TrendingUp, AlertCircle } from "lucide-react";
+
+function BentoCard({ children, className, onClick }: { children: React.ReactNode; className?: string; onClick?: () => void }) {
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 10 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
+      onClick={onClick}
+      className={`relative bg-white border border-light-200 rounded-2xl shadow-sm overflow-hidden hover:shadow-lg hover:-translate-y-0.5 transition-all duration-200 ${onClick ? "cursor-pointer hover:border-navy-700/40" : ""} ${className}`}
+    >
+      {children}
+    </motion.div>
+  );
+}
 
 export default function BillsPage() {
   const { showNotification } = useNotification();
@@ -139,12 +154,16 @@ export default function BillsPage() {
     }
   };
 
+  const totalDue = bills.reduce((sum, bill) => sum + bill.amount, 0);
+  const upcomingCount = bills.filter(b => new Date(b.due_date) > new Date()).length;
+  const autoPayCount = bills.filter(b => b.auto_pay).length;
+
   if (loading) {
     return (
       <ProtectedRoute>
         <DashboardLayout>
           <div className="flex items-center justify-center h-64">
-            <div className="w-12 h-12 border-4 border-gold-500 border-t-transparent rounded-full animate-spin"></div>
+            <div className="w-10 h-10 border-4 border-navy-700 border-t-transparent rounded-full animate-spin" />
           </div>
         </DashboardLayout>
       </ProtectedRoute>
@@ -154,48 +173,146 @@ export default function BillsPage() {
   return (
     <ProtectedRoute>
       <DashboardLayout>
-        <div className="space-y-6 sm:space-y-8 pb-4">
-          <div className="flex items-center justify-between gap-4">
-            <div className="flex-1 min-w-0">
-              <h1 className="text-2xl sm:text-3xl font-serif font-bold mb-1 sm:mb-2 text-white">Bill Pay</h1>
-              <p className="text-sm sm:text-base text-gray-400">Manage and pay your bills</p>
+        <div className="space-y-6">
+          {/* Dark Hero Header */}
+          <BentoCard className="overflow-hidden border-navy-800 bg-gradient-to-br from-navy-900 via-navy-800 to-navy-900 text-white p-0">
+            <div className="relative p-6 sm:p-8 lg:p-10">
+              <div className="pointer-events-none absolute -top-20 -right-16 h-56 w-56 rounded-full bg-sky-400/10 blur-3xl" />
+              <div className="pointer-events-none absolute -bottom-12 left-1/3 h-40 w-40 rounded-full bg-white/10 blur-3xl" />
+              <div className="relative flex flex-col lg:flex-row lg:items-end lg:justify-between gap-8">
+                <div className="max-w-2xl">
+                  <p className="text-[11px] font-work-sans font-bold tracking-[0.16em] uppercase text-navy-200/80">
+                    Bill pay center
+                  </p>
+                  <h1 className="mt-2 text-3xl sm:text-4xl font-work-sans font-bold tracking-tight">
+                    All your bills, one organized view.
+                  </h1>
+                  <p className="mt-3 text-sm sm:text-base text-navy-100/75 font-gruppo max-w-xl">
+                    Track due dates, enable auto-pay, and settle bills without switching contexts. Built like a command center.
+                  </p>
+                </div>
+                <div className="flex flex-wrap gap-3">
+                  <button
+                    onClick={() => setShowAddBillModal(true)}
+                    className="flex items-center gap-2 px-5 py-3 rounded-2xl bg-white text-navy-900 hover:bg-navy-50 font-work-sans font-semibold text-sm transition-colors"
+                  >
+                    <Plus size={18} />
+                    <span>Add Bill</span>
+                  </button>
+                  <div className="rounded-2xl border border-white/10 bg-white/5 px-4 py-3 min-w-[160px]">
+                    <p className="text-[10px] font-work-sans font-bold tracking-[0.16em] uppercase text-navy-200/75">Total due</p>
+                    <p className="mt-1 text-2xl font-work-sans font-bold tabular-nums">${totalDue.toFixed(2)}</p>
+                  </div>
+                </div>
+              </div>
             </div>
-            <button
-              onClick={() => setShowAddBillModal(true)}
-              className="flex items-center space-x-2 px-4 sm:px-6 py-2.5 sm:py-3 bg-gradient-to-r from-gold-600 to-gold-700 text-white rounded-lg font-work-sans font-semibold hover:from-gold-500 hover:to-gold-600 transition-smooth flex-shrink-0 text-sm sm:text-base active:scale-95 shadow-lg shadow-gold-500/20 hover-glow"
-            >
-              <Plus size={18} className="sm:w-5 sm:h-5" />
-              <span className="hidden sm:inline">Add Bill</span>
-              <span className="sm:hidden">Add</span>
-            </button>
+          </BentoCard>
+
+          {/* Metrics Row */}
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <BentoCard className="p-5 sm:p-6">
+              <div className="flex items-start justify-between">
+                <div>
+                  <p className="text-[11px] font-work-sans font-bold tracking-[0.12em] uppercase text-neutral-500">Active bills</p>
+                  <p className="mt-2 text-3xl font-work-sans font-bold text-neutral-900">{bills.length}</p>
+                </div>
+                <div className="w-11 h-11 rounded-xl bg-navy-50 text-navy-700 flex items-center justify-center">
+                  <Receipt size={20} />
+                </div>
+              </div>
+            </BentoCard>
+            <BentoCard className="p-5 sm:p-6">
+              <div className="flex items-start justify-between">
+                <div>
+                  <p className="text-[11px] font-work-sans font-bold tracking-[0.12em] uppercase text-neutral-500">Upcoming due</p>
+                  <p className="mt-2 text-3xl font-work-sans font-bold text-neutral-900">{upcomingCount}</p>
+                </div>
+                <div className="w-11 h-11 rounded-xl bg-amber-50 text-amber-700 flex items-center justify-center">
+                  <AlertCircle size={20} />
+                </div>
+              </div>
+            </BentoCard>
+            <BentoCard className="p-5 sm:p-6">
+              <div className="flex items-start justify-between">
+                <div>
+                  <p className="text-[11px] font-work-sans font-bold tracking-[0.12em] uppercase text-neutral-500">Auto-pay enabled</p>
+                  <p className="mt-2 text-3xl font-work-sans font-bold text-neutral-900">{autoPayCount}</p>
+                </div>
+                <div className="w-11 h-11 rounded-xl bg-emerald-50 text-emerald-700 flex items-center justify-center">
+                  <Zap size={20} />
+                </div>
+              </div>
+            </BentoCard>
           </div>
 
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {bills.map((bill) => (
-              <div key={bill.id} className="bg-dark-800/30 border border-gold-500/10 rounded-xl p-6">
-                <h3 className="text-lg font-semibold mb-2 text-white">{bill.payee_name}</h3>
-                <p className="text-2xl font-bold mb-4 text-white">${bill.amount}</p>
-                <div className="flex items-center space-x-2 text-sm text-gray-400 mb-4">
-                  <Calendar size={16} />
-                  <span>Due: {new Date(bill.due_date).toLocaleDateString()}</span>
-                </div>
-                <button className="w-full px-4 py-2 bg-gold-500 text-dark-900 rounded-lg font-semibold hover:bg-gold-400">
-                  Pay Now
-                </button>
-                <p className="text-xs text-center text-gray-400 mt-2">
-                  {bill.auto_pay ? "Auto-pay enabled" : "Manual payment"}
-                </p>
+          {/* Bills Grid */}
+          {bills.length === 0 ? (
+            <BentoCard className="p-12 text-center">
+              <div className="w-16 h-16 bg-navy-50 rounded-2xl flex items-center justify-center mx-auto mb-4">
+                <Receipt className="text-navy-700" size={32} />
               </div>
-            ))}
-          </div>
+              <h3 className="text-xl font-work-sans font-semibold mb-2 text-neutral-900">No Bills Yet</h3>
+              <p className="text-neutral-500 font-gruppo mb-6">
+                Add your first bill to start tracking payments and due dates.
+              </p>
+              <button
+                onClick={() => setShowAddBillModal(true)}
+                className="px-6 py-2.5 bg-navy-700 hover:bg-navy-800 text-white rounded-xl font-work-sans font-semibold transition-colors"
+              >
+                Add Your First Bill
+              </button>
+            </BentoCard>
+          ) : (
+            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
+              {bills.map((bill) => (
+                <BentoCard key={bill.id} className="p-5">
+                  <div className="flex items-start justify-between mb-4">
+                    <div className="flex items-center gap-3">
+                      <div className="w-10 h-10 rounded-xl bg-navy-50 text-navy-700 flex items-center justify-center text-lg">
+                        {getBillTypeIcon(bill.bill_type || 'other')}
+                      </div>
+                      <div>
+                        <h3 className="font-work-sans font-semibold text-neutral-900">{bill.payee_name}</h3>
+                        <p className="text-xs text-neutral-500 font-gruppo capitalize">{(bill.bill_type || 'other').replace('_', ' ')}</p>
+                      </div>
+                    </div>
+                    {bill.auto_pay && (
+                      <span className="px-2 py-1 rounded-lg text-[10px] font-work-sans font-semibold bg-emerald-100 text-emerald-700">
+                        Auto
+                      </span>
+                    )}
+                  </div>
+                  <p className="text-2xl font-work-sans font-bold text-neutral-900 mb-3">${bill.amount.toFixed(2)}</p>
+                  <div className="flex items-center gap-2 text-sm text-neutral-500 mb-4">
+                    <Calendar size={16} />
+                    <span className="font-gruppo">Due {new Date(bill.due_date).toLocaleDateString()}</span>
+                  </div>
+                  <button className="w-full px-4 py-2.5 bg-navy-700 hover:bg-navy-800 text-white rounded-xl font-work-sans font-semibold text-sm transition-colors">
+                    Pay Now
+                  </button>
+                </BentoCard>
+              ))}
+            </div>
+          )}
         </div>
 
-        {/* Add Bill Modal - Chase-like Flow */}
+        {/* Add Bill Modal - Bento Style */}
+        <AnimatePresence>
         {showAddBillModal && (
-          <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm">
-            <div className="w-full max-w-2xl glass-gold border border-gold-500/30 rounded-2xl shadow-2xl animate-scale-in max-h-[90vh] overflow-hidden">
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm"
+          >
+            <motion.div
+              initial={{ opacity: 0, scale: 0.95, y: 20 }}
+              animate={{ opacity: 1, scale: 1, y: 0 }}
+              exit={{ opacity: 0, scale: 0.95, y: 20 }}
+              className="w-full max-w-2xl bg-white border border-light-200 rounded-2xl shadow-2xl max-h-[90vh] overflow-hidden"
+            >
               {/* Modal Header */}
-              <div className="flex items-center justify-between p-6 border-b border-gold-500/20">
+              <div className="flex items-center justify-between p-6 border-b border-navy-700/20">
                 <h2 className="text-2xl font-work-sans font-bold text-neutral-900">
                   {billStep === 'search' && 'Add a Bill'}
                   {billStep === 'details' && 'Bill Details'}
@@ -212,22 +329,22 @@ export default function BillsPage() {
               {/* Step Indicator */}
               <div className="px-6 py-4 bg-neutral-50 border-b border-neutral-200">
                 <div className="flex items-center space-x-4">
-                  <div className={`flex items-center space-x-2 ${billStep === 'search' ? 'text-gold-600' : billStep === 'details' || billStep === 'confirm' ? 'text-green-600' : 'text-neutral-400'}`}>
-                    <div className={`w-8 h-8 rounded-full flex items-center justify-center text-sm font-bold ${billStep === 'search' ? 'bg-gold-600 text-white' : billStep === 'details' || billStep === 'confirm' ? 'bg-green-600 text-white' : 'bg-neutral-300 text-neutral-600'}`}>
+                  <div className={`flex items-center space-x-2 ${billStep === 'search' ? 'text-navy-700' : billStep === 'details' || billStep === 'confirm' ? 'text-green-600' : 'text-neutral-400'}`}>
+                    <div className={`w-8 h-8 rounded-full flex items-center justify-center text-sm font-bold ${billStep === 'search' ? 'bg-navy-700 text-white' : billStep === 'details' || billStep === 'confirm' ? 'bg-green-600 text-white' : 'bg-neutral-300 text-neutral-600'}`}>
                       1
                     </div>
                     <span className="font-medium">Find Payee</span>
                   </div>
                   <div className={`flex-1 h-px ${billStep === 'details' || billStep === 'confirm' ? 'bg-green-600' : 'bg-neutral-300'}`} />
-                  <div className={`flex items-center space-x-2 ${billStep === 'details' ? 'text-gold-600' : billStep === 'confirm' ? 'text-green-600' : 'text-neutral-400'}`}>
-                    <div className={`w-8 h-8 rounded-full flex items-center justify-center text-sm font-bold ${billStep === 'details' ? 'bg-gold-600 text-white' : billStep === 'confirm' ? 'bg-green-600 text-white' : 'bg-neutral-300 text-neutral-600'}`}>
+                  <div className={`flex items-center space-x-2 ${billStep === 'details' ? 'text-navy-700' : billStep === 'confirm' ? 'text-green-600' : 'text-neutral-400'}`}>
+                    <div className={`w-8 h-8 rounded-full flex items-center justify-center text-sm font-bold ${billStep === 'details' ? 'bg-navy-700 text-white' : billStep === 'confirm' ? 'bg-green-600 text-white' : 'bg-neutral-300 text-neutral-600'}`}>
                       2
                     </div>
                     <span className="font-medium">Add Details</span>
                   </div>
                   <div className={`flex-1 h-px ${billStep === 'confirm' ? 'bg-green-600' : 'bg-neutral-300'}`} />
-                  <div className={`flex items-center space-x-2 ${billStep === 'confirm' ? 'text-gold-600' : 'text-neutral-400'}`}>
-                    <div className={`w-8 h-8 rounded-full flex items-center justify-center text-sm font-bold ${billStep === 'confirm' ? 'bg-gold-600 text-white' : 'bg-neutral-300 text-neutral-600'}`}>
+                  <div className={`flex items-center space-x-2 ${billStep === 'confirm' ? 'text-navy-700' : 'text-neutral-400'}`}>
+                    <div className={`w-8 h-8 rounded-full flex items-center justify-center text-sm font-bold ${billStep === 'confirm' ? 'bg-navy-700 text-white' : 'bg-neutral-300 text-neutral-600'}`}>
                       3
                     </div>
                     <span className="font-medium">Confirm</span>
@@ -251,7 +368,7 @@ export default function BillsPage() {
                           placeholder="Search payees (e.g., Con Edison, Netflix, Verizon)..."
                           value={searchQuery}
                           onChange={(e) => setSearchQuery(e.target.value)}
-                          className="w-full pl-10 pr-4 py-3 bg-white/90 border border-gold-500/30 rounded-lg focus:outline-none focus:border-gold-500 transition-smooth text-neutral-900 placeholder:text-neutral-400 shadow-inner"
+                          className="w-full pl-10 pr-4 py-3 bg-white/90 border border-navy-700/30 rounded-lg focus:outline-none focus:border-navy-700 transition-smooth text-neutral-900 placeholder:text-neutral-400 shadow-inner"
                         />
                       </div>
 
@@ -262,14 +379,14 @@ export default function BillsPage() {
                             <button
                               key={payee.name}
                               onClick={() => handlePayeeSelect(payee.name)}
-                              className="w-full flex items-center space-x-4 p-4 glass hover:glass-gold rounded-lg transition-all text-left group"
+                              className="w-full flex items-center space-x-4 p-4 glass hover:bg-light-100 rounded-lg transition-all text-left group"
                             >
                               <div className="text-2xl">{payee.logo}</div>
                               <div className="flex-1">
-                                <div className="font-medium text-neutral-900 group-hover:text-gold-700">{payee.name}</div>
+                                <div className="font-medium text-neutral-900 group-hover:text-navy-800">{payee.name}</div>
                                 <div className="text-sm text-neutral-600 capitalize">{payee.type.replace('_', ' ')}</div>
                               </div>
-                              <div className="text-gold-600 opacity-0 group-hover:opacity-100 transition-opacity">
+                              <div className="text-navy-700 opacity-0 group-hover:opacity-100 transition-opacity">
                                 <span className="text-sm font-medium">Add</span>
                               </div>
                             </button>
@@ -280,7 +397,7 @@ export default function BillsPage() {
                             <p className="text-neutral-600 mb-4">No payees found matching &quot;{searchQuery}&quot;</p>
                             <button
                               onClick={handleCustomPayee}
-                              className="px-6 py-2 bg-gold-600 text-white rounded-lg font-medium hover:bg-gold-500 transition-colors"
+                              className="px-6 py-2 bg-navy-700 text-white rounded-lg font-medium hover:bg-navy-700 transition-colors"
                             >
                               Add Custom Payee
                             </button>
@@ -297,7 +414,7 @@ export default function BillsPage() {
                       <div className="text-center">
                         <button
                           onClick={handleCustomPayee}
-                          className="px-6 py-2 border border-gold-600 text-gold-600 rounded-lg font-medium hover:bg-gold-50 transition-colors"
+                          className="px-6 py-2 border border-navy-700 text-navy-700 rounded-lg font-medium hover:bg-gold-50 transition-colors"
                         >
                           <Plus size={16} className="inline mr-2" />
                           Add Custom Payee
@@ -323,7 +440,7 @@ export default function BillsPage() {
                             value={billForm.payee_name}
                             onChange={(e) => setBillForm({ ...billForm, payee_name: e.target.value })}
                             placeholder="Enter payee name"
-                            className="w-full px-4 py-3 bg-white/90 border border-gold-500/30 rounded-lg focus:outline-none focus:border-gold-500 transition-smooth text-neutral-900 placeholder:text-neutral-400 shadow-inner"
+                            className="w-full px-4 py-3 bg-white/90 border border-navy-700/30 rounded-lg focus:outline-none focus:border-navy-700 transition-smooth text-neutral-900 placeholder:text-neutral-400 shadow-inner"
                             required
                           />
                         </div>
@@ -335,7 +452,7 @@ export default function BillsPage() {
                           <select
                             value={billForm.bill_type}
                             onChange={(e) => setBillForm({ ...billForm, bill_type: e.target.value })}
-                            className="w-full px-4 py-3 bg-white/90 border border-gold-500/30 rounded-lg focus:outline-none focus:border-gold-500 transition-smooth text-neutral-900 shadow-inner"
+                            className="w-full px-4 py-3 bg-white/90 border border-navy-700/30 rounded-lg focus:outline-none focus:border-navy-700 transition-smooth text-neutral-900 shadow-inner"
                           >
                             <option value="utility">Utility</option>
                             <option value="telecom">Telecom</option>
@@ -357,7 +474,7 @@ export default function BillsPage() {
                               placeholder="0.00"
                               step="0.01"
                               min="0"
-                              className="w-full pl-10 pr-4 py-3 bg-white/90 border border-gold-500/30 rounded-lg focus:outline-none focus:border-gold-500 transition-smooth text-neutral-900 placeholder:text-neutral-400 shadow-inner"
+                              className="w-full pl-10 pr-4 py-3 bg-white/90 border border-navy-700/30 rounded-lg focus:outline-none focus:border-navy-700 transition-smooth text-neutral-900 placeholder:text-neutral-400 shadow-inner"
                               required
                             />
                           </div>
@@ -372,7 +489,7 @@ export default function BillsPage() {
                             value={billForm.due_date}
                             onChange={(e) => setBillForm({ ...billForm, due_date: e.target.value })}
                             min={new Date().toISOString().split('T')[0]}
-                            className="w-full px-4 py-3 bg-white/90 border border-gold-500/30 rounded-lg focus:outline-none focus:border-gold-500 transition-smooth text-neutral-900 shadow-inner"
+                            className="w-full px-4 py-3 bg-white/90 border border-navy-700/30 rounded-lg focus:outline-none focus:border-navy-700 transition-smooth text-neutral-900 shadow-inner"
                             required
                           />
                         </div>
@@ -384,7 +501,7 @@ export default function BillsPage() {
                             value={billForm.account_number}
                             onChange={(e) => setBillForm({ ...billForm, account_number: e.target.value })}
                             placeholder="Account or reference number"
-                            className="w-full px-4 py-3 bg-white/90 border border-gold-500/30 rounded-lg focus:outline-none focus:border-gold-500 transition-smooth text-neutral-900 placeholder:text-neutral-400 shadow-inner"
+                            className="w-full px-4 py-3 bg-white/90 border border-navy-700/30 rounded-lg focus:outline-none focus:border-navy-700 transition-smooth text-neutral-900 placeholder:text-neutral-400 shadow-inner"
                           />
                         </div>
                       </div>
@@ -395,7 +512,7 @@ export default function BillsPage() {
                           id="auto_pay"
                           checked={billForm.auto_pay}
                           onChange={(e) => setBillForm({ ...billForm, auto_pay: e.target.checked })}
-                          className="w-4 h-4 text-gold-600 bg-gray-100 border-gray-300 rounded focus:ring-gold-500"
+                          className="w-4 h-4 text-navy-700 bg-gray-100 border-gray-300 rounded focus:ring-navy-700"
                         />
                         <label htmlFor="auto_pay" className="text-sm text-neutral-900">
                           <span className="font-medium">Enable Auto Pay</span>
@@ -407,13 +524,13 @@ export default function BillsPage() {
                         <button
                           type="button"
                           onClick={() => setBillStep('search')}
-                          className="flex-1 px-6 py-3 glass text-neutral-700 rounded-lg font-work-sans font-semibold hover:glass-gold transition-smooth"
+                          className="flex-1 px-6 py-3 glass text-neutral-700 rounded-lg font-work-sans font-semibold hover:bg-light-100 transition-smooth"
                         >
                           Back
                         </button>
                         <button
                           type="submit"
-                          className="flex-1 px-6 py-3 bg-gradient-to-r from-gold-600 to-gold-700 text-white rounded-lg font-work-sans font-semibold hover:from-gold-500 hover:to-gold-600 transition-smooth"
+                          className="flex-1 px-6 py-3 bg-gradient-to-r from-navy-700 to-navy-800 text-white rounded-lg font-work-sans font-semibold hover:from-navy-700 hover:to-navy-700 transition-smooth"
                         >
                           Continue
                         </button>
@@ -430,7 +547,7 @@ export default function BillsPage() {
                     </div>
 
                     {/* Confirmation Summary */}
-                    <div className="glass rounded-xl p-6 space-y-4">
+                    <div className="bg-neutral-50 rounded-xl p-6 space-y-4">
                       <div className="grid md:grid-cols-2 gap-6">
                         <div>
                           <span className="text-sm text-neutral-600">Payee</span>
@@ -464,14 +581,14 @@ export default function BillsPage() {
                     <div className="flex space-x-4">
                       <button
                         onClick={() => setBillStep('details')}
-                        className="flex-1 px-6 py-3 glass text-neutral-700 rounded-lg font-work-sans font-semibold hover:glass-gold transition-smooth"
+                        className="flex-1 px-6 py-3 glass text-neutral-700 rounded-lg font-work-sans font-semibold hover:bg-light-100 transition-smooth"
                       >
                         Back
                       </button>
                       <button
                         onClick={handleBillSubmit}
                         disabled={saving}
-                        className="flex-1 px-6 py-3 bg-gradient-to-r from-gold-600 to-gold-700 text-white rounded-lg font-work-sans font-semibold hover:from-gold-500 hover:to-gold-600 transition-smooth disabled:opacity-50"
+                        className="flex-1 px-6 py-3 bg-gradient-to-r from-navy-700 to-navy-800 text-white rounded-lg font-work-sans font-semibold hover:from-navy-700 hover:to-navy-700 transition-smooth disabled:opacity-50"
                       >
                         {saving ? "Adding Bill..." : "Add Bill"}
                       </button>
@@ -479,9 +596,10 @@ export default function BillsPage() {
                   </div>
                 )}
               </div>
-            </div>
-          </div>
+            </motion.div>
+          </motion.div>
         )}
+        </AnimatePresence>
       </DashboardLayout>
     </ProtectedRoute>
   );

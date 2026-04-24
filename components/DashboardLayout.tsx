@@ -26,6 +26,8 @@ import {
   User,
   HelpCircle,
   Shield,
+  TrendingUp,
+  MessageSquare,
 } from "lucide-react";
 
 interface NavItem {
@@ -40,8 +42,9 @@ const navItems: NavItem[] = [
   { name: "Accounts", href: "/dashboard/accounts", icon: <Wallet size={20} /> },
   { name: "Transfers", href: "/dashboard/transfers", icon: <Send size={20} /> },
   { name: "Cards", href: "/dashboard/cards", icon: <CreditCard size={20} /> },
-  { name: "Bills", href: "/dashboard/bills", icon: <Receipt size={20} /> },
-  { name: "Checks", href: "/dashboard/checks", icon: <FileText size={20} /> },
+  { name: "Trade", href: "/dashboard/trade", icon: <TrendingUp size={20} /> },
+  { name: "Checks & Bills", href: "/dashboard/checks-and-bills", icon: <Receipt size={20} /> },
+  { name: "Concierge", href: "/dashboard/concierge", icon: <MessageSquare size={20} /> },
   { name: "Settings", href: "/dashboard/settings", icon: <Settings size={20} /> },
   { name: "Admin", href: "/dashboard/admin", icon: <Shield size={20} />, adminOnly: true },
 ];
@@ -116,123 +119,120 @@ export default function DashboardLayout({ children }: { children: ReactNode }) {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-neutral-50 via-white to-neutral-100">
+    <div className="min-h-screen bg-light-50">
       {/* Top Navigation Bar */}
-      <nav className="fixed top-0 left-0 right-0 z-50 glass border-b shadow-lg shadow-neutral-900/10">
-        <div className="px-4 sm:px-6 lg:px-8">
-          <div className="flex items-center justify-between h-16 md:h-18">
+      <nav className="fixed top-0 left-0 right-0 z-50 bg-light-50/90 backdrop-blur-xl border-b border-light-200/80">
+        <div className="px-4 sm:px-6 lg:px-8 py-3">
+          <div className="max-w-7xl mx-auto flex items-center justify-between gap-3 rounded-[28px] border border-light-200/80 bg-white/90 shadow-[0_10px_40px_rgba(23,34,58,0.08)] px-3 sm:px-4 lg:px-5 py-3">
             {/* Logo */}
-            <Link href="/dashboard" className="flex items-center space-x-3 group relative">
-              <div className="relative w-10 h-10 transition-all duration-300 group-hover:scale-110 group-hover:rotate-[5deg]">
-                <Image
-                  src="/logos/emblem.png"
-                  alt="Concierge Bank"
-                  fill
-                  className="object-contain drop-shadow-lg"
-                  priority
-                />
+            <Link href="/dashboard" className="flex items-center gap-3 group shrink-0">
+              <div className="relative flex h-12 w-12 items-center justify-center rounded-2xl bg-gradient-to-br from-navy-900 via-navy-800 to-navy-700 shadow-[0_14px_30px_rgba(23,34,58,0.28)]">
+                <svg viewBox="0 0 40 40" className="w-7 h-7 transition-transform duration-300 group-hover:scale-110" aria-hidden>
+                  <path d="M20 4 L36 32 L28 32 L20 18 L12 32 L4 32 Z" fill="#2C3E5A" />
+                  <path d="M20 18 L28 32 L12 32 Z" fill="#354A68" />
+                </svg>
+                <div className="absolute inset-0 rounded-2xl bg-white/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
               </div>
-              <div className="hidden sm:block">
-                <span className="font-work-sans text-xl font-extrabold transition-all duration-200 text-neutral-900">
-                  Concierge<span className="text-gold-600 group-hover:text-gold-500">Bank</span>
+              <div className="hidden sm:flex flex-col">
+                <span className="font-work-sans text-xl lg:text-2xl font-extrabold text-navy-900 tracking-tight leading-none">
+                  Inv<span className="text-navy-700">Bank</span>
                 </span>
-                <div className="h-0.5 w-0 bg-gradient-to-r from-gold-500 to-transparent group-hover:w-full transition-all duration-300"></div>
+                <span className="text-[10px] font-work-sans font-semibold tracking-[0.18em] uppercase text-neutral-400 mt-1">
+                  Wealth cockpit
+                </span>
               </div>
             </Link>
 
-            {/* Desktop Navigation */}
-            <div className="hidden md:flex items-center space-x-1">
+            {/* Desktop Navigation - Futuristic Icon-First Style */}
+            <div className="hidden md:flex items-center gap-1.5 rounded-2xl border border-light-200 bg-light-50/80 p-1.5 shadow-inner">
               {navItems.filter(item => !item.adminOnly || user?.role === 'admin').map((item) => {
                 const isActive = pathname === item.href || pathname?.startsWith(item.href + '/');
                 return (
                   <Link
                     key={item.href}
                     href={item.href}
-                    className={`relative px-4 py-2.5 rounded-xl text-sm font-work-sans font-semibold transition-all duration-200 group ${
+                    className={`relative flex items-center gap-2 rounded-2xl px-3 lg:px-4 py-2.5 text-sm font-work-sans font-semibold transition-all duration-300 group ${
                       isActive
-                        ? "bg-gradient-to-br from-gold-500 to-gold-600 text-white shadow-lg shadow-gold-500/20"
-                        : "text-neutral-700 hover:bg-neutral-100 hover:text-neutral-900"
+                        ? "text-navy-950 bg-white shadow-sm"
+                        : "text-neutral-500 hover:text-navy-700 hover:bg-white/80"
                     }`}
                   >
-                    <span className="relative z-10 flex items-center space-x-2">
-                      {item.icon}
-                      <span>{item.name}</span>
-                      {item.adminOnly && (
-                        <div className="w-2 h-2 rounded-full bg-red-500 animate-pulse" />
-                      )}
+                    <span className={`flex h-9 w-9 items-center justify-center rounded-xl transition-all duration-300 ${
+                      isActive
+                        ? "bg-gradient-to-br from-navy-900 via-navy-800 to-navy-700 text-white shadow-[0_12px_24px_rgba(23,34,58,0.18)]"
+                        : "bg-light-100 text-neutral-500 group-hover:bg-navy-50 group-hover:text-navy-700"
+                    }`}>
+                        {item.icon}
                     </span>
-                    {isActive && (
-                      <div className="absolute inset-0 bg-white/10 rounded-xl animate-pulse"></div>
+                    {item.adminOnly && (
+                      <div className="w-1.5 h-1.5 rounded-full bg-red-500 animate-pulse" />
                     )}
-                    {!isActive && (
-                      <div className="absolute inset-0 bg-gradient-to-br from-gold-500/0 to-gold-600/0 group-hover:from-gold-500/10 group-hover:to-gold-600/10 rounded-xl transition-all duration-200"></div>
+                    {isActive && (
+                      <span className="absolute inset-x-3 -bottom-1 h-1 rounded-full bg-gradient-to-r from-navy-700 via-navy-500 to-sky-400" />
                     )}
                   </Link>
                 );
               })}
             </div>
 
-            {/* Right Section: Search, Notifications, User Menu */}
-            <div className="flex items-center space-x-2 sm:space-x-3">
+            {/* Right Section - Cleaner Icon-First Style */}
+            <div className="flex items-center gap-2 shrink-0">
               {/* Search Button (Desktop) */}
               <button
-                className="hidden lg:flex items-center space-x-2 px-3 py-2 bg-white/60 hover:bg-white border border-neutral-200/60 hover:border-gold-500/30 rounded-lg transition-all duration-200 group font-gruppo"
+                className="hidden lg:flex items-center gap-2 rounded-2xl border border-light-200 bg-light-50/80 px-3.5 py-2.5 text-neutral-500 hover:text-navy-700 hover:bg-white transition-all duration-300 group"
                 onClick={() => setSearchModalOpen(true)}
                 title="Search (⌘K)"
               >
-                <Search size={16} className="text-neutral-500 group-hover:text-gold-500 transition-colors" />
-                <span className="text-xs text-neutral-600 group-hover:text-neutral-700 font-gruppo">Search...</span>
-                <kbd className="hidden xl:inline-block px-1.5 py-0.5 text-[10px] font-mono bg-neutral-100 border border-neutral-300 rounded text-neutral-600">⌘K</kbd>
+                <Search size={18} className="transition-transform duration-300 group-hover:scale-110" />
+                <span className="text-xs font-work-sans font-semibold">Search</span>
+                <span className="rounded-lg bg-white px-2 py-1 text-[10px] text-neutral-400 border border-light-200">⌘K</span>
               </button>
 
               {/* Quick Search Icon (Tablet) */}
               <button
-                className="lg:hidden p-2 rounded-lg text-neutral-500 hover:bg-neutral-100 hover:text-gold-500 transition-all duration-200"
+                className="lg:hidden h-11 w-11 flex items-center justify-center rounded-2xl border border-light-200 bg-light-50/80 text-neutral-500 hover:text-navy-700 hover:bg-white transition-all duration-300"
                 onClick={() => setSearchModalOpen(true)}
                 title="Search"
               >
-                <Search size={20} />
+                <Search size={20} className="transition-transform duration-300 hover:scale-110" />
               </button>
 
               {/* Notifications */}
               <button
-                className="relative p-2 rounded-lg text-neutral-500 hover:bg-neutral-100 hover:text-gold-500 transition-all duration-200 group"
+                className="relative h-11 w-11 flex items-center justify-center rounded-2xl border border-light-200 bg-light-50/80 text-neutral-500 hover:text-navy-700 hover:bg-white transition-all duration-300 group"
                 onClick={() => router.push('/dashboard/notifications')}
                 title="Notifications"
               >
-                <Bell size={20} className="text-neutral-700 group-hover:text-neutral-900 group-hover:animate-wiggle" />
+                <Bell size={20} className="transition-transform duration-300 group-hover:scale-110 group-hover:rotate-12" />
                 {notificationCount > 0 && (
-                  <span className="absolute -top-1 -right-1 flex h-5 w-5 items-center justify-center">
-                    <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-gold-500 opacity-75"></span>
-                    <span className="relative inline-flex h-4 w-4 rounded-full bg-gold-500 text-[10px] font-bold text-white items-center justify-center">
+                  <span className="absolute -top-1 -right-1 flex h-5 w-5 items-center justify-center rounded-full bg-gradient-to-br from-navy-700 to-navy-900 text-[10px] font-bold text-white shadow-md">
                       {notificationCount}
-                    </span>
                   </span>
                 )}
               </button>
 
               {/* Help */}
               <button
-                className="hidden sm:block p-2.5 rounded-xl hover:bg-white/50 transition-all duration-200"
+                className="hidden sm:flex h-11 w-11 items-center justify-center rounded-2xl border border-light-200 bg-light-50/80 text-neutral-500 hover:text-navy-700 hover:bg-white transition-all duration-300"
                 title="Help & Support"
               >
-                <HelpCircle size={20} className="text-neutral-700 hover:text-neutral-900" />
+                <HelpCircle size={20} className="transition-transform duration-300 hover:scale-110" />
               </button>
 
-              {/* User Profile Dropdown */}
+              {/* User Profile Dropdown - Minimal Style */}
               <div ref={userMenuRef} className="hidden sm:block relative">
                 <button
                   onClick={() => setUserMenuOpen(!userMenuOpen)}
-                  className="flex items-center space-x-2 px-3 py-2 rounded-xl bg-white/40 hover:bg-white/60 border border-neutral-200/60 hover:border-gold-500/30 transition-all duration-200 group backdrop-blur-sm"
+                  className="flex items-center gap-2.5 rounded-2xl border border-light-200 bg-light-50/80 px-2.5 py-2 hover:bg-white transition-all duration-300 group"
                 >
-                  <div className="w-8 h-8 rounded-full bg-gradient-to-br from-gold-500 to-gold-600 flex items-center justify-center text-white font-bold text-sm shadow-lg">
+                  <div className="w-9 h-9 rounded-2xl bg-gradient-to-br from-navy-600 to-navy-800 flex items-center justify-center text-white font-bold text-sm shadow-sm transition-transform duration-300 group-hover:scale-105">
                     {user?.full_name?.charAt(0) || 'U'}
                   </div>
                   <div className="hidden lg:block text-left">
-                    <p className="text-sm font-work-sans font-bold text-neutral-900 leading-tight">{user?.full_name}</p>
-                    <p className="text-xs text-neutral-600 leading-tight font-gruppo">{user?.preferred_brand || 'Member'}</p>
+                    <p className="text-sm font-work-sans font-semibold text-neutral-900 leading-tight">{user?.full_name}</p>
+                    <p className="text-[10px] uppercase tracking-[0.14em] text-neutral-400 font-work-sans font-bold mt-0.5">Private access</p>
                   </div>
-                  <ChevronDown size={16} className={`text-neutral-600 transition-transform duration-200 ${userMenuOpen ? 'rotate-180' : ''}`} />
+                  <ChevronDown size={14} className={`text-neutral-400 transition-transform duration-300 ${userMenuOpen ? 'rotate-180' : ''}`} />
                 </button>
 
                 {/* Dropdown Menu - Animated */}
@@ -243,39 +243,40 @@ export default function DashboardLayout({ children }: { children: ReactNode }) {
                       initial="initial"
                       animate="animate"
                       exit="exit"
-                      className="absolute right-0 mt-2 w-56 glass rounded-xl shadow-2xl shadow-neutral-900/10 overflow-hidden z-50"
+                      className="absolute right-0 mt-3 w-72 bg-white rounded-[24px] shadow-[0_20px_60px_rgba(23,34,58,0.18)] border border-light-200 overflow-hidden z-50"
                     >
-                    <div className="p-3 border-b border-neutral-200/60 bg-neutral-50/50">
+                    <div className="p-4 border-b border-light-200 bg-gradient-to-br from-light-50 to-white">
+                      <p className="text-[11px] font-work-sans font-bold tracking-[0.14em] uppercase text-neutral-400 mb-1">Signed in as</p>
                       <p className="text-sm font-work-sans font-bold text-neutral-900">{user?.full_name}</p>
-                      <p className="text-xs text-neutral-600 truncate font-gruppo">{user?.email}</p>
+                      <p className="text-xs text-neutral-500 truncate font-gruppo mt-0.5">{user?.email}</p>
                     </div>
                     <div className="py-2">
                       <Link
                         href="/dashboard/settings"
-                        className="flex items-center space-x-3 px-4 py-2.5 text-sm text-neutral-700 hover:bg-neutral-50 hover:text-neutral-900 transition-colors font-work-sans font-medium"
+                        className="flex items-center gap-3 px-4 py-3 text-sm text-neutral-700 hover:bg-light-50 hover:text-navy-900 transition-colors font-work-sans font-semibold"
                         onClick={() => setUserMenuOpen(false)}
                       >
-                        <Settings size={16} />
+                        <Settings size={16} className="text-neutral-400" />
                         <span>Settings</span>
                       </Link>
                       <Link
                         href="/dashboard/profile"
-                        className="flex items-center space-x-3 px-4 py-2.5 text-sm text-neutral-700 hover:bg-neutral-50 hover:text-neutral-900 transition-colors font-work-sans font-medium"
+                        className="flex items-center gap-3 px-4 py-3 text-sm text-neutral-700 hover:bg-light-50 hover:text-navy-900 transition-colors font-work-sans font-semibold"
                         onClick={() => setUserMenuOpen(false)}
                       >
-                        <User size={16} />
+                        <User size={16} className="text-neutral-400" />
                         <span>Profile</span>
                       </Link>
                     </div>
-                    <div className="border-t border-neutral-200/60">
+                    <div className="border-t border-light-200">
                       <button
                         onClick={() => {
                           setUserMenuOpen(false);
                           handleLogout();
                         }}
-                        className="flex items-center space-x-3 px-4 py-2.5 text-sm text-red-400 hover:bg-red-500/10 hover:text-red-300 transition-colors w-full font-work-sans font-medium"
+                        className="flex items-center gap-3 px-4 py-3 text-sm text-red-600 hover:bg-red-50 hover:text-red-700 transition-colors w-full font-work-sans font-semibold"
                       >
-                        <LogOut size={16} />
+                        <LogOut size={16} className="text-red-400" />
                         <span>Logout</span>
                       </button>
                     </div>
@@ -287,7 +288,7 @@ export default function DashboardLayout({ children }: { children: ReactNode }) {
               {/* Mobile Menu Toggle */}
               <button
                 onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-                className="md:hidden p-2 rounded-lg text-neutral-500 hover:bg-neutral-100 transition-all duration-200"
+                className="md:hidden h-11 w-11 flex items-center justify-center rounded-2xl border border-light-200 bg-light-50/80 text-neutral-500 hover:bg-white hover:text-navy-900 transition-all duration-200"
                 aria-label="Toggle menu"
               >
                 {mobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
@@ -304,24 +305,24 @@ export default function DashboardLayout({ children }: { children: ReactNode }) {
               initial="initial"
               animate="animate"
               exit="exit"
-              className="md:hidden border-t border-neutral-200/60 glass"
+              className="md:hidden border-t border-light-200 bg-white/95 backdrop-blur-xl"
             >
             {/* Mobile User Info */}
-            <div className="px-4 py-4 border-b border-neutral-200/60 bg-neutral-50">
+            <div className="px-4 py-4 border-b border-light-200 bg-gradient-to-br from-light-50 to-white">
               <div className="flex items-center space-x-3">
-                <div className="w-12 h-12 rounded-full bg-gradient-to-br from-gold-500 to-gold-600 flex items-center justify-center text-white font-bold text-lg shadow-lg">
+                <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-navy-700 to-navy-900 flex items-center justify-center text-white font-bold text-lg shadow-sm">
                   {user?.full_name?.charAt(0) || 'U'}
                 </div>
                 <div className="flex-1 min-w-0">
                   <p className="text-sm font-work-sans font-bold text-neutral-900 truncate">{user?.full_name}</p>
                   <p className="text-xs text-neutral-600 truncate font-gruppo">{user?.email}</p>
-                  <p className="text-xs text-gold-600 mt-0.5 font-gruppo">{user?.preferred_brand || 'Member'}</p>
+                  <p className="text-xs text-navy-700 mt-0.5 font-gruppo">{user?.preferred_brand || 'Member'}</p>
                 </div>
               </div>
             </div>
 
             {/* Mobile Navigation */}
-            <div className="px-4 py-4 space-y-1">
+            <div className="px-4 py-4 grid grid-cols-2 gap-2">
               {navItems.filter(item => !item.adminOnly || user?.role === 'admin').map((item) => {
                 const isActive = pathname === item.href || pathname?.startsWith(item.href + '/');
                 return (
@@ -329,15 +330,19 @@ export default function DashboardLayout({ children }: { children: ReactNode }) {
                     key={item.href}
                     href={item.href}
                     onClick={() => setMobileMenuOpen(false)}
-                    className={`flex items-center space-x-3 px-4 py-3 rounded-xl text-sm font-work-sans font-semibold transition-all duration-200 ${
+                    className={`flex items-center gap-3 px-4 py-3.5 rounded-2xl text-sm font-work-sans font-semibold transition-all duration-200 ${
                       isActive
-                        ? "bg-gradient-to-br from-gold-500 to-gold-600 text-white shadow-lg"
-                        : "text-neutral-700 hover:bg-neutral-100 hover:text-neutral-900 active:scale-95"
+                        ? "bg-gradient-to-br from-navy-900 via-navy-800 to-navy-700 text-white shadow-md"
+                        : "border border-light-200 bg-light-50 text-neutral-700 hover:bg-white hover:text-navy-900 active:scale-95"
                     }`}
                   >
-                    <div className={`${isActive ? "" : "text-neutral-500"} flex items-center space-x-2`}>
+                    <div className={`h-9 w-9 rounded-xl flex items-center justify-center ${
+                      isActive ? "bg-white/10 text-white" : "bg-white text-neutral-500"
+                    }`}>
                       {item.icon}
-                      <span>{item.name}</span>
+                    </div>
+                    <div className="flex items-center gap-2 min-w-0">
+                      <span className="truncate">{item.name}</span>
                       {item.adminOnly && (
                         <div className="w-2 h-2 rounded-full bg-red-500 animate-pulse" />
                       )}
@@ -348,26 +353,26 @@ export default function DashboardLayout({ children }: { children: ReactNode }) {
             </div>
 
             {/* Mobile Quick Actions */}
-            <div className="px-4 py-3 border-t border-neutral-200/60 space-y-1">
+            <div className="px-4 py-3 border-t border-light-200 space-y-1">
               <button
                 onClick={() => {
                   setMobileMenuOpen(false);
                   router.push('/dashboard/notifications');
                 }}
-                className="flex items-center justify-between w-full px-4 py-2.5 rounded-lg text-sm text-neutral-700 hover:bg-neutral-100 hover:text-neutral-900 transition-colors"
+                className="flex items-center justify-between w-full px-4 py-3 rounded-2xl border border-light-200 bg-light-50 text-sm text-neutral-700 hover:bg-white hover:text-navy-900 transition-colors"
               >
                 <div className="flex items-center space-x-3">
                   <Bell size={18} />
                   <span>Notifications</span>
                 </div>
                 {notificationCount > 0 && (
-                  <span className="px-2 py-0.5 bg-gold-500 text-white text-xs font-bold rounded-full">
+                  <span className="px-2 py-0.5 bg-navy-700 text-white text-xs font-bold rounded-full">
                     {notificationCount}
                   </span>
                 )}
               </button>
               <button
-                className="flex items-center space-x-3 w-full px-4 py-2.5 rounded-lg text-sm text-neutral-700 hover:bg-neutral-100 hover:text-neutral-900 transition-colors"
+                className="flex items-center space-x-3 w-full px-4 py-3 rounded-2xl border border-light-200 bg-light-50 text-sm text-neutral-700 hover:bg-white hover:text-navy-900 transition-colors"
               >
                 <HelpCircle size={18} />
                 <span>Help & Support</span>
@@ -375,13 +380,13 @@ export default function DashboardLayout({ children }: { children: ReactNode }) {
             </div>
 
             {/* Mobile Logout */}
-            <div className="px-4 py-3 border-t border-neutral-200/60">
+            <div className="px-4 py-3 border-t border-light-200">
               <button
                 onClick={() => {
                   setMobileMenuOpen(false);
                   handleLogout();
                 }}
-                className="flex items-center space-x-3 w-full px-4 py-2.5 rounded-lg text-sm text-red-600 hover:bg-red-50 hover:text-red-700 transition-colors"
+                className="flex items-center space-x-3 w-full px-4 py-3 rounded-2xl border border-red-100 bg-red-50/60 text-sm text-red-600 hover:bg-red-50 hover:text-red-700 transition-colors"
               >
                 <LogOut size={18} />
                 <span>Logout</span>
@@ -399,30 +404,27 @@ export default function DashboardLayout({ children }: { children: ReactNode }) {
       />
 
       {/* Main Content */}
-      <main className="pt-16 pb-24 md:pb-8">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 sm:py-8">
+      <main className="pt-28 pb-24 md:pb-8 bg-light-50">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8">
           {children}
         </div>
       </main>
 
       {/* Bottom Navigation (Mobile) - Modernized */}
-      <nav className="fixed bottom-0 left-0 right-0 z-50 md:hidden glass border-t border-neutral-200/60 safe-area-inset-bottom shadow-lg">
-        <div className="grid grid-cols-5 gap-0.5 px-1 py-2 pb-safe">
+      <nav className="fixed bottom-0 left-0 right-0 z-50 md:hidden bg-white/95 border-t border-light-200 safe-area-inset-bottom shadow-[0_-10px_40px_rgba(23,34,58,0.08)] backdrop-blur-xl">
+        <div className="grid grid-cols-5 gap-1 px-2 py-2.5 pb-safe">
           {navItems.filter(item => !item.adminOnly || user?.role === 'admin').slice(0, 5).map((item) => (
             <Link
               key={item.href}
               href={item.href}
-              className={`flex flex-col items-center justify-center py-3 px-2 rounded-xl text-[10px] sm:text-xs font-medium transition-all active:scale-95 ${
+              className={`flex flex-col items-center justify-center py-2.5 px-2 rounded-2xl text-[10px] sm:text-xs font-medium transition-all active:scale-95 ${
                 pathname === item.href
-                  ? "text-gold-600 bg-gold-500/10"
-                  : "text-neutral-600 hover:text-neutral-900 active:bg-neutral-100"
+                  ? "text-navy-900 bg-light-50 border border-light-200"
+                  : "text-neutral-600 hover:text-navy-900 active:bg-light-100"
               }`}
             >
-              <div className={`mb-1 ${pathname === item.href ? "scale-110" : ""} flex items-center space-x-1`}>
+              <div className={`mb-1 h-8 w-8 rounded-xl flex items-center justify-center ${pathname === item.href ? "bg-gradient-to-br from-navy-900 to-navy-700 text-white scale-110" : "bg-light-100 text-neutral-500"}`}>
                 {item.icon}
-                {item.adminOnly && (
-                  <div className="w-1.5 h-1.5 rounded-full bg-red-500 animate-pulse" />
-                )}
               </div>
               <span className="leading-tight">{item.name}</span>
             </Link>

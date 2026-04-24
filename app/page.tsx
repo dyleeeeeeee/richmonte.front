@@ -1,484 +1,407 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useState, FormEvent } from "react";
 import Link from "next/link";
-import CanvasScene from "@/components/CanvasScene";
+import { useRouter } from "next/navigation";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
-import ScrollSection from "@/components/ScrollSection";
-import TrustBadges from "@/components/TrustBadges";
-import { gsap } from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
+import BrandSlider from "@/components/BrandSlider";
+import { useAuth } from "@/contexts/AuthContext";
 import {
-  Shield,
-  Lock,
-  Zap,
-  Globe,
-  Phone,
+  Bell,
+  Send,
+  ShieldCheck,
+  PieChart,
   ArrowRight,
-  CheckCircle2,
-  Star,
-  TrendingUp,
-  Users,
-  Award,
+  User as UserIcon,
+  Lock,
+  ChevronRight,
+  Briefcase,
+  Lightbulb,
   CreditCard,
-  Building2,
-  Wallet,
-  BarChart3,
-  HeadphonesIcon,
 } from "lucide-react";
 
-if (typeof window !== "undefined") {
-  gsap.registerPlugin(ScrollTrigger);
-}
-
-const stats = [
-  { value: "$2.4T", label: "Assets Under Management" },
-  { value: "180+", label: "Countries Served" },
-  { value: "125K+", label: "Private Clients" },
-  { value: "Since 1988", label: "Swiss Heritage" },
+// ─── Static content ────────────────────────────────────────────────────────
+const PATHS = [
+  { label: "Personal Banking", icon: <UserIcon size={16} />, href: "/#accounts" },
+  { label: "Business Growth", icon: <Briefcase size={16} />, href: "/#business" },
+  { label: "Financial Advice", icon: <Lightbulb size={16} />, href: "/wealth-management" },
 ];
 
-const cardTiers = [
+const TOOLS = [
   {
-    tier: "Gold",
-    tagline: "Your gateway to Maison privileges",
-    limit: "$50,000",
-    apr: "16.99%–22.99% Variable APR",
-    rewards: "2x points on Maison purchases",
-    annualFee: "$295 Annual Fee",
-    highlight: false,
-    features: [
-      "Worldwide acceptance at 50M+ merchants",
-      "2% Maison Returns on all purchases",
-      "Travel accident & delay insurance",
-      "Zero foreign transaction fees",
-      "24/7 concierge assistance",
-    ],
+    icon: <Bell className="w-5 h-5 text-navy-700" />,
+    title: "Real-time Alerts",
+    desc: "Stay informed instantly.",
   },
   {
-    tier: "Platinum",
-    tagline: "Reserved for the distinguished few",
-    limit: "$250,000",
-    apr: "14.99%–19.99% Variable APR",
-    rewards: "4x points on luxury & travel",
-    annualFee: "$895 Annual Fee",
-    highlight: true,
-    features: [
-      "Priority Pass™ airport lounge access",
-      "4% Maison Returns on all purchases",
-      "Geneva Concierge — 24/7 dedicated advisor",
-      "Global travel & emergency assistance",
-      "Exclusive event pre-sale access",
-    ],
-  },
-  {
-    tier: "Black",
-    tagline: "By invitation. Without limits.",
-    limit: "Unlimited",
-    apr: "12.99% Variable APR",
-    rewards: "8x points — Maison tier",
-    annualFee: "$2,500 Annual Fee",
-    highlight: false,
-    features: [
-      "Private aviation access & upgrades",
-      "8% Maison Privileges on all spend",
-      "Dedicated personal attaché",
-      "Estate & art acquisition advisory",
-      "Invitation-only Richemont events",
-    ],
-  },
-];
-
-const whyUs = [
-  {
-    icon: <Shield className="w-7 h-7 text-gold-600" />,
-    title: "FDIC Insured Up to $250,000",
-    desc: "Your deposits are protected by the Federal Deposit Insurance Corporation — the same guarantee trusted by millions of Americans.",
-  },
-  {
-    icon: <Lock className="w-7 h-7 text-gold-600" />,
-    title: "Swiss-Grade Security",
-    desc: "256-bit AES encryption, biometric authentication, and real-time fraud monitoring modeled on FINMA standards.",
-  },
-  {
-    icon: <Zap className="w-7 h-7 text-gold-600" />,
+    icon: <Send className="w-5 h-5 text-navy-700" />,
     title: "Instant Transfers",
-    desc: "Move funds between accounts in seconds. External wires clear in 1–3 business days with zero transfer fees.",
+    desc: "Move money effortlessly.",
   },
   {
-    icon: <HeadphonesIcon className="w-7 h-7 text-gold-600" />,
-    title: "24/7 Private Banking Line",
-    desc: "Reach a dedicated relationship manager any time, day or night. No queues, no bots — just your personal advisor.",
+    icon: <ShieldCheck className="w-5 h-5 text-navy-700" />,
+    title: "Credit Monitoring",
+    desc: "Track your score easily.",
   },
   {
-    icon: <Globe className="w-7 h-7 text-gold-600" />,
-    title: "Global Acceptance",
-    desc: "Accepted in 180+ countries. Multi-currency accounts with real-time exchange rates. Zero foreign transaction fees.",
-  },
-  {
-    icon: <TrendingUp className="w-7 h-7 text-gold-600" />,
-    title: "Elite Returns",
-    desc: "Industry-leading APY on savings accounts. Priority access to exclusive investment vehicles not available to retail clients.",
+    icon: <PieChart className="w-5 h-5 text-navy-700" />,
+    title: "Smart Budgeting",
+    desc: "Manage finances better.",
   },
 ];
 
-const services = [
-  { icon: <Wallet className="w-6 h-6" />, name: "Checking & Savings", desc: "High-yield accounts with no monthly minimums" },
-  { icon: <CreditCard className="w-6 h-6" />, name: "Elite Credit Cards", desc: "Maison-tier rewards and unlimited travel perks" },
-  { icon: <BarChart3 className="w-6 h-6" />, name: "Wealth Management", desc: "Bespoke portfolio curation from Geneva advisors" },
-  { icon: <Building2 className="w-6 h-6" />, name: "Private Banking", desc: "Discreet, relationship-first banking at scale" },
-  { icon: <Globe className="w-6 h-6" />, name: "International Wires", desc: "SWIFT transfers to 180+ countries, same day" },
-  { icon: <Award className="w-6 h-6" />, name: "Maison Privileges", desc: "Cartier, Van Cleef & Arpels acquisition advisory" },
-];
+// ─── Inline sign-in (hero card) ────────────────────────────────────────────
+function InlineSignIn() {
+  const router = useRouter();
+  const { login } = useAuth();
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [remember, setRemember] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
-export default function Home() {
-  const heroRef = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    const ctx = gsap.context(() => {
-      gsap.from(".hero-eyebrow", { opacity: 0, y: 20, duration: 0.7, ease: "power3.out", delay: 0.2 });
-      gsap.from(".hero-heading", { opacity: 0, y: 40, duration: 0.9, ease: "power4.out", delay: 0.4 });
-      gsap.from(".hero-sub", { opacity: 0, y: 24, duration: 0.8, ease: "power3.out", delay: 0.7 });
-      gsap.from(".hero-ctas", { opacity: 0, y: 20, duration: 0.7, ease: "power3.out", delay: 0.95 });
-      gsap.from(".hero-trust", { opacity: 0, y: 16, duration: 0.6, ease: "power3.out", delay: 1.1 });
-    }, heroRef);
-    return () => ctx.revert();
-  }, []);
+  const handleSubmit = async (e: FormEvent) => {
+    e.preventDefault();
+    setError(null);
+    setLoading(true);
+    try {
+      await login(email, password);
+      router.push("/dashboard");
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Sign in failed");
+    } finally {
+      setLoading(false);
+    }
+  };
 
   return (
-    <>
-      <CanvasScene />
-      <Navbar />
+    <form
+      onSubmit={handleSubmit}
+      className="bg-white border border-neutral-200 rounded-xl shadow-sm p-5 md:p-6 grid grid-cols-1 md:grid-cols-12 gap-4 md:gap-3 md:items-end"
+    >
+      {/* Username */}
+      <div className="md:col-span-4 flex flex-col gap-1.5">
+        <label htmlFor="hero-email" className="text-xs font-semibold text-neutral-700">
+          Username
+        </label>
+        <div className="relative">
+          <UserIcon
+            size={14}
+            className="absolute left-3 top-1/2 -translate-y-1/2 text-neutral-400"
+          />
+          <input
+            id="hero-email"
+            type="email"
+            autoComplete="username"
+            required
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            className="w-full pl-9 pr-3 py-2.5 border border-neutral-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-navy-600 focus:border-navy-600 transition"
+            placeholder="you@invbank.us"
+          />
+        </div>
+      </div>
 
-      <main className="relative z-10">
+      {/* Password */}
+      <div className="md:col-span-4 flex flex-col gap-1.5">
+        <label htmlFor="hero-password" className="text-xs font-semibold text-neutral-700">
+          Password
+        </label>
+        <div className="relative">
+          <Lock
+            size={14}
+            className="absolute left-3 top-1/2 -translate-y-1/2 text-neutral-400"
+          />
+          <input
+            id="hero-password"
+            type="password"
+            autoComplete="current-password"
+            required
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            className="w-full pl-9 pr-3 py-2.5 border border-neutral-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-navy-600 focus:border-navy-600 transition"
+            placeholder="••••••••"
+          />
+        </div>
+      </div>
 
-        {/* ─── HERO ─── */}
-        <section
-          ref={heroRef}
-          className="relative min-h-screen flex items-center pt-24 md:pt-32 pb-16 px-6 sm:px-8"
+      {/* Sign in button */}
+      <div className="md:col-span-4 flex flex-col gap-1.5">
+        <button
+          type="submit"
+          disabled={loading}
+          className="w-full py-2.5 bg-navy-700 hover:bg-navy-800 disabled:opacity-60 text-white text-sm font-bold rounded-lg shadow-sm transition"
         >
-          <div className="container mx-auto max-w-6xl grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
-            <div className="max-w-xl lg:max-w-none">
-              {/* Eyebrow */}
-              <div className="hero-eyebrow inline-flex items-center space-x-2 px-4 py-2 bg-gold-50 border border-gold-200/70 rounded-full mb-8">
-                <span className="w-1.5 h-1.5 rounded-full bg-gold-500 animate-pulse" />
-                <span className="text-xs font-work-sans font-bold tracking-widest uppercase text-gold-700">
-                  A Compagnie Financière Richemont SA Company
+          {loading ? "Signing in…" : "Sign In"}
+        </button>
+        <Link
+          href="/register"
+          className="text-xs text-navy-700 hover:underline text-center md:text-right"
+        >
+          Set up online access
+        </Link>
+      </div>
+
+      {/* Secondary row: remember + forgot */}
+      <div className="md:col-span-12 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 text-xs text-neutral-600">
+        <label className="inline-flex items-center gap-2 cursor-pointer select-none">
+          <input
+            type="checkbox"
+            checked={remember}
+            onChange={(e) => setRemember(e.target.checked)}
+            className="w-3.5 h-3.5 accent-navy-700"
+          />
+          <span>Remember me</span>
+        </label>
+        <Link href="/login" className="text-navy-700 hover:underline">
+          Forgot username or password?
+        </Link>
+      </div>
+
+      {error && (
+        <p
+          role="alert"
+          className="md:col-span-12 text-xs text-red-600 bg-red-50 border border-red-200 rounded-md px-3 py-2"
+        >
+          {error}
+        </p>
+      )}
+    </form>
+  );
+}
+
+// ─── Stylized phone mockup (SVG) for "Next-Gen Digital Tools" section ─────
+function PhoneMockup() {
+  return (
+    <div className="relative mx-auto w-[240px] md:w-[260px]">
+      <div className="rounded-[40px] bg-neutral-900 p-2 shadow-2xl shadow-navy-900/20">
+        <div className="rounded-[32px] bg-gradient-to-b from-navy-700 to-navy-900 overflow-hidden aspect-[9/19] flex flex-col">
+          {/* Notch */}
+          <div className="mx-auto mt-2 w-24 h-5 bg-neutral-900 rounded-b-2xl" />
+
+          {/* App header */}
+          <div className="px-4 pt-4 pb-3 flex items-center justify-between">
+            <svg viewBox="0 0 40 40" className="w-5 h-5" aria-hidden>
+              <path d="M20 4 L36 32 L28 32 L20 18 L12 32 L4 32 Z" fill="#FFFFFF" />
+            </svg>
+            <span className="text-[10px] font-bold text-white/80 tracking-wide">InvBank</span>
+            <CreditCard size={12} className="text-white/70" />
+          </div>
+
+          {/* Balance */}
+          <div className="px-4">
+            <p className="text-[9px] uppercase tracking-widest text-white/60 font-semibold">
+              Account Overview
+            </p>
+            <p className="text-white font-extrabold text-xl mt-0.5">$71,625.00</p>
+          </div>
+
+          {/* Account list */}
+          <div className="mt-3 flex-1 bg-white rounded-t-2xl px-3 py-3 space-y-2 overflow-hidden">
+            <p className="text-[9px] font-bold tracking-wide uppercase text-neutral-500 px-1">
+              Accounts
+            </p>
+            {[
+              { name: "Credit Horizon", v: "-$312.30", neg: true },
+              { name: "Ambition Checking", v: "$12,984.22" },
+              { name: "Growth Savings", v: "$36,120.50" },
+              { name: "Emergency Fund", v: "$8,432.10" },
+              { name: "Roth IRA", v: "$13,988.18" },
+            ].map((row) => (
+              <div
+                key={row.name}
+                className="flex items-center justify-between px-2 py-1.5 rounded-lg bg-neutral-50 border border-neutral-100"
+              >
+                <span className="text-[10px] font-semibold text-neutral-700">{row.name}</span>
+                <span
+                  className={`text-[10px] font-mono font-bold ${
+                    row.neg ? "text-red-500" : "text-neutral-900"
+                  }`}
+                >
+                  {row.v}
                 </span>
               </div>
+            ))}
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
 
-              {/* Headline */}
-              <h1 className="hero-heading font-work-sans font-extrabold tracking-tight text-neutral-900 mb-6 leading-[1.05]">
-                <span className="block text-5xl sm:text-6xl md:text-7xl">Banking forged</span>
-                <span className="block text-5xl sm:text-6xl md:text-7xl">in Swiss precision.</span>
-                <span className="block gradient-text text-5xl sm:text-6xl md:text-7xl mt-1">Refined for you.</span>
+// ─── Main page ─────────────────────────────────────────────────────────────
+export default function Home() {
+  return (
+    <>
+      <Navbar />
+
+      <main className="relative bg-light-100 text-neutral-900">
+        {/* Spacer for fixed navbar (FDIC + utility + nav ≈ 56 + ~64 = 120px) */}
+        <div className="pt-[120px] md:pt-[148px]" />
+
+        {/* ─── HERO ─── */}
+        <section className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-6xl">
+          {/* Inline sign-in */}
+          <InlineSignIn />
+
+          {/* Hero card */}
+          <div
+            className="mt-6 rounded-2xl overflow-hidden relative shadow-sm border border-light-300"
+            style={{
+              // Navy overlay tuned to the Apex reference — desaturated steel-blue
+              backgroundImage:
+                "linear-gradient(100deg, rgba(23,34,58,0.85) 0%, rgba(33,48,72,0.55) 45%, rgba(33,48,72,0.0) 70%), url('https://images.unsplash.com/photo-1521791136064-7986c2920216?auto=format&fit=crop&w=1600&q=80')",
+              backgroundSize: "cover",
+              backgroundPosition: "center right",
+            }}
+          >
+            <div className="py-16 sm:py-20 md:py-28 px-6 sm:px-10 md:px-14 max-w-xl">
+              <h1 className="text-4xl sm:text-5xl md:text-6xl font-extrabold tracking-tight text-white leading-[1.05]">
+                Banking Built for
+                <br />
+                Your Ambition
               </h1>
-
-              {/* Sub */}
-              <p className="hero-sub text-lg sm:text-xl text-neutral-600 max-w-2xl leading-relaxed font-gruppo mb-10">
-                Concierge Bank brings the heritage of Maison Richemont to private banking in America — FDIC-insured accounts, elite credit cards, and a dedicated relationship manager, all in one platform.
+              <p className="mt-5 text-sm sm:text-base text-white/85 font-gruppo max-w-md leading-relaxed">
+                Plus, enjoy no monthly fees, no maintenance fees and no overdraft fees.
               </p>
+              <Link
+                href="/register"
+                className="mt-7 inline-flex items-center gap-2 px-6 py-3 bg-navy-900 hover:bg-navy-800 text-white text-sm font-bold rounded-full shadow-lg shadow-navy-950/40 transition"
+              >
+                Explore Accounts
+                <ArrowRight size={15} />
+              </Link>
+            </div>
+          </div>
+        </section>
 
-              {/* CTAs */}
-              <div className="hero-ctas flex flex-col sm:flex-row items-start sm:items-center gap-4 mb-12">
-                <Link
-                  href="/register"
-                  className="inline-flex items-center space-x-2 px-8 py-4 bg-gradient-to-r from-gold-600 to-gold-700 hover:from-gold-500 hover:to-gold-600 text-white font-work-sans font-bold text-base rounded-xl shadow-xl shadow-gold-500/25 hover:shadow-2xl hover:shadow-gold-500/30 transition-all duration-300 hover:-translate-y-0.5"
-                >
-                  <span>Open an Account</span>
-                  <ArrowRight size={18} />
-                </Link>
-                <Link
-                  href="/login"
-                  className="inline-flex items-center space-x-2 px-8 py-4 bg-white hover:bg-neutral-50 text-neutral-800 font-work-sans font-semibold text-base rounded-xl border border-neutral-200 hover:border-gold-300 transition-all duration-300 shadow-sm"
-                >
-                  <span>Sign In to My Account</span>
-                </Link>
+        {/* ─── CHOOSE A PATH ─── */}
+        <section id="accounts" className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-6xl pt-14 pb-16">
+          <div className="flex items-center gap-2 mb-5">
+            <h2 className="text-sm font-bold tracking-[0.2em] uppercase text-neutral-700">
+              Choose a Path
+            </h2>
+            <ChevronRight size={16} className="text-neutral-500" />
+          </div>
+          <div className="flex flex-wrap gap-3">
+            {PATHS.map((p) => (
+              <Link
+                key={p.label}
+                href={p.href}
+                className="inline-flex items-center gap-2 px-5 py-2.5 bg-navy-700 hover:bg-navy-800 text-white text-sm font-semibold rounded-full shadow-sm transition"
+              >
+                <span className="opacity-80">{p.icon}</span>
+                <span>{p.label}</span>
+              </Link>
+            ))}
+          </div>
+        </section>
+
+        {/* ─── NEXT-GEN DIGITAL TOOLS ─── */}
+        <section
+          id="tools"
+          className="bg-white border-y border-neutral-100 py-20 md:py-24"
+        >
+          <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-5xl">
+            <h2 className="text-center text-xs sm:text-sm font-bold tracking-[0.25em] uppercase text-neutral-800 mb-12">
+              Next-Gen Digital Tools
+            </h2>
+
+            <div className="grid grid-cols-1 md:grid-cols-[1fr_auto_1fr] items-center gap-10 md:gap-14">
+              {/* Left features */}
+              <div className="flex flex-col gap-10 order-2 md:order-1">
+                {[TOOLS[0], TOOLS[1]].map((t) => (
+                  <div key={t.title} className="flex items-start gap-4">
+                    <div className="w-11 h-11 rounded-full bg-neutral-100 flex items-center justify-center flex-shrink-0">
+                      {t.icon}
+                    </div>
+                    <div>
+                      <p className="text-sm font-bold text-neutral-900">{t.title}:</p>
+                      <p className="text-sm text-neutral-600 font-gruppo">{t.desc}</p>
+                    </div>
+                  </div>
+                ))}
               </div>
 
-              {/* Inline trust signals */}
-              <div className="hero-trust flex flex-wrap items-center gap-x-6 gap-y-2">
-                {["FDIC Insured", "FINMA Regulated", "PCI DSS Level 1", "256-bit Encryption"].map((t) => (
-                  <span key={t} className="flex items-center space-x-1.5 text-sm text-neutral-500 font-gruppo">
-                    <CheckCircle2 size={14} className="text-gold-500 flex-shrink-0" />
-                    <span>{t}</span>
-                  </span>
+              {/* Phone */}
+              <div className="order-1 md:order-2">
+                <PhoneMockup />
+              </div>
+
+              {/* Right features */}
+              <div className="flex flex-col gap-10 order-3">
+                {[TOOLS[2], TOOLS[3]].map((t) => (
+                  <div key={t.title} className="flex items-start gap-4">
+                    <div className="w-11 h-11 rounded-full bg-neutral-100 flex items-center justify-center flex-shrink-0">
+                      {t.icon}
+                    </div>
+                    <div>
+                      <p className="text-sm font-bold text-neutral-900">{t.title}:</p>
+                      <p className="text-sm text-neutral-600 font-gruppo">{t.desc}</p>
+                    </div>
+                  </div>
                 ))}
               </div>
             </div>
-
-            {/* Right column — intentionally empty so the particle globe shows through */}
-            <div className="hidden lg:block" aria-hidden="true" />
           </div>
         </section>
 
-        {/* ─── STATS BAR ─── */}
-        <section className="relative z-10 bg-neutral-900 py-10">
-          <div className="container mx-auto px-6 sm:px-8">
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
-              {stats.map((s, i) => (
-                <div key={i} className="text-center">
-                  <p className="text-3xl md:text-4xl font-work-sans font-extrabold gradient-text mb-1">{s.value}</p>
-                  <p className="text-sm text-neutral-400 font-gruppo tracking-wide">{s.label}</p>
-                </div>
-              ))}
-            </div>
-          </div>
+        {/* ─── BRAND SLIDER (ported from landing-page/slider.*) ─── */}
+        <section id="experience">
+          <BrandSlider />
         </section>
 
-        {/* ─── ABOUT ─── */}
-        <ScrollSection className="section-padding" animationType="fade" id="about">
-          <div className="container mx-auto px-6 max-w-6xl">
-            <div className="grid md:grid-cols-2 gap-16 items-center">
-              <div>
-                <div className="inline-flex items-center space-x-2 px-3 py-1.5 bg-gold-50 border border-gold-200/60 rounded-full mb-6">
-                  <span className="text-xs font-work-sans font-bold tracking-widest uppercase text-gold-700">Our Heritage</span>
-                </div>
-                <h2 className="text-4xl md:text-5xl font-work-sans font-extrabold text-neutral-900 tracking-tight mb-6 leading-tight">
-                  Swiss precision.<br />
-                  <span className="gradient-text">Maison craftsmanship.</span>
-                </h2>
-                <p className="text-neutral-600 text-lg leading-relaxed font-gruppo mb-6">
-                  Born from the heritage of <strong className="text-neutral-900 font-work-sans">Compagnie Financière Richemont SA</strong>, Concierge Bank serves those who appreciate life&apos;s finest pursuits — the financial architects for clients of Cartier, Van Cleef &amp; Arpels, and every distinguished Maison.
+        {/* ─── CARDS CTA ─── */}
+        <section
+          id="cards"
+          className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-6xl py-20 bg-light-100"
+        >
+          <div className="grid md:grid-cols-3 gap-6">
+            {[
+              {
+                title: "Everyday Checking",
+                desc: "Zero monthly fees. Mobile-first. FDIC insured to $250,000.",
+                href: "/register",
+                cta: "Open Checking",
+              },
+              {
+                title: "Ambition Credit Card",
+                desc: "2% cash back on everything. No annual fee. Build your credit.",
+                href: "/#cards",
+                cta: "Apply Now",
+              },
+              {
+                title: "Invest & Trade",
+                desc: "Commission-free stocks, ETFs and crypto. Real-time market data.",
+                href: "/dashboard/trade",
+                cta: "Start Trading",
+              },
+            ].map((c) => (
+              <div
+                key={c.title}
+                className="p-7 bg-light-50 border border-light-300 rounded-2xl hover:border-navy-400 hover:shadow-md transition-all duration-300"
+              >
+                <h3 className="font-work-sans font-bold text-lg text-neutral-900 mb-2">
+                  {c.title}
+                </h3>
+                <p className="text-sm text-neutral-600 font-gruppo leading-relaxed mb-5">
+                  {c.desc}
                 </p>
-                <p className="text-neutral-600 text-lg leading-relaxed font-gruppo mb-8">
-                  With Swiss precision and Maison craftsmanship, we curate wealth experiences as meticulously as our sister houses craft their masterpieces. Private banking for the connoisseur — discreet, refined, uncompromising.
-                </p>
-                <Link href="/about" className="inline-flex items-center space-x-2 text-gold-700 font-work-sans font-semibold hover:text-gold-600 transition-colors group">
-                  <span>Learn about our story</span>
-                  <ArrowRight size={16} className="group-hover:translate-x-1 transition-transform" />
+                <Link
+                  href={c.href}
+                  className="inline-flex items-center gap-1.5 text-sm font-bold text-navy-700 hover:text-navy-800 group"
+                >
+                  {c.cta}
+                  <ArrowRight
+                    size={14}
+                    className="group-hover:translate-x-0.5 transition-transform"
+                  />
                 </Link>
               </div>
-              <div className="space-y-4">
-                <div className="py-8">
-                  <TrustBadges variant="compact" />
-                </div>
-                <div className="grid grid-cols-2 gap-4">
-                  {[
-                    { icon: <Users className="w-5 h-5 text-gold-600" />, label: "125,000+", sub: "Private Clients" },
-                    { icon: <Star className="w-5 h-5 text-gold-600" />, label: "4.9 / 5.0", sub: "Client Satisfaction" },
-                    { icon: <Award className="w-5 h-5 text-gold-600" />, label: "#1 Ranked", sub: "Private Bank USA 2024" },
-                    { icon: <Globe className="w-5 h-5 text-gold-600" />, label: "180+ Nations", sub: "Global Network" },
-                  ].map((item, i) => (
-                    <div key={i} className="p-5 bg-white border border-neutral-100 rounded-2xl shadow-sm hover:shadow-md hover:border-gold-200 transition-all duration-300">
-                      <div className="w-9 h-9 rounded-xl bg-gold-50 flex items-center justify-center mb-3">{item.icon}</div>
-                      <p className="font-work-sans font-extrabold text-neutral-900 text-lg">{item.label}</p>
-                      <p className="text-xs text-neutral-500 font-gruppo">{item.sub}</p>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            </div>
+            ))}
           </div>
-        </ScrollSection>
-
-        {/* ─── SERVICES GRID ─── */}
-        <ScrollSection
-          className="section-padding bg-gradient-to-b from-neutral-50 to-white"
-          animationType="fade"
-          id="services"
-        >
-          <div className="container mx-auto px-6 sm:px-8 max-w-6xl">
-            <div className="text-center mb-16">
-              <div className="inline-flex items-center space-x-2 px-3 py-1.5 bg-gold-50 border border-gold-200/60 rounded-full mb-5">
-                <span className="text-xs font-work-sans font-bold tracking-widest uppercase text-gold-700">What We Offer</span>
-              </div>
-              <h2 className="text-4xl md:text-5xl font-work-sans font-extrabold text-neutral-900 tracking-tight mb-4">
-                Full-service banking.<br /><span className="gradient-text">Extraordinary standards.</span>
-              </h2>
-              <p className="text-neutral-500 text-lg font-gruppo max-w-2xl mx-auto">
-                From everyday checking to private equity — every financial need, handled with Maison-level discretion.
-              </p>
-            </div>
-            <div className="grid sm:grid-cols-2 md:grid-cols-3 gap-6">
-              {services.map((s, i) => (
-                <div
-                  key={i}
-                  className="group p-7 bg-white border border-neutral-100 rounded-2xl shadow-sm hover:shadow-lg hover:border-gold-200 transition-all duration-300 hover:-translate-y-1 cursor-pointer"
-                >
-                  <div className="w-12 h-12 rounded-xl bg-gold-50 group-hover:bg-gold-100 flex items-center justify-center text-gold-600 mb-5 transition-colors duration-300">
-                    {s.icon}
-                  </div>
-                  <h3 className="font-work-sans font-bold text-neutral-900 text-lg mb-2">{s.name}</h3>
-                  <p className="text-neutral-500 text-sm font-gruppo leading-relaxed">{s.desc}</p>
-                </div>
-              ))}
-            </div>
-          </div>
-        </ScrollSection>
-
-        {/* ─── CARDS ─── */}
-        <ScrollSection
-          className="section-padding bg-gradient-to-b from-white via-gold-50/20 to-white"
-          animationType="scale"
-          id="cards"
-        >
-          <div className="container mx-auto px-6 sm:px-8 max-w-6xl">
-            <div className="text-center mb-16">
-              <div className="inline-flex items-center space-x-2 px-3 py-1.5 bg-gold-50 border border-gold-200/60 rounded-full mb-5">
-                <span className="text-xs font-work-sans font-bold tracking-widest uppercase text-gold-700">The Maison Collection</span>
-              </div>
-              <h2 className="text-4xl md:text-5xl font-work-sans font-extrabold text-neutral-900 tracking-tight mb-4">
-                Cards that reflect<br /><span className="gradient-text">who you are.</span>
-              </h2>
-              <p className="text-neutral-500 text-lg font-gruppo max-w-2xl mx-auto">
-                Each tier is engineered for a different kind of ambition. Rewards, limits, and privileges that grow with you.
-              </p>
-            </div>
-
-            <div className="grid md:grid-cols-3 gap-6 lg:gap-8">
-              {cardTiers.map((card, idx) => (
-                <div
-                  key={idx}
-                  className={`relative flex flex-col rounded-3xl overflow-hidden transition-all duration-300 hover:-translate-y-2 ${
-                    card.highlight
-                      ? "shadow-2xl shadow-gold-500/20 ring-2 ring-gold-400"
-                      : "shadow-lg shadow-neutral-200/80 border border-neutral-100 hover:shadow-xl hover:border-gold-200"
-                  }`}
-                >
-                  {card.highlight && (
-                    <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-gold-400 via-gold-500 to-gold-600" />
-                  )}
-                  {card.highlight && (
-                    <div className="absolute top-4 right-4 px-2.5 py-1 bg-gradient-to-r from-gold-500 to-gold-600 text-white text-[10px] font-work-sans font-bold tracking-wider uppercase rounded-full shadow-lg">
-                      Most Popular
-                    </div>
-                  )}
-
-                  {/* Card header */}
-                  <div className={`px-8 pt-8 pb-6 ${card.highlight ? "bg-gradient-to-br from-neutral-900 to-neutral-800" : "bg-white"}`}>
-                    <p className={`text-xs font-work-sans font-bold tracking-widest uppercase mb-2 ${card.highlight ? "text-gold-400" : "text-gold-600"}`}>
-                      {card.tier}
-                    </p>
-                    <h3 className={`text-2xl font-work-sans font-extrabold mb-1 ${card.highlight ? "text-white" : "text-neutral-900"}`}>
-                      {card.tagline}
-                    </h3>
-                    <p className={`text-sm font-gruppo mt-2 ${card.highlight ? "text-neutral-400" : "text-neutral-500"}`}>
-                      {card.apr}
-                    </p>
-                  </div>
-
-                  {/* Card body */}
-                  <div className={`flex-1 px-8 py-6 ${card.highlight ? "bg-neutral-900" : "bg-white"}`}>
-                    <div className="flex items-baseline space-x-1 mb-1">
-                      <span className={`text-3xl font-work-sans font-extrabold ${card.highlight ? "text-white" : "text-neutral-900"}`}>
-                        {card.limit}
-                      </span>
-                      {card.limit !== "Unlimited" && (
-                        <span className={`text-sm font-gruppo ${card.highlight ? "text-neutral-400" : "text-neutral-500"}`}>credit limit</span>
-                      )}
-                    </div>
-                    <p className={`text-sm font-work-sans font-semibold mb-1 ${card.highlight ? "text-gold-400" : "text-gold-600"}`}>
-                      {card.rewards}
-                    </p>
-                    <p className={`text-xs font-gruppo mb-6 ${card.highlight ? "text-neutral-500" : "text-neutral-400"}`}>
-                      {card.annualFee}
-                    </p>
-
-                    <ul className="space-y-3 mb-8">
-                      {card.features.map((f, i) => (
-                        <li key={i} className="flex items-start space-x-2.5">
-                          <CheckCircle2 size={15} className={`flex-shrink-0 mt-0.5 ${card.highlight ? "text-gold-400" : "text-gold-500"}`} />
-                          <span className={`text-sm font-gruppo leading-relaxed ${card.highlight ? "text-neutral-300" : "text-neutral-600"}`}>{f}</span>
-                        </li>
-                      ))}
-                    </ul>
-
-                    <Link
-                      href="/register"
-                      className={`block w-full text-center py-3 rounded-xl text-sm font-work-sans font-bold transition-all duration-200 ${
-                        card.highlight
-                          ? "bg-gradient-to-r from-gold-500 to-gold-600 hover:from-gold-400 hover:to-gold-500 text-white shadow-lg shadow-gold-500/30"
-                          : "bg-neutral-900 hover:bg-neutral-800 text-white"
-                      }`}
-                    >
-                      Apply Now
-                    </Link>
-                  </div>
-                </div>
-              ))}
-            </div>
-
-            <p className="text-center text-xs text-neutral-400 font-gruppo mt-8 max-w-3xl mx-auto">
-              Subject to credit approval. Variable APR based on creditworthiness and Prime Rate. See Cardholder Agreement for full terms. Rates effective as of 2025.
-            </p>
-          </div>
-        </ScrollSection>
-
-        {/* ─── WHY US ─── */}
-        <ScrollSection className="section-padding bg-neutral-950" animationType="fade" id="why-us">
-          <div className="container mx-auto px-6 sm:px-8 max-w-6xl">
-            <div className="text-center mb-16">
-              <div className="inline-flex items-center space-x-2 px-3 py-1.5 bg-white/5 border border-white/10 rounded-full mb-5">
-                <span className="text-xs font-work-sans font-bold tracking-widest uppercase text-gold-400">Why Concierge Bank</span>
-              </div>
-              <h2 className="text-4xl md:text-5xl font-work-sans font-extrabold text-white tracking-tight mb-4">
-                The standard other banks<br /><span className="gradient-text">aspire to reach.</span>
-              </h2>
-              <p className="text-neutral-400 text-lg font-gruppo max-w-2xl mx-auto">
-                We built the banking experience we wished existed — combining institutional rigor with the intimacy of a private family office.
-              </p>
-            </div>
-            <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
-              {whyUs.map((item, i) => (
-                <div
-                  key={i}
-                  className="p-7 bg-white/5 border border-white/10 rounded-2xl hover:bg-white/8 hover:border-gold-500/30 transition-all duration-300"
-                >
-                  <div className="w-12 h-12 rounded-xl bg-gold-500/10 flex items-center justify-center mb-5">
-                    {item.icon}
-                  </div>
-                  <h3 className="font-work-sans font-bold text-white text-lg mb-3">{item.title}</h3>
-                  <p className="text-neutral-400 text-sm font-gruppo leading-relaxed">{item.desc}</p>
-                </div>
-              ))}
-            </div>
-          </div>
-        </ScrollSection>
-
-        {/* ─── FINAL CTA ─── */}
-        <ScrollSection
-          className="section-padding bg-gradient-to-br from-neutral-900 via-neutral-800 to-neutral-900 relative overflow-hidden"
-          animationType="fade"
-          id="contact"
-        >
-          {/* Decorative gold glow */}
-          <div className="absolute inset-0 pointer-events-none">
-            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[400px] bg-gold-500/10 rounded-full blur-3xl" />
-          </div>
-          <div className="container mx-auto px-6 sm:px-8 text-center max-w-3xl relative z-10">
-            <div className="inline-flex items-center space-x-2 px-3 py-1.5 bg-white/5 border border-white/10 rounded-full mb-8">
-              <span className="text-xs font-work-sans font-bold tracking-widest uppercase text-gold-400">Begin Your Journey</span>
-            </div>
-            <h2 className="text-5xl sm:text-6xl md:text-7xl font-work-sans font-extrabold text-white tracking-tight mb-6 leading-tight">
-              Banking worthy<br />
-              <span className="gradient-text">of your legacy.</span>
-            </h2>
-            <p className="text-neutral-300 text-lg md:text-xl font-gruppo leading-relaxed mb-10 max-w-2xl mx-auto">
-              Join 125,000+ distinguished clients who trust Concierge Bank with their most private financial affairs. Opening takes under 5 minutes.
-            </p>
-            <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-10">
-              <Link
-                href="/register"
-                className="inline-flex items-center space-x-2 px-10 py-4 bg-gradient-to-r from-gold-500 to-gold-600 hover:from-gold-400 hover:to-gold-500 text-white font-work-sans font-bold text-lg rounded-xl shadow-2xl shadow-gold-500/30 transition-all duration-300 hover:-translate-y-0.5"
-              >
-                <span>Open Your Account</span>
-                <ArrowRight size={20} />
-              </Link>
-              <a
-                href="tel:+18002662434"
-                className="inline-flex items-center space-x-2 px-8 py-4 bg-white/10 hover:bg-white/15 border border-white/20 hover:border-white/30 text-white font-work-sans font-semibold text-base rounded-xl transition-all duration-300"
-              >
-                <Phone size={18} />
-                <span>1-800-CONCIERGE</span>
-              </a>
-            </div>
-            <p className="text-neutral-500 text-xs font-gruppo">
-              FDIC Insured · No hidden fees · Cancel anytime · US residents only
-            </p>
-          </div>
-        </ScrollSection>
+        </section>
       </main>
 
       <Footer />

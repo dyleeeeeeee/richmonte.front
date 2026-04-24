@@ -9,25 +9,58 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
-        background: "#FEFDFB",  // Warm off-white
-        foreground: "#1a1a1a",  // Near black for text
+        // ── InvBank base — tuned to Apex reference (cool neutrals, desaturated) ──
+        background: "#F1F2F4",  // Cool soft gray (hero body bg in the reference)
+        foreground: "#1a1a1a",
         gold: {
-          50: "#FFFCF0",   // Lightest gold wash
-          100: "#FFF8E1",  // Very light gold
-          200: "#FFE9A0",  // Soft gold
-          300: "#FFD54F",  // Medium gold
-          400: "#FFC107",  // Vibrant gold
-          500: "#F2CA27",  // True Gold - Primary accent
-          600: "#EBA420",  // Rich Golden Orange
-          700: "#D08C1D",  // Deep Amber
-          800: "#b07618",  // Darker amber
-          900: "#8a5d13",  // Darkest gold
+          // Retained for legacy dashboard pages still using gold. Not used on landing.
+          50: "#FFFCF0",
+          100: "#FFF8E1",
+          200: "#FFE9A0",
+          300: "#FFD54F",
+          400: "#FFC107",
+          500: "#F2CA27",
+          600: "#EBA420",
+          700: "#D08C1D",
+          800: "#b07618",
+          900: "#8a5d13",
+        },
+        // ── InvBank navy ── desaturated steel-blue. Matches the Apex hero overlay,
+        // sign-in button, footnote accents. Less jewel-tone, more corporate-utility.
+        navy: {
+          50:  "#F3F5F8",
+          100: "#DEE4EC",
+          200: "#BCC6D6",
+          300: "#94A2B9",
+          400: "#6B7D99",
+          500: "#4A5E7C",
+          600: "#354A68",
+          700: "#2C3E5A",   // Primary — headline accent, nav CTA, path pills
+          800: "#213048",
+          900: "#17223A",
+          950: "#0D1626",
+        },
+        brand: {
+          DEFAULT: "#2C3E5A",
+          light:   "#354A68",
+          dark:    "#17223A",
+          accent:  "#EBA420",
+        },
+        // Neutral stone greys (FDIC bar, section dividers, card borders)
+        stone: {
+          50:  "#F7F7F6",
+          100: "#EEEDEA",
+          200: "#E0DFDB",
+          300: "#CFCEC9",
+          400: "#A8A7A2",
+          500: "#82817D",
+          600: "#5F5E5A",
         },
         light: {
-          50: "#FEFDFB",   // Warm white
-          100: "#FAF9F7",  // Light cream
-          200: "#F5F3F0",  // Soft beige
-          300: "#E8E6E3",  // Light gray
+          50:  "#FAFBFC",  // Near-white (cards)
+          100: "#F1F2F4",  // Body bg (matches reference)
+          200: "#E6E8EC",  // Subtle section bg
+          300: "#D4D7DD",  // Hairline borders / dividers
         },
         neutral: {
           100: "#f5f5f5",

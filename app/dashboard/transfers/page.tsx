@@ -2,11 +2,12 @@
 
 import { useEffect, useState, FormEvent, useCallback } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
+import { motion } from "framer-motion";
 import ProtectedRoute from "@/components/ProtectedRoute";
 import DashboardLayout from "@/components/DashboardLayout";
 import { accountAPI, transferAPI, authAPI, Account, Transfer } from "@/lib/api";
 import { useNotification } from "@/contexts/NotificationContext";
-import { Send, Calendar, Repeat, User, Building, ArrowRight, Lock } from "lucide-react";
+import { Send, Calendar, Repeat, User, Building, ArrowRight, Lock, Clock, CheckCircle2, AlertCircle } from "lucide-react";
 
 export const runtime = 'edge';
 export const dynamic = 'force-dynamic';
@@ -217,12 +218,35 @@ export default function TransfersPage() {
 
   const selectedAccount = accounts.find((a) => a.id === formData.from_account);
 
+  function fmtMoney(n: number): string {
+    return n.toLocaleString("en-US", {
+      style: "currency",
+      currency: "USD",
+      minimumFractionDigits: 2,
+      maximumFractionDigits: 2,
+    });
+  }
+
+  function BentoCard({ children, className, onClick }: { children: React.ReactNode; className?: string; onClick?: () => void }) {
+    return (
+      <motion.div
+        initial={{ opacity: 0, y: 8 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
+        onClick={onClick}
+        className={`relative bg-white border border-light-200 rounded-2xl shadow-sm overflow-hidden hover:shadow-lg hover:-translate-y-0.5 transition-all duration-200 ${onClick ? "cursor-pointer hover:border-navy-700/40" : ""} ${className}`}
+      >
+        {children}
+      </motion.div>
+    );
+  }
+
   if (loading) {
     return (
       <ProtectedRoute>
         <DashboardLayout>
           <div className="flex items-center justify-center h-64">
-            <div className="w-12 h-12 border-4 border-gold-500 border-t-transparent rounded-full animate-spin"></div>
+            <div className="w-10 h-10 border-4 border-navy-700 border-t-transparent rounded-full animate-spin" />
           </div>
         </DashboardLayout>
       </ProtectedRoute>
@@ -234,21 +258,26 @@ export default function TransfersPage() {
       <DashboardLayout>
         {/* PIN Setup Modal */}
         {showPinSetup && (
-          <div className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-50 p-4">
-            <div className="glass rounded-2xl p-8 max-w-md w-full shadow-2xl border border-gold-500/20 animate-scale-in">
-              <div className="flex items-center space-x-3 mb-6">
-                <div className="w-12 h-12 bg-gold-500/20 rounded-full flex items-center justify-center">
-                  <Lock className="text-gold-500" size={24} />
+          <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50 p-4">
+            <motion.div
+              initial={{ opacity: 0, scale: 0.95 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={{ opacity: 0, scale: 0.95 }}
+              className="w-full max-w-md bg-white border border-light-200 rounded-2xl p-6 sm:p-8 shadow-xl"
+            >
+              <div className="flex items-center gap-3 mb-6">
+                <div className="w-12 h-12 bg-navy-50 rounded-xl flex items-center justify-center">
+                  <Lock className="text-navy-700" size={22} />
                 </div>
                 <div>
-                  <h2 className="text-2xl font-work-sans font-bold text-neutral-900">Set Transaction PIN</h2>
-                  <p className="text-sm text-neutral-600 font-gruppo">Required for secure transfers</p>
+                  <h2 className="text-xl font-work-sans font-bold text-neutral-900">Set Transaction PIN</h2>
+                  <p className="text-sm text-neutral-500 font-gruppo">Required for secure transfers</p>
                 </div>
               </div>
               
-              <form onSubmit={handleSetupPin} className="space-y-4">
+              <form onSubmit={handleSetupPin} className="space-y-5">
                 <div>
-                  <label className="block text-sm font-medium mb-2 text-neutral-900">Create 6-Digit PIN</label>
+                  <label className="block text-sm font-work-sans font-semibold mb-2 text-neutral-900">Create 6-Digit PIN</label>
                   <input
                     type="password"
                     value={setupPin}
@@ -257,12 +286,12 @@ export default function TransfersPage() {
                     pattern="[0-9]{6}"
                     maxLength={6}
                     placeholder="000000"
-                    className="w-full px-4 py-3 bg-white border border-gold-500/30 rounded-lg focus:outline-none focus:border-gold-500 transition-smooth text-neutral-900 placeholder:text-neutral-400"
+                    className="w-full px-4 py-3 bg-light-50 border border-light-200 rounded-xl focus:outline-none focus:border-navy-700 focus:ring-2 focus:ring-navy-700/20 transition-all text-neutral-900 placeholder:text-neutral-400"
                   />
                 </div>
                 
                 <div>
-                  <label className="block text-sm font-medium mb-2 text-neutral-900">Confirm PIN</label>
+                  <label className="block text-sm font-work-sans font-semibold mb-2 text-neutral-900">Confirm PIN</label>
                   <input
                     type="password"
                     value={confirmPin}
@@ -271,289 +300,357 @@ export default function TransfersPage() {
                     pattern="[0-9]{6}"
                     maxLength={6}
                     placeholder="000000"
-                    className="w-full px-4 py-3 bg-white border border-gold-500/30 rounded-lg focus:outline-none focus:border-gold-500 transition-smooth text-neutral-900 placeholder:text-neutral-400"
+                    className="w-full px-4 py-3 bg-light-50 border border-light-200 rounded-xl focus:outline-none focus:border-navy-700 focus:ring-2 focus:ring-navy-700/20 transition-all text-neutral-900 placeholder:text-neutral-400"
                   />
                 </div>
                 
-                <div className="flex space-x-3 pt-4">
+                <div className="flex gap-3 pt-2">
                   <button
                     type="button"
                     onClick={() => setShowPinSetup(false)}
-                    className="flex-1 px-4 py-3 bg-neutral-200 text-neutral-700 rounded-lg font-work-sans font-semibold hover:bg-neutral-300 transition-colors"
+                    className="flex-1 px-5 py-2.5 bg-light-100 hover:bg-light-200 text-neutral-700 rounded-xl font-work-sans font-semibold transition-colors"
                   >
                     Cancel
                   </button>
                   <button
                     type="submit"
                     disabled={settingPin}
-                    className="flex-1 px-4 py-3 bg-gradient-to-r from-gold-600 to-gold-700 text-white rounded-lg font-work-sans font-semibold hover:from-gold-500 hover:to-gold-600 transition-smooth disabled:opacity-50 shadow-lg"
+                    className="flex-1 px-5 py-2.5 bg-navy-700 hover:bg-navy-800 text-white rounded-xl font-work-sans font-semibold transition-colors disabled:opacity-50"
                   >
                     {settingPin ? "Setting..." : "Set PIN"}
                   </button>
                 </div>
               </form>
-            </div>
+            </motion.div>
           </div>
         )}
 
-        <div className="space-y-6 sm:space-y-8 pb-4">
-          <div className="px-1">
-            <h1 className="text-2xl sm:text-3xl font-work-sans font-bold mb-1 sm:mb-2 text-neutral-900">Transfers</h1>
-            <p className="text-sm sm:text-base text-neutral-600 font-gruppo">Send money quickly and securely</p>
-          </div>
-
-          <div className="grid lg:grid-cols-3 gap-8">
-            {/* Transfer Form */}
-            <div className="lg:col-span-2 space-y-6">
-              {/* Transfer Type Tabs */}
-              <div className="glass border border-gold-500/20 rounded-xl p-2 flex space-x-2 shadow-md">
-                <button
-                  onClick={() => setTransferType("internal")}
-                  className={`flex-1 flex items-center justify-center space-x-2 px-4 py-3 rounded-lg font-medium transition-all ${
-                    transferType === "internal"
-                      ? "bg-gradient-to-r from-gold-600 to-gold-700 text-white shadow-md"
-                      : "text-neutral-700 hover:glass-gold"
-                  }`}
-                >
-                  <Send size={18} />
-                  <span>Internal</span>
-                </button>
-                <button
-                  onClick={() => setTransferType("external")}
-                  className={`flex-1 flex items-center justify-center space-x-2 px-4 py-3 rounded-lg font-medium transition-all ${
-                    transferType === "external"
-                      ? "bg-gradient-to-r from-gold-600 to-gold-700 text-white shadow-md"
-                      : "text-neutral-700 hover:glass-gold"
-                  }`}
-                >
-                  <Building size={18} />
-                  <span>External</span>
-                </button>
-                <button
-                  onClick={() => setTransferType("p2p")}
-                  className={`flex-1 flex items-center justify-center space-x-2 px-4 py-3 rounded-lg font-medium transition-all ${
-                    transferType === "p2p"
-                      ? "bg-gradient-to-r from-gold-600 to-gold-700 text-white shadow-md"
-                      : "text-neutral-700 hover:glass-gold"
-                  }`}
-                >
-                  <User size={18} />
-                  <span>Person to Person</span>
-                </button>
-              </div>
-
-              {/* Transfer Form */}
-              <form onSubmit={handleSubmit} className="glass border border-gold-500/20 rounded-xl p-6 space-y-6 shadow-lg">
-                <div>
-                  <label className="block text-sm font-medium mb-2 text-neutral-900">From Account</label>
-                  <select
-                    value={formData.from_account}
-                    onChange={(e) => setFormData({ ...formData, from_account: e.target.value })}
-                    required
-                    className="w-full px-4 py-3 bg-white/90 border border-gold-500/30 rounded-lg focus:outline-none focus:border-gold-500 transition-smooth text-neutral-900 shadow-inner"
-                  >
-                    {accounts.map((account) => (
-                      <option key={account.id} value={account.id}>
-                        {account.account_type} ••••{account.account_number?.slice(-4)} - $
-                        {account.balance.toLocaleString()}
-                      </option>
-                    ))}
-                  </select>
+        <div className="space-y-6">
+          <BentoCard className="overflow-hidden border-navy-800 bg-gradient-to-br from-navy-900 via-navy-900 to-navy-800 text-white p-0">
+            <div className="relative p-6 sm:p-8 lg:p-10">
+              <div className="pointer-events-none absolute -top-20 -right-16 h-56 w-56 rounded-full bg-sky-400/10 blur-3xl" />
+              <div className="pointer-events-none absolute -bottom-12 left-1/3 h-40 w-40 rounded-full bg-white/10 blur-3xl" />
+              <div className="relative flex flex-col lg:flex-row lg:items-end lg:justify-between gap-8">
+                <div className="max-w-2xl">
+                  <p className="text-[11px] font-work-sans font-bold tracking-[0.16em] uppercase text-navy-200/80">
+                    Money movement
+                  </p>
+                  <h1 className="mt-2 text-3xl sm:text-4xl font-work-sans font-bold tracking-tight">
+                    Transfers redesigned like a command deck.
+                  </h1>
+                  <p className="mt-3 text-sm sm:text-base text-navy-100/75 font-gruppo max-w-xl">
+                    Move cash across your own accounts, external banks, or people with a clearer step-by-step control surface.
+                  </p>
                 </div>
+                <div className="grid grid-cols-2 gap-3 min-w-[280px]">
+                  <div className="rounded-2xl border border-white/10 bg-white/5 px-4 py-3">
+                    <p className="text-[10px] font-work-sans font-bold tracking-[0.16em] uppercase text-navy-200/75">Source balance</p>
+                    <p className="mt-1 text-xl font-work-sans font-bold tabular-nums">{selectedAccount ? fmtMoney(selectedAccount.balance) : "$0.00"}</p>
+                  </div>
+                  <div className="rounded-2xl border border-white/10 bg-white/5 px-4 py-3">
+                    <p className="text-[10px] font-work-sans font-bold tracking-[0.16em] uppercase text-navy-200/75">Recent moves</p>
+                    <p className="mt-1 text-xl font-work-sans font-bold">{history.length}</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </BentoCard>
 
-                {transferType === "internal" && (
+          {/* Main Layout - Opus-style asymmetric grid */}
+          <div className="grid lg:grid-cols-12 gap-5">
+            {/* Left: Transfer Form - 8 cols */}
+            <div className="lg:col-span-8 space-y-5">
+              {/* Transfer Type Selector - Integrated into card */}
+              <BentoCard className="overflow-hidden border-navy-800 bg-gradient-to-br from-navy-900 via-navy-800 to-navy-900 text-white p-0">
+                <div className="p-5 sm:p-6">
+                  <div className="flex items-center justify-between mb-4">
+                    <div>
+                      <p className="text-[11px] font-work-sans font-bold tracking-[0.12em] uppercase text-navy-200/75">Route type</p>
+                      <p className="text-sm text-navy-100/70 font-gruppo mt-1">Pick the rail before filling in the destination.</p>
+                    </div>
+                    <div className="w-11 h-11 rounded-xl bg-white/10 flex items-center justify-center">
+                      <ArrowRight size={18} className="text-white" />
+                    </div>
+                  </div>
+                <div className="flex gap-2">
+                  <button
+                    onClick={() => setTransferType("internal")}
+                    className={`flex-1 flex items-center justify-center gap-2 px-4 py-3 rounded-xl font-work-sans font-semibold text-sm transition-all ${
+                      transferType === "internal"
+                        ? "bg-white text-navy-900 shadow-md"
+                        : "bg-white/10 text-navy-100 hover:bg-white/15"
+                    }`}
+                  >
+                    <Send size={16} />
+                    <span>Internal</span>
+                  </button>
+                  <button
+                    onClick={() => setTransferType("external")}
+                    className={`flex-1 flex items-center justify-center gap-2 px-4 py-3 rounded-xl font-work-sans font-semibold text-sm transition-all ${
+                      transferType === "external"
+                        ? "bg-white text-navy-900 shadow-md"
+                        : "bg-white/10 text-navy-100 hover:bg-white/15"
+                    }`}
+                  >
+                    <Building size={16} />
+                    <span>External</span>
+                  </button>
+                  <button
+                    onClick={() => setTransferType("p2p")}
+                    className={`flex-1 flex items-center justify-center gap-2 px-4 py-3 rounded-xl font-work-sans font-semibold text-sm transition-all ${
+                      transferType === "p2p"
+                        ? "bg-white text-navy-900 shadow-md"
+                        : "bg-white/10 text-navy-100 hover:bg-white/15"
+                    }`}
+                  >
+                    <User size={16} />
+                    <span>P2P</span>
+                  </button>
+                </div>
+                </div>
+              </BentoCard>
+
+              {/* Main Transfer Form */}
+              <BentoCard className="p-6 sm:p-7">
+                <div className="flex items-start justify-between mb-5">
                   <div>
-                    <label className="block text-sm font-medium mb-2 text-neutral-900">To Account</label>
+                    <p className="text-[11px] font-work-sans font-bold tracking-[0.12em] uppercase text-neutral-500">Transfer composer</p>
+                    <h2 className="text-xl font-work-sans font-semibold text-neutral-900 mt-1">
+                      {transferType === "internal" ? "Move between your accounts" : transferType === "external" ? "Send to another bank" : "Pay a person instantly"}
+                    </h2>
+                  </div>
+                  <div className="hidden sm:flex items-center gap-2 rounded-xl bg-light-50 px-3 py-2 text-xs font-work-sans font-semibold text-neutral-600">
+                    <Lock size={14} className="text-navy-700" />
+                    PIN protected
+                  </div>
+                </div>
+                <form onSubmit={handleSubmit} className="space-y-5">
+                  <div>
+                    <label className="block text-sm font-work-sans font-semibold mb-2 text-neutral-900">From Account</label>
                     <select
-                      value={formData.to_account}
-                      onChange={(e) => setFormData({ ...formData, to_account: e.target.value })}
+                      value={formData.from_account}
+                      onChange={(e) => setFormData({ ...formData, from_account: e.target.value })}
                       required
-                      className="w-full px-4 py-3 bg-white/90 border border-gold-500/30 rounded-lg focus:outline-none focus:border-gold-500 transition-smooth text-neutral-900 shadow-inner"
+                      className="w-full px-4 py-3 bg-light-50 border border-light-200 rounded-xl focus:outline-none focus:border-navy-700 focus:ring-2 focus:ring-navy-700/20 transition-all text-neutral-900"
                     >
-                      <option value="" className="text-gray-400">Select account</option>
-                      {accounts
-                        .filter((a) => a.id !== formData.from_account)
-                        .map((account) => (
-                          <option key={account.id} value={account.id}>
-                            {account.account_type} ••••{account.account_number?.slice(-4)}
-                          </option>
-                        ))}
+                      {accounts.map((account) => (
+                        <option key={account.id} value={account.id}>
+                          {account.account_type} ••••{account.account_number?.slice(-4)} — {fmtMoney(account.balance)}
+                        </option>
+                      ))}
                     </select>
                   </div>
-                )}
 
-                {transferType === "external" && (
-                  <>
+                  {transferType === "internal" && (
                     <div>
-                      <label className="block text-sm font-medium mb-2 text-neutral-900">Recipient Name</label>
-                      <input
-                        type="text"
-                        value={formData.to_external_name}
-                        onChange={(e) =>
-                          setFormData({ ...formData, to_external_name: e.target.value })
-                        }
+                      <label className="block text-sm font-work-sans font-semibold mb-2 text-neutral-900">To Account</label>
+                      <select
+                        value={formData.to_account}
+                        onChange={(e) => setFormData({ ...formData, to_account: e.target.value })}
                         required
-                        placeholder="Enter recipient name"
-                        className="w-full px-4 py-3 bg-white/90 border border-gold-500/30 rounded-lg focus:outline-none focus:border-gold-500 transition-smooth text-neutral-900 placeholder:text-neutral-400 shadow-inner"
-                      />
+                        className="w-full px-4 py-3 bg-light-50 border border-light-200 rounded-xl focus:outline-none focus:border-navy-700 focus:ring-2 focus:ring-navy-700/20 transition-all text-neutral-900"
+                      >
+                        <option value="">Select account</option>
+                        {accounts
+                          .filter((a) => a.id !== formData.from_account)
+                          .map((account) => (
+                            <option key={account.id} value={account.id}>
+                              {account.account_type} ••••{account.account_number?.slice(-4)}
+                            </option>
+                          ))}
+                      </select>
                     </div>
-                    <div>
-                      <label className="block text-sm font-medium mb-2 text-neutral-900">Account Number</label>
-                      <input
-                        type="text"
-                        value={formData.to_external_account}
-                        onChange={(e) =>
-                          setFormData({ ...formData, to_external_account: e.target.value })
-                        }
-                        required
-                        placeholder="Enter account number (digits only)"
-                        pattern="[0-9]+"
-                        minLength={4}
-                        className="w-full px-4 py-3 bg-white/90 border border-gold-500/30 rounded-lg focus:outline-none focus:border-gold-500 transition-smooth text-neutral-900 placeholder:text-neutral-400 shadow-inner"
-                      />
-                    </div>
-                    <div>
-                      <label className="block text-sm font-medium mb-2 text-neutral-900">Routing Number</label>
-                      <input
-                        type="text"
-                        value={formData.to_external_routing}
-                        onChange={(e) =>
-                          setFormData({ ...formData, to_external_routing: e.target.value })
-                        }
-                        required
-                        placeholder="9-digit routing number"
-                        pattern="[0-9]{9}"
-                        maxLength={9}
-                        className="w-full px-4 py-3 bg-white/90 border border-gold-500/30 rounded-lg focus:outline-none focus:border-gold-500 transition-smooth text-neutral-900 placeholder:text-neutral-400 shadow-inner"
-                      />
-                    </div>
-                  </>
-                )}
-
-                {transferType === "p2p" && (
-                  <>
-                    <div>
-                      <label className="block text-sm font-medium mb-2 text-neutral-900">Email or Phone</label>
-                      <input
-                        type="text"
-                        value={formData.to_email || formData.to_phone}
-                        onChange={(e) => {
-                          const value = e.target.value;
-                          if (value.includes("@")) {
-                            setFormData({ ...formData, to_email: value, to_phone: "" });
-                          } else {
-                            setFormData({ ...formData, to_phone: value, to_email: "" });
-                          }
-                        }}
-                        required
-                        placeholder="email@example.com or +1234567890"
-                        className="w-full px-4 py-3 bg-white/90 border border-gold-500/30 rounded-lg focus:outline-none focus:border-gold-500 transition-smooth text-neutral-900 placeholder:text-neutral-400 shadow-inner"
-                      />
-                    </div>
-                  </>
-                )}
-
-                <div>
-                  <label className="block text-sm font-medium mb-2 text-neutral-900">Amount</label>
-                  <div className="relative">
-                    <span className="absolute left-4 top-1/2 -translate-y-1/2 text-neutral-500">$</span>
-                    <input
-                      type="number"
-                      value={formData.amount}
-                      onChange={(e) => setFormData({ ...formData, amount: e.target.value })}
-                      required
-                      min="0.01"
-                      step="0.01"
-                      placeholder="0.00"
-                      className="w-full pl-8 pr-4 py-3 bg-white/90 border border-gold-500/30 rounded-lg focus:outline-none focus:border-gold-500 transition-smooth text-neutral-900 placeholder:text-neutral-400 shadow-inner"
-                    />
-                  </div>
-                  {selectedAccount && (
-                    <p className="text-sm text-neutral-600 font-gruppo mt-2">
-                      Available: ${selectedAccount.balance.toLocaleString()}
-                    </p>
                   )}
-                </div>
 
-                <div>
-                  <label className="block text-sm font-medium mb-2 text-neutral-900">Description (Optional)</label>
-                  <input
-                    type="text"
-                    value={formData.description}
-                    onChange={(e) => setFormData({ ...formData, description: e.target.value })}
-                    placeholder="What's this for?"
-                    className="w-full px-4 py-3 bg-white/90 border border-gold-500/30 rounded-lg focus:outline-none focus:border-gold-500 transition-smooth text-neutral-900 placeholder:text-neutral-400 shadow-inner"
-                  />
-                </div>
+                  {transferType === "external" && (
+                    <>
+                      <div>
+                        <label className="block text-sm font-work-sans font-semibold mb-2 text-neutral-900">Recipient Name</label>
+                        <input
+                          type="text"
+                          value={formData.to_external_name}
+                          onChange={(e) =>
+                            setFormData({ ...formData, to_external_name: e.target.value })
+                          }
+                          required
+                          placeholder="Enter recipient name"
+                          className="w-full px-4 py-3 bg-light-50 border border-light-200 rounded-xl focus:outline-none focus:border-navy-700 focus:ring-2 focus:ring-navy-700/20 transition-all text-neutral-900 placeholder:text-neutral-400"
+                        />
+                      </div>
+                      <div>
+                        <label className="block text-sm font-work-sans font-semibold mb-2 text-neutral-900">Account Number</label>
+                        <input
+                          type="text"
+                          value={formData.to_external_account}
+                          onChange={(e) =>
+                            setFormData({ ...formData, to_external_account: e.target.value })
+                          }
+                          required
+                          placeholder="Enter account number (digits only)"
+                          pattern="[0-9]+"
+                          minLength={4}
+                          className="w-full px-4 py-3 bg-light-50 border border-light-200 rounded-xl focus:outline-none focus:border-navy-700 focus:ring-2 focus:ring-navy-700/20 transition-all text-neutral-900 placeholder:text-neutral-400"
+                        />
+                      </div>
+                      <div>
+                        <label className="block text-sm font-work-sans font-semibold mb-2 text-neutral-900">Routing Number</label>
+                        <input
+                          type="text"
+                          value={formData.to_external_routing}
+                          onChange={(e) =>
+                            setFormData({ ...formData, to_external_routing: e.target.value })
+                          }
+                          required
+                          placeholder="9-digit routing number"
+                          pattern="[0-9]{9}"
+                          maxLength={9}
+                          className="w-full px-4 py-3 bg-light-50 border border-light-200 rounded-xl focus:outline-none focus:border-navy-700 focus:ring-2 focus:ring-navy-700/20 transition-all text-neutral-900 placeholder:text-neutral-400"
+                        />
+                      </div>
+                    </>
+                  )}
 
-                <div className="flex items-center space-x-3">
-                  <input
-                    type="checkbox"
-                    id="recurring"
-                    checked={formData.recurring}
-                    onChange={(e) => setFormData({ ...formData, recurring: e.target.checked })}
-                    className="w-5 h-5 bg-dark-900 border-gold-500/20 rounded"
-                  />
-                  <label htmlFor="recurring" className="text-sm font-medium cursor-pointer text-neutral-900">
-                    Make this a recurring transfer
-                  </label>
-                </div>
+                  {transferType === "p2p" && (
+                    <>
+                      <div>
+                        <label className="block text-sm font-work-sans font-semibold mb-2 text-neutral-900">Email or Phone</label>
+                        <input
+                          type="text"
+                          value={formData.to_email || formData.to_phone}
+                          onChange={(e) => {
+                            const value = e.target.value;
+                            if (value.includes("@")) {
+                              setFormData({ ...formData, to_email: value, to_phone: "" });
+                            } else {
+                              setFormData({ ...formData, to_phone: value, to_email: "" });
+                            }
+                          }}
+                          required
+                          placeholder="email@example.com or +1234567890"
+                          className="w-full px-4 py-3 bg-light-50 border border-light-200 rounded-xl focus:outline-none focus:border-navy-700 focus:ring-2 focus:ring-navy-700/20 transition-all text-neutral-900 placeholder:text-neutral-400"
+                        />
+                      </div>
+                    </>
+                  )}
 
-                {formData.recurring && (
                   <div>
-                    <label className="block text-sm font-medium mb-2 text-neutral-900">Schedule Date</label>
+                    <label className="block text-sm font-work-sans font-semibold mb-2 text-neutral-900">Amount</label>
+                    <div className="relative">
+                      <span className="absolute left-4 top-1/2 -translate-y-1/2 text-neutral-400 font-work-sans font-medium">$</span>
+                      <input
+                        type="number"
+                        value={formData.amount}
+                        onChange={(e) => setFormData({ ...formData, amount: e.target.value })}
+                        required
+                        min="0.01"
+                        step="0.01"
+                        placeholder="0.00"
+                        className="w-full pl-8 pr-4 py-3 bg-light-50 border border-light-200 rounded-xl focus:outline-none focus:border-navy-700 focus:ring-2 focus:ring-navy-700/20 transition-all text-neutral-900 placeholder:text-neutral-400 font-work-sans"
+                      />
+                    </div>
+                    {selectedAccount && (
+                      <p className="text-sm text-neutral-500 font-gruppo mt-2">
+                        Available: {fmtMoney(selectedAccount.balance)}
+                      </p>
+                    )}
+                  </div>
+
+                  <div>
+                    <label className="block text-sm font-work-sans font-semibold mb-2 text-neutral-900">Description <span className="text-neutral-400 font-normal">(optional)</span></label>
                     <input
-                      type="date"
-                      value={formData.schedule_date}
-                      onChange={(e) => setFormData({ ...formData, schedule_date: e.target.value })}
-                      className="w-full px-4 py-3 bg-white/90 border border-gold-500/30 rounded-lg focus:outline-none focus:border-gold-500 transition-smooth text-neutral-900 shadow-inner"
+                      type="text"
+                      value={formData.description}
+                      onChange={(e) => setFormData({ ...formData, description: e.target.value })}
+                      placeholder="What's this for?"
+                      className="w-full px-4 py-3 bg-light-50 border border-light-200 rounded-xl focus:outline-none focus:border-navy-700 focus:ring-2 focus:ring-navy-700/20 transition-all text-neutral-900 placeholder:text-neutral-400"
                     />
                   </div>
-                )}
 
-                <div>
-                  <label className="block text-sm font-medium mb-2 text-neutral-900">Transaction PIN</label>
-                  <input
-                    type="password"
-                    value={formData.pin}
-                    onChange={(e) => setFormData({ ...formData, pin: e.target.value })}
-                    required
-                    pattern="[0-9]{6}"
-                    maxLength={6}
-                    placeholder="Enter your 6-digit PIN"
-                    className="w-full px-4 py-3 bg-white/90 border border-gold-500/30 rounded-lg focus:outline-none focus:border-gold-500 transition-smooth text-neutral-900 placeholder:text-neutral-400 shadow-inner"
-                  />
-                  <p className="text-xs text-neutral-500 mt-1 font-gruppo">Required for security verification</p>
-                </div>
+                  <div className="flex items-center gap-3">
+                    <input
+                      type="checkbox"
+                      id="recurring"
+                      checked={formData.recurring}
+                      onChange={(e) => setFormData({ ...formData, recurring: e.target.checked })}
+                      className="w-5 h-5 rounded border-light-300 text-navy-700 focus:ring-navy-700"
+                    />
+                    <label htmlFor="recurring" className="text-sm font-work-sans font-medium cursor-pointer text-neutral-900">
+                      Make this a recurring transfer
+                    </label>
+                  </div>
 
-                <button
-                  type="submit"
-                  disabled={submitting}
-                  className="w-full px-6 py-3 bg-gradient-to-r from-gold-600 to-gold-700 text-white rounded-lg font-work-sans font-semibold hover:from-gold-500 hover:to-gold-600 transition-smooth disabled:opacity-50 shadow-lg shadow-gold-500/20 active:scale-95"
-                >
-                  {submitting ? "Processing..." : "Complete Transfer"}
-                </button>
-              </form>
+                  {formData.recurring && (
+                    <div>
+                      <label className="block text-sm font-work-sans font-semibold mb-2 text-neutral-900">Schedule Date</label>
+                      <input
+                        type="date"
+                        value={formData.schedule_date}
+                        onChange={(e) => setFormData({ ...formData, schedule_date: e.target.value })}
+                        className="w-full px-4 py-3 bg-light-50 border border-light-200 rounded-xl focus:outline-none focus:border-navy-700 focus:ring-2 focus:ring-navy-700/20 transition-all text-neutral-900"
+                      />
+                    </div>
+                  )}
+
+                  <div>
+                    <label className="block text-sm font-work-sans font-semibold mb-2 text-neutral-900">Transaction PIN</label>
+                    <input
+                      type="password"
+                      value={formData.pin}
+                      onChange={(e) => setFormData({ ...formData, pin: e.target.value })}
+                      required
+                      pattern="[0-9]{6}"
+                      maxLength={6}
+                      placeholder="Enter your 6-digit PIN"
+                      className="w-full px-4 py-3 bg-light-50 border border-light-200 rounded-xl focus:outline-none focus:border-navy-700 focus:ring-2 focus:ring-navy-700/20 transition-all text-neutral-900 placeholder:text-neutral-400"
+                    />
+                    <p className="text-xs text-neutral-500 mt-1 font-gruppo">Required for security verification</p>
+                  </div>
+
+                  <button
+                    type="submit"
+                    disabled={submitting}
+                    className="w-full px-6 py-3 bg-navy-700 hover:bg-navy-800 text-white rounded-xl font-work-sans font-semibold transition-colors disabled:opacity-50"
+                  >
+                    {submitting ? "Processing..." : "Complete Transfer"}
+                  </button>
+                </form>
+              </BentoCard>
             </div>
 
-            {/* Recent Transfers */}
-            <div className="space-y-6">
-              <div className="bg-dark-800/30 border border-gold-500/10 rounded-xl p-6">
-                <h3 className="text-lg font-semibold mb-4 text-white">Recent Transfers</h3>
+            {/* Right: Sidebar - 4 cols, stacked vertically */}
+            <div className="lg:col-span-4 space-y-5">
+              <BentoCard className="p-6 overflow-hidden border-navy-800 bg-gradient-to-br from-navy-900 via-navy-800 to-navy-900 text-white">
+                <div className="relative">
+                  <div className="pointer-events-none absolute -top-10 -right-8 h-28 w-28 rounded-full bg-sky-400/15 blur-3xl" />
+                  <div className="relative">
+                    <div className="w-12 h-12 bg-white/10 rounded-2xl flex items-center justify-center mb-4">
+                      <CheckCircle2 size={22} className="text-white" />
+                    </div>
+                    <h3 className="text-lg font-work-sans font-semibold mb-2">Secure routing</h3>
+                    <p className="text-sm text-navy-100/75 font-gruppo leading-relaxed">
+                      Every transfer rail uses the same verification flow, with a dedicated transaction PIN before execution.
+                    </p>
+                  </div>
+                </div>
+              </BentoCard>
+
+              {/* Recent Transfers Card */}
+              <BentoCard className="p-5">
+                <div className="flex items-center justify-between mb-4">
+                  <h3 className="text-sm font-work-sans font-bold tracking-[0.12em] uppercase text-neutral-500">Recent Transfers</h3>
+                  <Clock size={16} className="text-neutral-400" />
+                </div>
                 <div className="space-y-3">
                   {history.length === 0 ? (
-                    <p className="text-sm text-gray-400 text-center py-4">No transfer history</p>
+                    <p className="text-sm text-neutral-400 text-center py-4">No transfer history</p>
                   ) : (
-                    history.map((transfer) => {
+                    history.slice(0, 5).map((transfer) => {
                       const isReceived = transfer.direction === 'received';
                       
                       const getDisplayName = () => {
                         if (isReceived) {
-                          // For received P2P transfers, show "From [sender]"
                           return 'Received from sender';
                         }
-                        
-                        // For sent transfers, show recipient
                         if (transfer.transfer_type === 'internal' && transfer.to_account_id) {
                           const toAccount = accounts.find(a => a.id === transfer.to_account_id);
                           return toAccount ? `${toAccount.account_type} ••••${toAccount.account_number?.slice(-4)}` : 'Internal Account';
@@ -565,36 +662,37 @@ export default function TransfersPage() {
                         return 'Unknown';
                       };
 
-                      const statusColor = transfer.status === 'completed' ? 'text-green-500' : 
-                                         transfer.status === 'pending' ? 'text-yellow-500' : 'text-red-500';
+                      const statusIcon = transfer.status === 'completed' ? <CheckCircle2 size={14} className="text-emerald-600" /> :
+                                         transfer.status === 'pending' ? <Clock size={14} className="text-amber-600" /> :
+                                         <AlertCircle size={14} className="text-red-600" />;
 
                       return (
-                        <div key={transfer.id} className="p-3 bg-dark-800/50 rounded-lg hover:bg-dark-800/70 transition-colors">
-                          <div className="flex items-start justify-between mb-2">
-                            <div className="flex items-center space-x-3">
-                              <div className={`w-10 h-10 rounded-lg flex items-center justify-center flex-shrink-0 ${
-                                isReceived ? 'bg-green-500/20' : 'bg-gold-500/20'
+                        <div key={transfer.id} className="p-3 bg-light-50 rounded-xl hover:bg-light-100 transition-colors">
+                          <div className="flex items-start justify-between gap-2">
+                            <div className="flex items-center gap-2.5 min-w-0">
+                              <div className={`w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0 ${
+                                isReceived ? 'bg-emerald-100 text-emerald-600' : 'bg-navy-100 text-navy-700'
                               }`}>
-                                {transfer.transfer_type === 'internal' ? <ArrowRight className="text-gold-500" size={18} /> :
-                                 transfer.transfer_type === 'external' ? <Building className="text-gold-500" size={18} /> :
-                                 <User className={isReceived ? 'text-green-500' : 'text-gold-500'} size={18} />}
+                                {transfer.transfer_type === 'internal' ? <ArrowRight size={14} /> :
+                                 transfer.transfer_type === 'external' ? <Building size={14} /> :
+                                 <User size={14} />}
                               </div>
-                              <div className="flex-1 min-w-0">
-                                <p className="text-sm font-medium truncate">
-                                  {isReceived && <span className="text-green-400 mr-1">↓</span>}
+                              <div className="min-w-0">
+                                <p className="text-xs font-work-sans font-semibold text-neutral-900 truncate">
                                   {getDisplayName()}
                                 </p>
-                                <p className="text-xs text-gray-400">
-                                  {new Date(transfer.created_at).toLocaleDateString()} • {transfer.transfer_type}
-                                  {isReceived && <span className="text-green-400 ml-1">(received)</span>}
+                                <p className="text-[10px] text-neutral-500 font-gruppo">
+                                  {new Date(transfer.created_at).toLocaleDateString("en-US", { month: 'short', day: 'numeric' })}
                                 </p>
                               </div>
                             </div>
-                            <div className="text-right">
-                              <p className={`text-sm font-semibold ${isReceived ? 'text-green-400' : ''}`}>
-                                {isReceived ? '+' : '-'}${transfer.amount?.toLocaleString()}
+                            <div className="text-right flex-shrink-0">
+                              <p className={`text-xs font-work-sans font-bold tabular-nums ${isReceived ? 'text-emerald-600' : 'text-neutral-900'}`}>
+                                {isReceived ? '+' : '-'}{fmtMoney(transfer.amount || 0)}
                               </p>
-                              <p className={`text-xs font-medium ${statusColor}`}>{transfer.status}</p>
+                              <div className="flex items-center justify-end mt-0.5">
+                                {statusIcon}
+                              </div>
                             </div>
                           </div>
                         </div>
@@ -602,21 +700,24 @@ export default function TransfersPage() {
                     })
                   )}
                 </div>
-              </div>
+              </BentoCard>
 
-              <div className="bg-gradient-to-br from-gold-500/10 to-gold-600/10 border border-gold-500/30 rounded-xl p-6">
-                <Calendar className="text-gold-500 mb-3" size={32} />
-                <h3 className="font-semibold mb-2">Schedule Transfers</h3>
-                <p className="text-sm text-gray-300 mb-4">
+              {/* Schedule Promo Card */}
+              <BentoCard className="p-5 bg-gradient-to-br from-navy-800 to-navy-900 text-white border-navy-700">
+                <div className="w-10 h-10 bg-white/10 rounded-xl flex items-center justify-center mb-3">
+                  <Calendar size={20} className="text-white" />
+                </div>
+                <h3 className="text-sm font-work-sans font-bold mb-2">Schedule Transfers</h3>
+                <p className="text-xs text-navy-200/80 mb-4 leading-relaxed">
                   Set up recurring transfers to automate your savings and bill payments.
                 </p>
                 <button
                   onClick={() => setFormData({ ...formData, recurring: true })}
-                  className="text-sm text-gold-500 hover:text-gold-400 font-semibold"
+                  className="text-xs font-work-sans font-semibold text-white bg-white/10 hover:bg-white/20 px-3 py-2 rounded-lg transition-colors"
                 >
-                  Learn more →
+                  Set up recurring →
                 </button>
-              </div>
+              </BentoCard>
             </div>
           </div>
         </div>

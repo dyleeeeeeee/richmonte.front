@@ -1,0 +1,30 @@
+name = "invbank"
+compatibility_date = "2024-04-23"
+compatibility_flags = ["nodejs_compat"]
+
+# Cloudflare Pages/Workers configuration for Next.js
+# Output directory for @cloudflare/next-on-pages adapter
+pages_build_output_dir = ".vercel/output/static"
+
+[vars]
+NEXT_PUBLIC_USE_MOCK = "true"
+NEXT_PUBLIC_MOCK_FALLBACK = "false"
+NEXT_PUBLIC_MARKET_DATA_URL = "https://api.binance.com"
+
+# Environment variables (secrets should be set via wrangler secret)
+# Run: wrangler secret put NEXT_PUBLIC_API_URL
+# Run: wrangler secret put NEXT_PUBLIC_GOOGLE_MAPS_API_KEY
+# Run: wrangler secret put NEXT_PUBLIC_GEMINI_API_KEY
+# Run: wrangler secret put NEXT_PUBLIC_POLYGON_API_KEY
+# Run: wrangler secret put NEXT_PUBLIC_FINNHUB_API_KEY
+
+# KV namespace for caching (optional)
+# [[kv_namespaces]]
+# binding = "CACHE"
+# id = "your-kv-namespace-id"
+
+# D1 database (optional)
+# [[d1_databases]]
+# binding = "DB"
+# database_name = "invbank-db"
+# database_id = "your-database-id"

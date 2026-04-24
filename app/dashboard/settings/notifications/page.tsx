@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import ProtectedRoute from "@/components/ProtectedRoute";
 import DashboardLayout from "@/components/DashboardLayout";
+import { settingsAPI } from "@/lib/api";
 import { ArrowLeft, Bell, Mail, Smartphone } from "lucide-react";
 
 export default function NotificationSettingsPage() {
@@ -24,14 +25,10 @@ export default function NotificationSettingsPage() {
   useEffect(() => {
     const loadPreferences = async () => {
       try {
-        const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000"}/api/settings/notifications`, {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem('auth_token')}`,
-          },
-        });
+        const response = await settingsAPI.getNotificationPreferences();
         
-        if (response.ok) {
-          const data = await response.json();
+        if (response.data) {
+          const data = response.data;
           if (data && Object.keys(data).length > 0) {
             setSettings(data);
           }
@@ -52,17 +49,10 @@ export default function NotificationSettingsPage() {
 
   const saveSettings = async () => {
     try {
-      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000"}/api/settings/notifications`, {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${localStorage.getItem('auth_token')}`,
-        },
-        body: JSON.stringify(settings),
-      });
+      const response = await settingsAPI.updateNotificationPreferences(settings);
 
-      if (!response.ok) {
-        throw new Error("Failed to save notification preferences");
+      if (response.error) {
+        throw new Error(response.error);
       }
 
       alert("Notification preferences saved!");

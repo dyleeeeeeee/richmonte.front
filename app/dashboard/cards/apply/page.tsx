@@ -81,7 +81,7 @@ export default function ApplyCardPage() {
         const selectedCard = CARD_TIERS.find(c => c.tier === selectedTier);
         const response = await cardAPI.applyCard({
           card_type: selectedTier,
-          card_brand: "Cartier",
+          card_brand: "Visa",
           credit_limit: selectedCard?.limit || 50000,
         });
         if (response.data) {
@@ -143,7 +143,7 @@ export default function ApplyCardPage() {
       <DashboardLayout>
         <div className="max-w-4xl mx-auto space-y-8">
           <div>
-            <h1 className="text-3xl font-work-sans font-bold mb-2 text-neutral-900">Apply for Concierge Bank Card</h1>
+            <h1 className="text-3xl font-work-sans font-bold mb-2 text-neutral-900">Apply for InvBank Card</h1>
             <p className="text-neutral-600 font-gruppo">Complete your application in 3 simple steps</p>
           </div>
 

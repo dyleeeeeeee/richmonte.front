@@ -14,11 +14,12 @@ export default function ReaderLayout({ title, lastUpdated, children }: ReaderLay
 			<header className="bg-white border-b border-neutral-200">
 				<div className="container mx-auto px-6 py-6">
 					<Link href="/" className="inline-flex items-center space-x-2 hover:opacity-80 transition-opacity">
-						<div className="w-8 h-8 rounded-full bg-gradient-to-br from-gold-500 to-gold-700 flex items-center justify-center">
-							<span className="text-white font-bold text-lg">C</span>
-						</div>
-						<span className="font-display text-xl font-bold text-neutral-900">
-							Concierge<span className="text-gold-600">Bank</span>
+						<svg viewBox="0 0 40 40" className="w-8 h-8" aria-hidden>
+							<path d="M20 4 L36 32 L28 32 L20 18 L12 32 L4 32 Z" fill="#2C3E5A" />
+							<path d="M20 18 L28 32 L12 32 Z" fill="#354A68" />
+						</svg>
+						<span className="font-work-sans text-xl font-extrabold text-neutral-900">
+							Inv<span className="text-navy-700">Bank</span>
 						</span>
 					</Link>
 				</div>

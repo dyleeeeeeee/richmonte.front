@@ -106,8 +106,8 @@ export default function ProfilePage() {
                     <Star size={18} className="text-white" />
                   </div>
                   <div>
-                    <p className="text-xs text-neutral-500 font-gruppo">Preferred Maison</p>
-                    <p className="font-work-sans font-semibold">{user?.preferred_brand || 'Cartier'}</p>
+                    <p className="text-xs text-neutral-500 font-gruppo">Primary account</p>
+                    <p className="font-work-sans font-semibold">{user?.preferred_brand || 'Everyday'}</p>
                   </div>
                 </div>
               </div>

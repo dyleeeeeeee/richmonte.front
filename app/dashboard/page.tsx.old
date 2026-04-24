@@ -1,0 +1,589 @@
+"use client";
+
+import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
+import { motion } from "framer-motion";
+import { useAuth } from "@/contexts/AuthContext";
+import ProtectedRoute from "@/components/ProtectedRoute";
+import DashboardLayout from "@/components/DashboardLayout";
+import PageTransition from "@/components/PageTransition";
+import AnimatedButton from "@/components/AnimatedButton";
+import { accountAPI, cardAPI, Account, Transaction } from "@/lib/api";
+import {
+  ArrowUpRight, ArrowDownLeft, CreditCard, Send, Plus, TrendingUp,
+  ShoppingBag, Utensils, Zap, Plane, RefreshCw, DollarSign,
+  ChevronRight, Clock, CheckCircle2, AlertCircle, Wifi,
+  BarChart2, Lock, Eye, EyeOff,
+} from "lucide-react";
+import { containerVariants } from "@/lib/animations";
+
+const RATES = [
+  { label: "Prime Rate", value: "8.50%", delta: "+0.00" },
+  { label: "30Y Fixed Mortgage", value: "6.82%", delta: "-0.03" },
+  { label: "10Y Treasury", value: "4.41%", delta: "+0.02" },
+  { label: "Fed Funds Rate", value: "5.25–5.50%", delta: "+0.00" },
+  { label: "1Y CD APY", value: "4.95%", delta: "+0.05" },
+];
+
+const CATEGORY_META: Record<string, { icon: React.ReactNode; color: string; bg: string }> = {
+  Income:       { icon: <DollarSign size={16} />,   color: "text-emerald-600", bg: "bg-emerald-50" },
+  Transfer:     { icon: <RefreshCw size={16} />,     color: "text-blue-600",    bg: "bg-blue-50" },
+  Utilities:    { icon: <Zap size={16} />,           color: "text-amber-600",   bg: "bg-amber-50" },
+  Shopping:     { icon: <ShoppingBag size={16} />,   color: "text-purple-600",  bg: "bg-purple-50" },
+  Dining:       { icon: <Utensils size={16} />,      color: "text-orange-600",  bg: "bg-orange-50" },
+  Travel:       { icon: <Plane size={16} />,         color: "text-sky-600",     bg: "bg-sky-50" },
+  Jewelry:      { icon: <Wifi size={16} />,          color: "text-gold-600",    bg: "bg-gold-50" },
+  Entertainment:{ icon: <BarChart2 size={16} />,     color: "text-pink-600",    bg: "bg-pink-50" },
+  Groceries:    { icon: <ShoppingBag size={16} />,   color: "text-green-600",   bg: "bg-green-50" },
+};
+
+function getCategoryMeta(category: string, type: string) {
+  if (CATEGORY_META[category]) return CATEGORY_META[category];
+  if (type === "credit") return { icon: <ArrowDownLeft size={16} />, color: "text-emerald-600", bg: "bg-emerald-50" };
+  return { icon: <ArrowUpRight size={16} />, color: "text-red-500", bg: "bg-red-50" };
+}
+
+function getGreeting() {
+  const h = new Date().getHours();
+  if (h < 12) return "Good morning";
+  if (h < 17) return "Good afternoon";
+  return "Good evening";
+}
+
+function maskAccount(num: string) {
+  if (!num) return "•••• ••••";
+  return `•••• ${num.slice(-4)}`;
+}
+
+function accountAge(createdAt: string) {
+  const days = Math.floor((Date.now() - new Date(createdAt).getTime()) / 86400000);
+  if (days < 30) return `${days}d old`;
+  if (days < 365) return `${Math.floor(days / 30)}mo old`;
+  return `${Math.floor(days / 365)}yr old`;
+}
+
+const ACCOUNT_COLORS: Record<string, { from: string; to: string; badge: string }> = {
+  Checking:   { from: "from-neutral-800", to: "to-neutral-900",   badge: "bg-neutral-700 text-neutral-200" },
+  Savings:    { from: "from-gold-700",    to: "to-gold-900",       badge: "bg-gold-600 text-white" },
+  Investment: { from: "from-slate-700",   to: "to-slate-900",      badge: "bg-slate-600 text-slate-100" },
+};
+
+export default function DashboardPage() {
+  const [accounts, setAccounts] = useState<Account[]>([]);
+  const [transactions, setTransactions] = useState<Transaction[]>([]);
+  const [cards, setCards] = useState<any[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [balanceVisible, setBalanceVisible] = useState(true);
+  const [selectedAccountIdx, setSelectedAccountIdx] = useState(0);
+  const router = useRouter();
+  const { user } = useAuth();
+
+  useEffect(() => { loadData(); }, []);
+
+  const loadData = async () => {
+    try {
+      const [accountsRes, cardsRes] = await Promise.all([
+        accountAPI.getAccounts(),
+        cardAPI.getCards(),
+      ]);
+
+      if (accountsRes.data) {
+        setAccounts(accountsRes.data);
+        if (accountsRes.data.length > 0) {
+          const txRes = await accountAPI.getAccountTransactions(accountsRes.data[0].id);
+          setTransactions(txRes.data ? txRes.data.slice(0, 8) : []);
+        } else {
+          setTransactions([]);
+        }
+      }
+      if (cardsRes.data) setCards(cardsRes.data);
+    } catch (error) {
+      console.error("Failed to load dashboard data:", error);
+      setTransactions([]);
+      setAccounts([]);
+      setCards([]);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  // Reload transactions when switching selected account
+  const switchAccount = async (idx: number) => {
+    setSelectedAccountIdx(idx);
+    if (accounts[idx]) {
+      try {
+        const txRes = await accountAPI.getAccountTransactions(accounts[idx].id);
+        setTransactions(txRes.data ? txRes.data.slice(0, 8) : []);
+      } catch { /* keep existing */ }
+    }
+  };
+
+  const totalBalance = accounts.reduce((sum, acc) => sum + acc.balance, 0);
+  const selectedAccount = accounts[selectedAccountIdx];
+
+  // Compute spending summary from transactions
+  const spendThisMonth = transactions
+    .filter(tx => tx.type === "debit" && new Date(tx.created_at).getMonth() === new Date().getMonth())
+    .reduce((s, tx) => s + tx.amount, 0);
+  const incomeThisMonth = transactions
+    .filter(tx => tx.type === "credit" && new Date(tx.created_at).getMonth() === new Date().getMonth())
+    .reduce((s, tx) => s + tx.amount, 0);
+
+  if (loading) {
+    return (
+      <ProtectedRoute>
+        <DashboardLayout>
+          <div className="flex items-center justify-center h-64">
+            <div className="w-12 h-12 border-4 border-gold-500 border-t-transparent rounded-full animate-spin" />
+          </div>
+        </DashboardLayout>
+      </ProtectedRoute>
+    );
+  }
+
+  return (
+    <ProtectedRoute>
+      <DashboardLayout>
+        <PageTransition>
+          <motion.div
+            className="space-y-6 sm:space-y-8"
+            variants={containerVariants}
+            initial="initial"
+            animate="animate"
+          >
+
+            {/* ── GREETING HEADER ── */}
+            <div className="flex items-start justify-between">
+              <div>
+                <p className="text-xs font-work-sans font-semibold tracking-widest uppercase text-neutral-400 mb-1">
+                  {new Date().toLocaleDateString("en-US", { weekday: "long", month: "long", day: "numeric" })}
+                </p>
+                <h1 className="text-2xl sm:text-3xl font-work-sans font-bold text-neutral-900">
+                  {getGreeting()}, {user?.full_name?.split(" ")[0] ?? "Client"}
+                </h1>
+                <p className="text-sm text-neutral-500 font-gruppo mt-0.5">
+                  InvBank · Member FDIC
+                </p>
+              </div>
+              <div className="hidden sm:flex items-center space-x-1.5 px-3 py-1.5 bg-emerald-50 border border-emerald-200/60 rounded-full">
+                <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
+                <span className="text-xs font-work-sans font-semibold text-emerald-700">All Systems Operational</span>
+              </div>
+            </div>
+
+            {/* ── PORTFOLIO HERO CARD ── */}
+            <div className="relative bg-gradient-to-br from-neutral-900 via-neutral-800 to-neutral-900 rounded-2xl p-6 sm:p-8 text-white shadow-2xl overflow-hidden">
+              {/* decorative rings */}
+              <div className="absolute -right-16 -top-16 w-64 h-64 rounded-full border border-white/5" />
+              <div className="absolute -right-8 -top-8 w-48 h-48 rounded-full border border-white/5" />
+              <div className="absolute right-4 bottom-4 w-32 h-32 rounded-full border border-gold-500/10" />
+
+              <div className="relative z-10">
+                <div className="flex items-start justify-between mb-6">
+                  <div>
+                    <p className="text-xs font-work-sans font-semibold tracking-widest uppercase text-neutral-400 mb-1">
+                      Total Portfolio Value
+                    </p>
+                    <div className="flex items-end space-x-3">
+                      <h2 className="text-4xl sm:text-5xl font-work-sans font-extrabold tracking-tight">
+                        {balanceVisible
+                          ? `$${totalBalance.toLocaleString("en-US", { minimumFractionDigits: 2 })}`
+                          : "•••••••••"}
+                      </h2>
+                      <button
+                        onClick={() => setBalanceVisible(v => !v)}
+                        className="mb-2 text-neutral-400 hover:text-white transition-colors"
+                        title={balanceVisible ? "Hide balance" : "Show balance"}
+                      >
+                        {balanceVisible ? <EyeOff size={18} /> : <Eye size={18} />}
+                      </button>
+                    </div>
+                    <div className="flex items-center space-x-2 mt-2 text-sm text-neutral-400">
+                      <TrendingUp size={14} className="text-emerald-400" />
+                      <span className="text-emerald-400 font-work-sans font-semibold">+2.5%</span>
+                      <span className="font-gruppo">this quarter</span>
+                      <span className="text-neutral-600">·</span>
+                      <Clock size={12} />
+                      <span className="font-gruppo text-xs">Updated just now</span>
+                    </div>
+                  </div>
+                  <div className="flex flex-col items-end space-y-2">
+                    <span className="px-3 py-1 bg-gold-500/20 border border-gold-500/30 text-gold-400 rounded-full text-xs font-work-sans font-bold tracking-wide">
+                      PRIVATE CLIENT
+                    </span>
+                    <div className="flex items-center space-x-1 text-xs text-neutral-500 font-gruppo">
+                      <Lock size={11} />
+                      <span>256-bit encrypted</span>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Account tabs */}
+                {accounts.length > 0 && (
+                  <div className="flex items-center space-x-2 overflow-x-auto pb-1 scrollbar-hide">
+                    {accounts.map((acc, i) => (
+                      <button
+                        key={acc.id}
+                        onClick={() => switchAccount(i)}
+                        className={`flex-shrink-0 px-4 py-2 rounded-xl text-xs font-work-sans font-semibold transition-all duration-200 ${
+                          i === selectedAccountIdx
+                            ? "bg-gold-500 text-white shadow-lg shadow-gold-500/30"
+                            : "bg-white/10 text-neutral-300 hover:bg-white/20"
+                        }`}
+                      >
+                        {acc.account_type} · {maskAccount(acc.account_number)}
+                      </button>
+                    ))}
+                  </div>
+                )}
+
+                {/* Selected account detail strip */}
+                {selectedAccount && (
+                  <div className="mt-4 pt-4 border-t border-white/10 grid grid-cols-3 gap-4">
+                    <div>
+                      <p className="text-[10px] text-neutral-500 font-work-sans uppercase tracking-widest mb-0.5">Current Balance</p>
+                      <p className="text-lg font-work-sans font-bold">
+                        {balanceVisible ? `$${selectedAccount.balance.toLocaleString("en-US", { minimumFractionDigits: 2 })}` : "•••••"}
+                      </p>
+                    </div>
+                    <div>
+                      <p className="text-[10px] text-neutral-500 font-work-sans uppercase tracking-widest mb-0.5">Available</p>
+                      <p className="text-lg font-work-sans font-bold">
+                        {balanceVisible ? `$${(selectedAccount.balance * 0.97).toLocaleString("en-US", { minimumFractionDigits: 2 })}` : "•••••"}
+                      </p>
+                    </div>
+                    <div>
+                      <p className="text-[10px] text-neutral-500 font-work-sans uppercase tracking-widest mb-0.5">Account Status</p>
+                      <div className="flex items-center space-x-1.5 mt-0.5">
+                        <CheckCircle2 size={14} className="text-emerald-400" />
+                        <span className="text-sm font-work-sans font-semibold capitalize">{selectedAccount.status ?? "Active"}</span>
+                      </div>
+                    </div>
+                  </div>
+                )}
+              </div>
+            </div>
+
+            {/* ── SPENDING SUMMARY ROW ── */}
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
+              {[
+                { label: "Spent This Month", value: `$${spendThisMonth.toLocaleString("en-US", { minimumFractionDigits: 2 })}`, icon: <ArrowUpRight size={16} />, color: "text-red-500", bg: "bg-red-50" },
+                { label: "Income This Month", value: `$${incomeThisMonth.toLocaleString("en-US", { minimumFractionDigits: 2 })}`, icon: <ArrowDownLeft size={16} />, color: "text-emerald-600", bg: "bg-emerald-50" },
+                { label: "Accounts", value: accounts.length.toString(), icon: <BarChart2 size={16} />, color: "text-blue-600", bg: "bg-blue-50" },
+                { label: "Active Cards", value: cards.filter(c => c.status === "active").length.toString(), icon: <CreditCard size={16} />, color: "text-gold-600", bg: "bg-gold-50" },
+              ].map((stat) => (
+                <div key={stat.label} className="glass rounded-xl p-4 flex items-center space-x-3">
+                  <div className={`w-9 h-9 rounded-lg ${stat.bg} flex items-center justify-center flex-shrink-0 ${stat.color}`}>
+                    {stat.icon}
+                  </div>
+                  <div className="min-w-0">
+                    <p className="text-[10px] font-work-sans font-semibold uppercase tracking-wider text-neutral-500 truncate">{stat.label}</p>
+                    <p className="text-base font-work-sans font-bold text-neutral-900 truncate">{stat.value}</p>
+                  </div>
+                </div>
+              ))}
+            </div>
+
+            {/* ── QUICK ACTIONS ── */}
+            <motion.div className="grid grid-cols-2 md:grid-cols-4 gap-3 sm:gap-4" variants={containerVariants}>
+              {[
+                { label: "Transfer", sub: "Execute transfer", icon: <Send className="text-gold-600" size={20} />, href: "/dashboard/transfers" },
+                { label: "Pay Bills", sub: "Pay obligations", icon: <ArrowUpRight className="text-gold-600" size={20} />, href: "/dashboard/bills" },
+                { label: "Cards", sub: "Manage cards", icon: <CreditCard className="text-gold-600" size={20} />, href: "/dashboard/cards" },
+                { label: "New Account", sub: "Open account", icon: <Plus className="text-gold-600" size={20} />, href: "/dashboard/accounts?action=new" },
+              ].map((action) => (
+                <AnimatedButton
+                  key={action.label}
+                  onClick={() => router.push(action.href)}
+                  className="p-4 sm:p-5 glass hover:glass-gold rounded-xl hover:shadow-xl transition-smooth group hover-lift text-left"
+                >
+                  <div className="w-10 h-10 bg-gold-500/10 rounded-lg flex items-center justify-center mb-3 group-hover:bg-gold-500/20 transition-colors">
+                    {action.icon}
+                  </div>
+                  <h3 className="text-sm font-work-sans font-semibold text-neutral-900 mb-0.5">{action.label}</h3>
+                  <p className="text-[11px] text-neutral-500 font-gruppo">{action.sub}</p>
+                </AnimatedButton>
+              ))}
+            </motion.div>
+
+            {/* ── MAIN CONTENT: Transactions + Sidebar ── */}
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+
+              {/* Transactions — 2/3 width */}
+              <div className="lg:col-span-2">
+                <div className="flex items-center justify-between mb-4">
+                  <div>
+                    <h2 className="text-lg font-work-sans font-bold text-neutral-900">Recent Activity</h2>
+                    {selectedAccount && (
+                      <p className="text-xs text-neutral-500 font-gruppo mt-0.5">
+                        {selectedAccount.account_type} · {maskAccount(selectedAccount.account_number)}
+                      </p>
+                    )}
+                  </div>
+                  <button
+                    onClick={() => router.push("/dashboard/accounts")}
+                    className="flex items-center space-x-1 text-sm text-gold-600 hover:text-gold-700 font-gruppo transition-colors"
+                  >
+                    <span>View all</span>
+                    <ChevronRight size={14} />
+                  </button>
+                </div>
+
+                <div className="bg-white border border-neutral-200/60 rounded-2xl overflow-hidden shadow-sm">
+                  {/* Table header */}
+                  <div className="hidden sm:grid grid-cols-[2fr_1fr_1fr_auto] gap-4 px-5 py-3 bg-neutral-50 border-b border-neutral-200/60">
+                    <p className="text-[10px] font-work-sans font-bold uppercase tracking-widest text-neutral-400">Description</p>
+                    <p className="text-[10px] font-work-sans font-bold uppercase tracking-widest text-neutral-400">Date</p>
+                    <p className="text-[10px] font-work-sans font-bold uppercase tracking-widest text-neutral-400">Category</p>
+                    <p className="text-[10px] font-work-sans font-bold uppercase tracking-widest text-neutral-400 text-right">Amount</p>
+                  </div>
+
+                  {transactions.length === 0 ? (
+                    <div className="p-10 text-center">
+                      <AlertCircle size={32} className="text-neutral-300 mx-auto mb-3" />
+                      <p className="text-neutral-500 font-gruppo">No activity recorded yet</p>
+                    </div>
+                  ) : (
+                    <div className="divide-y divide-neutral-100">
+                      {transactions.map((tx) => {
+                        const meta = getCategoryMeta(tx.category ?? "", tx.type);
+                        const isCredit = tx.type === "credit";
+                        const isPending = (tx as any).status === "pending";
+                        const txDate = new Date(tx.created_at);
+                        return (
+                          <div key={tx.id} className="grid grid-cols-[auto_1fr] sm:grid-cols-[2fr_1fr_1fr_auto] gap-x-4 gap-y-1 items-center px-5 py-3.5 hover:bg-neutral-50/80 transition-colors group cursor-pointer">
+                            {/* Icon + description */}
+                            <div className="flex items-center space-x-3 min-w-0">
+                              <div className={`w-9 h-9 rounded-xl flex items-center justify-center flex-shrink-0 ${meta.bg} ${meta.color}`}>
+                                {meta.icon}
+                              </div>
+                              <div className="min-w-0">
+                                <p className="text-sm font-work-sans font-semibold text-neutral-900 truncate">
+                                  {tx.merchant || tx.description || "Transaction"}
+                                </p>
+                                <p className="text-[11px] text-neutral-400 font-gruppo truncate sm:hidden">
+                                  {txDate.toLocaleDateString("en-US", { month: "short", day: "numeric" })}
+                                </p>
+                              </div>
+                            </div>
+                            {/* Date */}
+                            <p className="hidden sm:block text-xs text-neutral-500 font-gruppo">
+                              {txDate.toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" })}
+                            </p>
+                            {/* Category badge */}
+                            <div className="hidden sm:flex items-center">
+                              {isPending ? (
+                                <span className="inline-flex items-center space-x-1 px-2 py-0.5 bg-amber-50 border border-amber-200/60 text-amber-600 rounded-full text-[10px] font-work-sans font-bold">
+                                  <Clock size={9} />
+                                  <span>Pending</span>
+                                </span>
+                              ) : (
+                                <span className={`px-2 py-0.5 rounded-full text-[10px] font-work-sans font-semibold ${meta.bg} ${meta.color}`}>
+                                  {tx.category ?? (isCredit ? "Income" : "Debit")}
+                                </span>
+                              )}
+                            </div>
+                            {/* Amount */}
+                            <p className={`text-sm font-work-sans font-bold text-right ${isCredit ? "text-emerald-600" : "text-neutral-900"}`}>
+                              {isCredit ? "+" : "−"}${Math.abs(tx.amount).toLocaleString("en-US", { minimumFractionDigits: 2 })}
+                            </p>
+                          </div>
+                        );
+                      })}
+                    </div>
+                  )}
+                </div>
+              </div>
+
+              {/* Sidebar: Accounts + Rates — 1/3 width */}
+              <div className="space-y-6">
+
+                {/* Accounts */}
+                <div>
+                  <div className="flex items-center justify-between mb-3">
+                    <h2 className="text-lg font-work-sans font-bold text-neutral-900">My Accounts</h2>
+                    <button
+                      onClick={() => router.push("/dashboard/accounts")}
+                      className="flex items-center space-x-1 text-sm text-gold-600 hover:text-gold-700 font-gruppo transition-colors"
+                    >
+                      <span>All</span>
+                      <ChevronRight size={14} />
+                    </button>
+                  </div>
+
+                  {accounts.length === 0 ? (
+                    <div className="p-6 glass rounded-xl text-center">
+                      <p className="text-neutral-500 mb-3 font-gruppo text-sm">No accounts yet</p>
+                      <button
+                        onClick={() => router.push("/dashboard/accounts?action=new")}
+                        className="px-4 py-2 bg-gradient-to-r from-gold-500 to-gold-600 text-white rounded-lg font-work-sans text-sm font-semibold"
+                      >
+                        Open Account
+                      </button>
+                    </div>
+                  ) : (
+                    <div className="space-y-3">
+                      {accounts.map((account) => {
+                        const colors = ACCOUNT_COLORS[account.account_type] ?? ACCOUNT_COLORS["Checking"];
+                        return (
+                          <div
+                            key={account.id}
+                            onClick={() => router.push(`/dashboard/accounts`)}
+                            className={`relative bg-gradient-to-br ${colors.from} ${colors.to} rounded-xl p-4 cursor-pointer hover:opacity-90 transition-opacity overflow-hidden`}
+                          >
+                            <div className="absolute right-3 top-3 opacity-10">
+                              <div className="w-16 h-16 rounded-full border-2 border-white" />
+                            </div>
+                            <div className="relative z-10">
+                              <div className="flex items-center justify-between mb-2">
+                                <span className={`px-2 py-0.5 rounded-full text-[10px] font-work-sans font-bold ${colors.badge}`}>
+                                  {account.account_type.toUpperCase()}
+                                </span>
+                                <span className="text-[10px] text-white/50 font-gruppo">{accountAge(account.created_at)}</span>
+                              </div>
+                              <p className="text-white/60 font-mono text-xs mb-1.5">{maskAccount(account.account_number)}</p>
+                              <p className="text-white font-work-sans font-extrabold text-xl">
+                                {balanceVisible
+                                  ? `$${account.balance.toLocaleString("en-US", { minimumFractionDigits: 2 })}`
+                                  : "•••••••"}
+                              </p>
+                              <div className="flex items-center justify-between mt-2">
+                                <p className="text-white/50 text-[10px] font-gruppo">Available: {balanceVisible ? `$${(account.balance * 0.97).toLocaleString("en-US", { minimumFractionDigits: 2 })}` : "•••••"}</p>
+                                <span className="flex items-center space-x-1 text-[10px] text-emerald-400 font-gruppo">
+                                  <CheckCircle2 size={10} />
+                                  <span>Active</span>
+                                </span>
+                              </div>
+                            </div>
+                          </div>
+                        );
+                      })}
+                    </div>
+                  )}
+                </div>
+
+                {/* Market / Rates widget */}
+                <div>
+                  <div className="flex items-center justify-between mb-3">
+                    <h2 className="text-lg font-work-sans font-bold text-neutral-900">Today&apos;s Rates</h2>
+                    <span className="text-[10px] text-neutral-400 font-gruppo">As of market open</span>
+                  </div>
+                  <div className="bg-white border border-neutral-200/60 rounded-2xl overflow-hidden shadow-sm">
+                    {RATES.map((rate, i) => (
+                      <div key={rate.label} className={`flex items-center justify-between px-4 py-3 ${i < RATES.length - 1 ? "border-b border-neutral-100" : ""}`}>
+                        <p className="text-xs font-work-sans font-semibold text-neutral-700">{rate.label}</p>
+                        <div className="flex items-center space-x-2">
+                          <p className="text-sm font-work-sans font-bold text-neutral-900">{rate.value}</p>
+                          <span className={`text-[10px] font-work-sans font-bold ${rate.delta.startsWith("+") && rate.delta !== "+0.00" ? "text-emerald-500" : rate.delta.startsWith("-") ? "text-red-500" : "text-neutral-400"}`}>
+                            {rate.delta}
+                          </span>
+                        </div>
+                      </div>
+                    ))}
+                    <div className="px-4 py-2.5 bg-neutral-50 border-t border-neutral-100">
+                      <p className="text-[10px] text-neutral-400 font-gruppo">Rates are indicative only. Subject to change without notice.</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* ── CARDS SECTION ── */}
+            {cards.length > 0 && (
+              <div>
+                <div className="flex items-center justify-between mb-4">
+                  <h2 className="text-lg font-work-sans font-bold text-neutral-900">Payment Cards</h2>
+                  <button
+                    onClick={() => router.push("/dashboard/cards")}
+                    className="flex items-center space-x-1 text-sm text-gold-600 hover:text-gold-700 font-gruppo transition-colors"
+                  >
+                    <span>Manage</span>
+                    <ChevronRight size={14} />
+                  </button>
+                </div>
+
+                <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                  {cards.map((card) => {
+                    const isCredit = card.card_type === "Credit";
+                    const utilization = isCredit && card.credit_limit > 0
+                      ? Math.min((card.balance / card.credit_limit) * 100, 100)
+                      : 0;
+                    const utilizationColor = utilization > 75 ? "bg-red-500" : utilization > 40 ? "bg-amber-400" : "bg-emerald-400";
+
+                    return (
+                      <div
+                        key={card.id}
+                        onClick={() => router.push("/dashboard/cards")}
+                        className="relative bg-gradient-to-br from-neutral-800 via-neutral-900 to-neutral-950 rounded-2xl p-5 cursor-pointer hover:scale-[1.02] transition-transform shadow-xl overflow-hidden"
+                      >
+                        {/* Card chip / decorative */}
+                        <div className="absolute top-4 right-4 w-10 h-8 rounded-md bg-gold-500/30 border border-gold-500/40" />
+                        <div className="absolute -bottom-6 -right-6 w-32 h-32 rounded-full border border-white/5" />
+                        <div className="absolute -bottom-3 -right-3 w-20 h-20 rounded-full border border-white/5" />
+
+                        <div className="relative z-10">
+                          <div className="flex items-center justify-between mb-4">
+                            <div>
+                              <p className="text-[10px] font-work-sans font-bold uppercase tracking-widest text-neutral-400">{card.card_brand}</p>
+                              <p className="text-xs text-neutral-300 font-gruppo capitalize">{card.card_type} Card</p>
+                            </div>
+                            <span className={`px-2 py-0.5 rounded-full text-[10px] font-work-sans font-bold ${
+                              card.status === "active" ? "bg-emerald-500/20 text-emerald-400" : "bg-neutral-700 text-neutral-400"
+                            }`}>
+                              {(card.status ?? "Active").toUpperCase()}
+                            </span>
+                          </div>
+
+                          <p className="text-white font-mono text-base tracking-[0.2em] mb-4">
+                            •••• •••• •••• {card.card_number?.slice(-4)}
+                          </p>
+
+                          <div className="flex items-end justify-between mb-3">
+                            <div>
+                              <p className="text-[10px] text-neutral-500 font-work-sans uppercase tracking-wider mb-0.5">Expires</p>
+                              <p className="text-sm text-white font-mono">{card.expiry_date ?? "••/••"}</p>
+                            </div>
+                            {isCredit ? (
+                              <div className="text-right">
+                                <p className="text-[10px] text-neutral-500 font-work-sans uppercase tracking-wider mb-0.5">Balance / Limit</p>
+                                <p className="text-sm text-white font-work-sans font-bold">
+                                  ${card.balance?.toLocaleString()} <span className="text-neutral-500 font-normal">/ ${card.credit_limit?.toLocaleString()}</span>
+                                </p>
+                              </div>
+                            ) : (
+                              <div className="text-right">
+                                <p className="text-[10px] text-neutral-500 font-work-sans uppercase tracking-wider mb-0.5">Type</p>
+                                <p className="text-sm text-white font-work-sans font-bold">Debit</p>
+                              </div>
+                            )}
+                          </div>
+
+                          {/* Utilization bar — credit cards only */}
+                          {isCredit && card.credit_limit > 0 && (
+                            <div>
+                              <div className="flex items-center justify-between mb-1">
+                                <p className="text-[10px] text-neutral-500 font-gruppo">Credit utilization</p>
+                                <p className="text-[10px] font-work-sans font-bold text-neutral-300">{utilization.toFixed(0)}%</p>
+                              </div>
+                              <div className="w-full h-1.5 bg-white/10 rounded-full overflow-hidden">
+                                <div
+                                  className={`h-full rounded-full ${utilizationColor} transition-all duration-500`}
+                                  style={{ width: `${utilization}%` }}
+                                />
+                              </div>
+                            </div>
+                          )}
+                        </div>
+                      </div>
+                    );
+                  })}
+                </div>
+              </div>
+            )}
+
+          </motion.div>
+        </PageTransition>
+      </DashboardLayout>
+    </ProtectedRoute>
+  );
+}

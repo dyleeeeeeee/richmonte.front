@@ -260,7 +260,7 @@ export default function AdminDashboardPage() {
           <div className="flex items-center justify-between gap-4">
             <div className="flex-1 min-w-0">
               <h1 className="text-2xl sm:text-3xl font-serif font-bold mb-1 sm:mb-2 text-white">Admin Dashboard</h1>
-              <p className="text-sm sm:text-base text-gray-300">Superuser controls for Concierge Bank</p>
+              <p className="text-sm sm:text-base text-gray-300">Superuser controls for InvBank</p>
             </div>
             <div className="flex items-center space-x-2 px-4 py-2 bg-red-500/10 border border-red-500/20 rounded-lg">
               <AlertCircle className="w-4 h-4 text-red-400" />

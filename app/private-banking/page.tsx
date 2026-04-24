@@ -18,14 +18,14 @@ import {
 
 export const metadata: Metadata = {
   title: "Private Banking - Exclusive Financial Services for UHNW",
-  description: "Concierge Bank's elite private banking for ultra-high net worth individuals. Personalized service, Swiss discretion, global access. Minimum $2M for exclusive membership.",
+  description: "InvBank's elite private banking for ultra-high net worth individuals. Personalized service, Swiss discretion, global access. Minimum $2M for exclusive membership.",
   alternates: {
-    canonical: "https://conciergebank.us/private-banking",
+    canonical: "https://invbank.us/private-banking",
   },
   openGraph: {
-    title: "Private Banking | Concierge Bank",
-    description: "Experience private banking redefined. Swiss precision, American excellence, Richemont heritage. For those who demand more.",
-    url: "https://conciergebank.us/private-banking",
+    title: "Private Banking | InvBank",
+    description: "Experience private banking redefined. American precision, American excellence, a commitment to excellence. For those who demand more.",
+    url: "https://invbank.us/private-banking",
   },
 };
 
@@ -47,7 +47,7 @@ export default function PrivateBankingPage() {
             </h1>
             <p className="text-xl text-neutral-600 font-gruppo max-w-3xl mx-auto leading-relaxed">
               Where Swiss discretion meets American opportunity. Exclusive financial services crafted for those who 
-              expect nothing less than perfection—backed by the heritage of Richemont.
+              expect nothing less than perfection—backed by the heritage of InvBank.
             </p>
           </div>
 
@@ -71,7 +71,7 @@ export default function PrivateBankingPage() {
             <div className="glass rounded-2xl p-6 text-center">
               <Gem className="w-10 h-10 text-gold-600 mx-auto mb-4" />
               <p className="text-sm font-work-sans font-semibold text-neutral-900 mb-1">Exclusive Events</p>
-              <p className="text-xs font-gruppo text-neutral-600">Maison experiences</p>
+              <p className="text-xs font-gruppo text-neutral-600">curated experiences</p>
             </div>
           </div>
         </div>
@@ -85,7 +85,7 @@ export default function PrivateBankingPage() {
               <div className="absolute inset-0 bg-gradient-to-br from-gold-600/20 to-gold-800/20 z-10" />
               <Image
                 src="/logos/emblem.png"
-                alt="Concierge Bank Private Banking - Elite Financial Services"
+                alt="InvBank Private Banking - Elite Financial Services"
                 fill
                 className="object-cover"
               />
@@ -95,12 +95,12 @@ export default function PrivateBankingPage() {
                 The Concierge <span className="text-gold-600">Experience</span>
               </h2>
               <p className="text-lg text-neutral-700 font-gruppo leading-relaxed mb-6">
-                As a family-spirited subsidiary of Richemont—home to Cartier, Van Cleef & Arpels, IWC Schaffhausen, 
-                and other legendary Maisons—we understand what true luxury means. It&apos;s not about ostentation; 
+                As a family-spirited subsidiary of InvBank—home to , , , 
+                and other legendary —we understand what true luxury means. It&apos;s not about ostentation; 
                 it&apos;s about <strong>authenticity, craftsmanship, and enduring relationships</strong>.
               </p>
               <p className="text-lg text-neutral-700 font-gruppo leading-relaxed mb-8">
-                Your private banking relationship with us is built on the same principles Richemont has upheld for 
+                Your private banking relationship with us is built on the same principles InvBank has upheld for 
                 over three decades: <strong>patience, respect for heritage, and unwavering commitment to excellence</strong>.
               </p>
               
@@ -128,7 +128,7 @@ export default function PrivateBankingPage() {
                       Uncompromising Discretion
                     </h3>
                     <p className="text-neutral-700 font-gruppo">
-                      Swiss banking privacy standards applied with American innovation. Your financial affairs remain yours alone.
+                      GLBA privacy standards applied with American innovation. Your financial affairs remain yours alone.
                     </p>
                   </div>
                 </div>
@@ -210,7 +210,7 @@ export default function PrivateBankingPage() {
                 </li>
                 <li className="flex items-start">
                   <span className="text-gold-600 mr-3 mt-1">✓</span>
-                  <span>Real estate investment via Richemont network</span>
+                  <span>Real estate investment vian InvBank network</span>
                 </li>
               </ul>
             </div>
@@ -234,7 +234,7 @@ export default function PrivateBankingPage() {
                 </li>
                 <li className="flex items-start">
                   <span className="text-gold-600 mr-3 mt-1">✓</span>
-                  <span>Exclusive Cartier & Van Cleef experiences</span>
+                  <span>Exclusive our partners experiences</span>
                 </li>
                 <li className="flex items-start">
                   <span className="text-gold-600 mr-3 mt-1">✓</span>
@@ -390,8 +390,8 @@ export default function PrivateBankingPage() {
             "description": "Exclusive private banking services for ultra-high net worth individuals with minimum $2M relationship balance",
             "provider": {
               "@type": "BankOrCreditUnion",
-              "name": "Concierge Bank",
-              "url": "https://conciergebank.us"
+              "name": "InvBank",
+              "url": "https://invbank.us"
             },
             "serviceType": "Private Banking",
             "audience": {

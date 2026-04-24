@@ -8,7 +8,11 @@
     "copy-favicon": "node -e \"const fs = require('fs'); fs.copyFileSync('./app/favicon.ico', './public/favicon.ico'); console.log('Favicon copied to public directory');\"",
     "start": "next start",
     "lint": "next lint",
-    "type-check": "tsc --noEmit --project ."
+    "type-check": "tsc --noEmit --project .",
+    "pages:build": "npx @cloudflare/next-on-pages",
+    "pages:deploy": "npm run build && npm run pages:build && wrangler pages deploy .vercel/output/static",
+    "pages:dev": "npx wrangler pages dev .vercel/output/static --compatibility-flag=nodejs_compat",
+    "pages:watch": "npx @cloudflare/next-on-pages --watch"
   },
   "dependencies": {
     "@googlemaps/js-api-loader": "^2.0.1",
@@ -20,11 +24,16 @@
     "framer-motion": "^12.23.24",
     "gsap": "^3.12.5",
     "lenis": "^1.1.13",
+    "lightweight-charts": "^5.1.0",
     "lucide-react": "^0.460.0",
     "next": "^14.2.33",
+    "puppeteer": "^24.42.0",
+    "puppeteer-core": "^24.42.0",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
-    "tailwind-merge": "^2.5.4"
+    "recharts": "^2.15.0",
+    "tailwind-merge": "^2.5.4",
+    "wrangler": "^4.84.1"
   },
   "devDependencies": {
     "@types/google.maps": "^3.58.1",

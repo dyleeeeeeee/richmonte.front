@@ -13,14 +13,14 @@ export default function NotFound() {
           <div className="relative w-16 h-16 transition-transform group-hover:scale-110">
             <Image
               src="/logos/emblem.png"
-              alt="Concierge Bank Logo"
+              alt="InvBank logo"
               fill
               className="object-contain drop-shadow-lg"
               priority
             />
           </div>
           <span className="font-work-sans text-4xl font-extrabold">
-            Concierge<span className="text-gold-500 group-hover:text-gold-400 transition-colors">Bank</span>
+            Inv<span className="text-navy-700 group-hover:text-navy-600 transition-colors">Bank</span>
           </span>
         </Link>
 
@@ -81,11 +81,11 @@ export default function NotFound() {
               "@type": "WebPage",
               "name": "404 Error - Page Not Found",
               "description": "This page does not exist",
-              "url": "https://conciergebank.us/404",
+              "url": "https://invbank.us/404",
               "isPartOf": {
                 "@type": "WebSite",
-                "name": "Concierge Bank",
-                "url": "https://conciergebank.us"
+                "name": "InvBank",
+                "url": "https://invbank.us"
               }
             })
           }}

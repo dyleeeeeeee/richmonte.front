@@ -5,9 +5,9 @@ export default function PrivacyPage() {
 		<ReaderLayout title="Privacy Policy" lastUpdated="January 2025">
 			<section className="space-y-6">
 				<p className="text-lg text-neutral-700 leading-relaxed">
-					At Concierge Bank, a banking subsidiary of Richemont Geneva, we uphold the highest standards
-					of Swiss banking privacy and discretion. Your personal and financial information is protected
-					with the same meticulous care that our Maisons apply to their finest creations.
+					At InvBank, a banking subsidiary of InvBank, N.A., we uphold the highest standards
+					of GLBA privacy and discretion. Your personal and financial information is protected
+					with the same meticulous care that our  apply to their finest creations.
 				</p>
 
 				<h2 className="text-2xl font-bold text-neutral-900 mt-12 mb-4">Information We Collect</h2>
@@ -17,7 +17,7 @@ export default function PrivacyPage() {
 				<ul className="list-disc pl-6 space-y-2 text-neutral-700">
 					<li>Personal identification information (name, contact details, government-issued ID)</li>
 					<li>Financial information (account details, transaction history, investment preferences)</li>
-					<li>Richemont Maison preferences and lifestyle requirements</li>
+					<li>InvBank preferences and lifestyle requirements</li>
 					<li>Device and usage information when you access our digital banking platform</li>
 				</ul>
 
@@ -27,22 +27,22 @@ export default function PrivacyPage() {
 				</p>
 				<ul className="list-disc pl-6 space-y-2 text-neutral-700">
 					<li>Provide and manage your private banking accounts and investment portfolios</li>
-					<li>Process transactions and deliver financial services with Swiss precision</li>
-					<li>Offer bespoke concierge services tailored to your Maison preferences</li>
+					<li>Process transactions and deliver financial services with American precision</li>
+					<li>Offer bespoke concierge services tailored to your preferences</li>
 					<li>Ensure security and prevent fraud through advanced monitoring</li>
 					<li>Comply with Swiss and international banking regulations</li>
 				</ul>
 
 				<h2 className="text-2xl font-bold text-neutral-900 mt-12 mb-4">Swiss Banking Privacy Standards</h2>
 				<p className="text-neutral-700 leading-relaxed">
-					As a Geneva-based institution, we adhere to Switzerland&apos;s stringent privacy laws and banking
+					As a US national bank, we adhere to federal privacy law (GLBA) and banking
 					secrecy traditions. Your information is protected by:
 				</p>
 				<ul className="list-disc pl-6 space-y-2 text-neutral-700">
 					<li>Swiss Federal Data Protection Act (FADP) compliance</li>
 					<li>Banking secrecy provisions under Swiss law</li>
 					<li>Advanced encryption and security protocols</li>
-					<li>Richemont Group&apos;s data governance framework</li>
+					<li>InvBank Holdings&apos;s data governance framework</li>
 				</ul>
 
 				<h2 className="text-2xl font-bold text-neutral-900 mt-12 mb-4">Information Sharing</h2>
@@ -51,7 +51,7 @@ export default function PrivacyPage() {
 				</p>
 				<ul className="list-disc pl-6 space-y-2 text-neutral-700">
 					<li>Required by Swiss or international banking regulations</li>
-					<li>Necessary to provide services you&apos;ve requested (e.g., partner Maisons for concierge services)</li>
+					<li>Necessary to provide services you&apos;ve requested (e.g., partner  for concierge services)</li>
 					<li>With your explicit consent</li>
 					<li>To prevent fraud or protect our legal rights</li>
 				</ul>
@@ -88,8 +88,8 @@ export default function PrivacyPage() {
 					For privacy inquiries or to exercise your rights, please contact our Data Protection Officer:
 				</p>
 				<p className="text-neutral-700 mt-4">
-					<strong>Email:</strong> privacy@conciergebank.us<br />
-					<strong>Headquarters:</strong> Concierge Bank, Rue du Rhône, 1204 Geneva, Switzerland<br />
+					<strong>Email:</strong> privacy@invbank.us<br />
+					<strong>Headquarters:</strong> InvBank, 299 Park Avenue, New York, NY 10171<br />
 					<strong>US Branch:</strong> 5421 N University Dr, Coral Springs, FL 33067, United States<br />
 					<strong>Swiss Branch:</strong> Feldstrasse 60, 8180 Bülach, Switzerland
 				</p>

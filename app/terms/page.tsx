@@ -5,21 +5,21 @@ export default function TermsPage() {
 		<ReaderLayout title="Terms of Service" lastUpdated="January 2025">
 			<section className="space-y-6">
 				<p className="text-lg text-neutral-700 leading-relaxed">
-					Welcome to Concierge Bank. These Terms of Service govern your relationship with our private
-					banking institution, a subsidiary of Richemont Geneva. By opening an account or using our
+					Welcome to InvBank. These Terms of Service govern your relationship with our private
+					banking institution, a subsidiary of InvBank, N.A.. By opening an account or using our
 					services, you agree to these terms.
 				</p>
 
 				<h2 className="text-2xl font-bold text-neutral-900 mt-12 mb-4">Acceptance of Terms</h2>
 				<p className="text-neutral-700 leading-relaxed">
 					By accessing our services, you acknowledge that you have read, understood, and agree to be
-					bound by these Terms of Service and all applicable Swiss banking regulations. If you do not
+					bound by these Terms of Service and all applicable US federal banking regulations. If you do not
 					agree, please do not use our services.
 				</p>
 
 				<h2 className="text-2xl font-bold text-neutral-900 mt-12 mb-4">Eligibility</h2>
 				<p className="text-neutral-700 leading-relaxed">
-					To become a Concierge Bank client, you must:
+					To become a InvBank client, you must:
 				</p>
 				<ul className="list-disc pl-6 space-y-2 text-neutral-700">
 					<li>Be at least 18 years of age</li>
@@ -30,7 +30,7 @@ export default function TermsPage() {
 
 				<h2 className="text-2xl font-bold text-neutral-900 mt-12 mb-4">Account Opening and Verification</h2>
 				<p className="text-neutral-700 leading-relaxed">
-					Our account opening process adheres to Swiss banking standards and includes:
+					Our account opening process adheres to US federal banking standards and includes:
 				</p>
 				<ul className="list-disc pl-6 space-y-2 text-neutral-700">
 					<li>Identity verification through government-issued documentation</li>
@@ -44,14 +44,14 @@ export default function TermsPage() {
 
 				<h2 className="text-2xl font-bold text-neutral-900 mt-12 mb-4">Services Provided</h2>
 				<p className="text-neutral-700 leading-relaxed">
-					Concierge Bank offers a range of private banking services including:
+					InvBank offers a range of private banking services including:
 				</p>
 				<ul className="list-disc pl-6 space-y-2 text-neutral-700">
 					<li>Private banking accounts and wealth management</li>
 					<li>Elite payment cards (Gold, Platinum, Black)</li>
 					<li>International transfers and multi-currency accounts</li>
 					<li>Investment advisory and portfolio management</li>
-					<li>Maison concierge services for Richemont clientele</li>
+					<li>concierge services for InvBank clientele</li>
 				</ul>
 
 				<h2 className="text-2xl font-bold text-neutral-900 mt-12 mb-4">Fees and Charges</h2>
@@ -63,7 +63,7 @@ export default function TermsPage() {
 
 				<h2 className="text-2xl font-bold text-neutral-900 mt-12 mb-4">Client Responsibilities</h2>
 				<p className="text-neutral-700 leading-relaxed">
-					As a Concierge Bank client, you agree to:
+					As a InvBank client, you agree to:
 				</p>
 				<ul className="list-disc pl-6 space-y-2 text-neutral-700">
 					<li>Provide accurate and truthful information at all times</li>
@@ -83,7 +83,7 @@ export default function TermsPage() {
 
 				<h2 className="text-2xl font-bold text-neutral-900 mt-12 mb-4">Liability Limitations</h2>
 				<p className="text-neutral-700 leading-relaxed">
-					While we strive for excellence, Concierge Bank shall not be liable for:
+					While we strive for excellence, InvBank shall not be liable for:
 				</p>
 				<ul className="list-disc pl-6 space-y-2 text-neutral-700">
 					<li>Losses resulting from unauthorized access due to client negligence</li>
@@ -107,7 +107,7 @@ export default function TermsPage() {
 				<h2 className="text-2xl font-bold text-neutral-900 mt-12 mb-4">Governing Law</h2>
 				<p className="text-neutral-700 leading-relaxed">
 					These Terms of Service are governed by the laws of Switzerland. Any disputes shall be resolved
-					through arbitration in Geneva, Switzerland, in accordance with the Swiss Rules of International
+					through arbitration, Switzerland, in accordance with the Swiss Rules of International
 					Arbitration.
 				</p>
 
@@ -123,9 +123,9 @@ export default function TermsPage() {
 					For questions regarding these Terms of Service:
 				</p>
 				<p className="text-neutral-700 mt-4">
-					<strong>Email:</strong> legal@conciergebank.us<br />
-					<strong>Headquarters:</strong> Concierge Bank, Rue du Rhône, 1204 Geneva, Switzerland<br />
-					<strong>Phone (Geneva):</strong> +41 22 123 4567<br />
+					<strong>Email:</strong> legal@invbank.us<br />
+					<strong>Headquarters:</strong> InvBank, 299 Park Avenue, New York, NY 10171<br />
+					<strong>Phone (New York):</strong> +1 (212) 555-0100<br />
 					<strong>US Branch:</strong> 5421 N University Dr, Coral Springs, FL 33067, United States<br />
 					<strong>Phone (US):</strong> +1 954 555 0100<br />
 					<strong>Swiss Branch:</strong> Feldstrasse 60, 8180 Bülach, Switzerland

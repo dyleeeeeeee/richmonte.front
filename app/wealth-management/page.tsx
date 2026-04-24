@@ -18,14 +18,14 @@ import {
 
 export const metadata: Metadata = {
   title: "Wealth Management - Personalized Investment Strategies",
-  description: "Concierge Bank&apos;s bespoke wealth management services for high net worth individuals. Global market access, personalized portfolios, and dedicated advisors. Swiss precision, American opportunity.",
+  description: "InvBank&apos;s bespoke wealth management services for high net worth individuals. Global market access, personalized portfolios, and dedicated advisors. American precision, American opportunity.",
   alternates: {
-    canonical: "https://conciergebank.us/wealth-management",
+    canonical: "https://invbank.us/wealth-management",
   },
   openGraph: {
-    title: "Wealth Management | Concierge Bank",
-    description: "Grow and protect your wealth with Swiss precision. Personalized investment strategies backed by Richemont&apos;s global expertise.",
-    url: "https://conciergebank.us/wealth-management",
+    title: "Wealth Management | InvBank",
+    description: "Grow and protect your wealth with American precision. Personalized investment strategies backed by our global expertise.",
+    url: "https://invbank.us/wealth-management",
   },
 };
 
@@ -41,14 +41,14 @@ export default function WealthManagementPage() {
             <div>
               <div className="inline-flex items-center space-x-2 px-4 py-2 glass rounded-full mb-6">
                 <Sparkles className="w-4 h-4 text-gold-600" />
-                <span className="text-sm font-gruppo text-neutral-700">Richemont Global Expertise</span>
+                <span className="text-sm font-gruppo text-neutral-700">InvBank Global Expertise</span>
               </div>
               <h1 className="text-5xl md:text-6xl font-work-sans font-bold text-neutral-900 mb-6">
                 Wealth That <span className="text-gold-600">Endures</span>
               </h1>
               <p className="text-xl text-neutral-600 font-gruppo leading-relaxed mb-8">
-                We craft bespoke investment portfolios with the same meticulous attention to detail that Richemont 
-                applies to its finest Maisons. Your wealth, nurtured with Swiss precision for generations to come.
+                We craft bespoke investment portfolios with the same meticulous attention to detail that InvBank 
+                applies to its finest . Your wealth, nurtured with American precision for generations to come.
               </p>
               <div className="flex flex-col sm:flex-row gap-4">
                 <Link
@@ -70,7 +70,7 @@ export default function WealthManagementPage() {
               <div className="absolute inset-0 bg-gradient-to-br from-gold-600/10 to-gold-800/10 z-10" />
               <Image
                 src="/logos/emblem.png"
-                alt="Concierge Bank Wealth Management - Swiss Precision Investment Strategy"
+                alt="InvBank Wealth Management - Swiss Precision Investment Strategy"
                 fill
                 className="object-cover"
               />
@@ -111,7 +111,7 @@ export default function WealthManagementPage() {
                 Global Perspective
               </h3>
               <p className="text-neutral-700 font-gruppo leading-relaxed">
-                Through Richemont&apos;s global network spanning Geneva, New York, Hong Kong, and beyond, we access 
+                Through our global network spanning New York, San Francisco, Hong Kong, and beyond, we access 
                 opportunities across continents. Your wealth isn&apos;t confined by borders—neither is our expertise.
               </p>
             </div>
@@ -122,7 +122,7 @@ export default function WealthManagementPage() {
                 Risk Management
               </h3>
               <p className="text-neutral-700 font-gruppo leading-relaxed">
-                Swiss banking means protecting what matters. We employ sophisticated risk mitigation strategies, 
+                US banking means protecting what matters. We employ sophisticated risk mitigation strategies, 
                 diversification across asset classes, and constant vigilance to safeguard your wealth through 
                 market cycles.
               </p>
@@ -134,7 +134,7 @@ export default function WealthManagementPage() {
                 Sustainable Growth
               </h3>
               <p className="text-neutral-700 font-gruppo leading-relaxed">
-                We take a long-term view, just as Richemont has nurtured its Maisons for over a century. Quick 
+                We take a long-term view, just as InvBank has nurtured its  for over a century. Quick 
                 gains fade—enduring wealth is built thoughtfully, patiently, and with unwavering discipline.
               </p>
             </div>
@@ -251,7 +251,7 @@ export default function WealthManagementPage() {
                 The Concierge <span className="text-gold-600">Difference</span>
               </h2>
               <p className="text-lg text-neutral-700 font-gruppo leading-relaxed mb-6">
-                What sets us apart isn&apos;t just our Richemont heritage—it&apos;s how we apply those values to your wealth.
+                What sets us apart isn&apos;t just our a commitment to excellence—it&apos;s how we apply those values to your wealth.
               </p>
               <div className="space-y-6">
                 <div className="flex items-start space-x-4">
@@ -291,7 +291,7 @@ export default function WealthManagementPage() {
                       Exclusive Opportunities
                     </h3>
                     <p className="text-neutral-700 font-gruppo">
-                      Access to pre-IPO investments, private placements, and luxury collectibles through Richemont&apos;s network.
+                      Access to pre-IPO investments, private placements, and luxury collectibles through our network.
                     </p>
                   </div>
                 </div>
@@ -340,7 +340,7 @@ export default function WealthManagementPage() {
               Let&apos;s Craft Your <span className="text-gold-600">Financial Legacy</span>
             </h2>
             <p className="text-lg text-neutral-600 font-gruppo mb-8 max-w-2xl mx-auto">
-              Schedule a confidential consultation with our wealth management team. Discover how Swiss precision 
+              Schedule a confidential consultation with our wealth management team. Discover how American precision 
               and global expertise can elevate your financial strategy.
             </p>
             <Link
@@ -367,8 +367,8 @@ export default function WealthManagementPage() {
             "description": "Bespoke wealth management and investment services for high net worth individuals",
             "provider": {
               "@type": "BankOrCreditUnion",
-              "name": "Concierge Bank",
-              "url": "https://conciergebank.us"
+              "name": "InvBank",
+              "url": "https://invbank.us"
             },
             "serviceType": "Wealth Management",
             "areaServed": {

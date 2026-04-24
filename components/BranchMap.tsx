@@ -16,16 +16,16 @@ interface Branch {
 
 const branches: Branch[] = [
   {
-    id: "geneva",
-    name: "Geneva Headquarters",
-    address: "Rue du Rhône 10",
-    city: "Geneva",
-    country: "Switzerland",
-    phone: "+41 22 123 4567",
-    hours: "Mon-Fri: 8:00 AM - 6:00 PM CET",
-    mapUrl: "https://maps.app.goo.gl/nnUpwPYdi3ZZ2RuA6",
-    image: "/images/geneva-branch.jpg",
-    description: "Our flagship headquarters in the heart of Geneva's financial district."
+    id: "new-york",
+    name: "New York Headquarters",
+    address: "299 Park Avenue, 22nd Floor",
+    city: "New York, NY",
+    country: "USA",
+    phone: "+1 (212) 555-0100",
+    hours: "Mon-Fri: 8:00 AM – 6:00 PM ET",
+    mapUrl: "https://maps.google.com/?q=299+Park+Avenue+New+York",
+    image: "/images/new-york-branch.jpg",
+    description: "Our flagship corporate headquarters in Midtown Manhattan."
   },
   {
     id: "coral-springs",
@@ -33,23 +33,23 @@ const branches: Branch[] = [
     address: "5421 N University Dr",
     city: "Coral Springs, FL",
     country: "USA",
-    phone: "+1 954 555 0100",
-    hours: "Mon-Fri: 9:00 AM - 5:00 PM EST",
+    phone: "+1 (954) 555-0100",
+    hours: "Mon-Fri: 9:00 AM – 5:00 PM ET",
     mapUrl: "https://maps.app.goo.gl/JrSt5811urXdGH4t9",
     image: "/images/coral-springs-branch.jpg",
-    description: "Serving our North American clientele with Swiss banking excellence."
+    description: "Full-service retail branch serving South Florida clients."
   },
   {
-    id: "bulach",
-    name: "Bülach Branch",
-    address: "Feldstrasse 60",
-    city: "Bülach",
-    country: "Switzerland",
-    phone: "+41 44 123 4567",
-    hours: "Mon-Fri: 8:30 AM - 5:30 PM CET",
-    mapUrl: "https://maps.app.goo.gl/DYr3je4YcSdvkEZbA",
-    image: "/images/bulach-branch.jpg",
-    description: "Regional office serving Zurich area clients."
+    id: "san-francisco",
+    name: "San Francisco Office",
+    address: "One Market Plaza, Spear Tower",
+    city: "San Francisco, CA",
+    country: "USA",
+    phone: "+1 (415) 555-0100",
+    hours: "Mon-Fri: 8:30 AM – 5:30 PM PT",
+    mapUrl: "https://maps.google.com/?q=One+Market+Plaza+San+Francisco",
+    image: "/images/san-francisco-branch.jpg",
+    description: "West Coast wealth-management and trading desk."
   }
 ];
 
@@ -62,7 +62,8 @@ export default function BranchMap() {
       <div className="relative bg-gradient-to-br from-gray-100 to-gray-200 rounded-2xl overflow-hidden shadow-xl mb-8">
         <div className="relative h-96">
           <iframe
-            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d29301818.50165862!2d-119.27036339999994!3d26.297920500000004!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x88d91ac26f28a3d5%3A0xb07cd60133f2ce2a!2sFinancial%20Concierge%20Solutions!5e0!3m2!1sen!2sng!4v1760810266777!5m2!1sen!2sng"
+            src="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d25232987.65!2d-98!3d39.5!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2sUnited%20States!5e0!3m2!1sen!2sus"
+            title="InvBank US branch map"
             width="100%"
             height="100%"
             style={{ border: 0 }}
@@ -74,10 +75,10 @@ export default function BranchMap() {
           {/* Map Title Overlay */}
           <div className="absolute top-6 left-6 right-6 z-10 bg-white/90 backdrop-blur-sm rounded-lg p-4 shadow-lg">
             <h3 className="text-2xl font-bold text-gray-900 mb-1">
-              Global Presence
+              Nationwide Presence
             </h3>
             <p className="text-gray-700 text-sm">
-              Serving clients across Switzerland and North America
+              Serving clients across the United States
             </p>
           </div>
         </div>
@@ -106,8 +107,8 @@ export default function BranchMap() {
                 </p>
               </div>
               <div className={`w-3 h-3 rounded-full ${
-                branch.id === 'geneva' ? 'bg-red-500' :
-                branch.id === 'coral-springs' ? 'bg-blue-500' : 'bg-green-500'
+                branch.id === 'new-york' ? 'bg-navy-700' :
+                branch.id === 'coral-springs' ? 'bg-navy-500' : 'bg-navy-400'
               }`}></div>
             </div>
 

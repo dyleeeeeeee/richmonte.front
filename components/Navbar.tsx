@@ -3,14 +3,13 @@
 import { useEffect, useState } from "react";
 import { usePathname } from "next/navigation";
 import Link from "next/link";
-import Image from "next/image";
 import { X, Menu, ChevronRight, Phone } from "lucide-react";
 
 const navLinks = [
-  { label: "About", href: "/#about" },
-  { label: "Services", href: "/#services" },
-  { label: "Cards", href: "/#cards" },
-  { label: "Private Banking", href: "/private-banking" },
+  { label: "Credit Cards", href: "/#cards" },
+  { label: "Accounts", href: "/#accounts" },
+  { label: "Lending", href: "/#lending" },
+  { label: "Business", href: "/#business" },
   { label: "Wealth Management", href: "/wealth-management" },
 ];
 
@@ -33,21 +32,24 @@ export default function Navbar() {
 
   return (
     <>
-      {/* Top utility bar */}
-      <div className="hidden md:block bg-neutral-900 text-neutral-300 text-xs py-2">
+      {/* FDIC banner bar — warm stone, matches Apex reference top strip */}
+      <div className="hidden md:block bg-stone-200 text-stone-600 text-[11px] font-semibold tracking-wide py-1.5 text-center border-b border-stone-300">
+        FDIC-Insured — Backed by the full faith and credit of the U.S. Government
+      </div>
+      <div className="hidden md:block bg-navy-950 text-navy-100 text-xs py-2">
         <div className="container mx-auto px-6 sm:px-8 flex items-center justify-between">
           <div className="flex items-center space-x-6">
             <span className="flex items-center space-x-1.5">
-              <Phone size={11} className="text-gold-400" />
-              <span>1-800-CONCIERGE&nbsp;&nbsp;|&nbsp;&nbsp;Mon–Fri 8am–8pm ET</span>
+              <Phone size={11} className="text-navy-300" />
+              <span>1-800-INVBANK&nbsp;&nbsp;|&nbsp;&nbsp;Mon–Fri 8am–8pm ET</span>
             </span>
             <span className="text-neutral-500">|</span>
-            <span>FDIC Insured · FINMA Regulated · Basel III Compliant</span>
+            <span>FDIC Insured · Equal Housing Lender</span>
           </div>
           <div className="flex items-center space-x-4">
-            <Link href="/security" className="hover:text-gold-400 transition-colors">Security Center</Link>
+            <Link href="/security" className="hover:text-navy-300 transition-colors">Security Center</Link>
             <span className="text-neutral-600">|</span>
-            <Link href="/login" className="hover:text-gold-400 transition-colors font-medium">Sign In</Link>
+            <Link href="/login" className="hover:text-navy-300 transition-colors font-medium">Sign In</Link>
           </div>
         </div>
       </div>
@@ -57,21 +59,23 @@ export default function Navbar() {
         className={`fixed left-0 right-0 z-50 transition-all duration-500 ${
           scrolled
             ? "top-0 bg-white/98 backdrop-blur-xl py-3 shadow-[0_2px_20px_rgba(0,0,0,0.08)] border-b border-neutral-100"
-            : "top-0 md:top-[32px] bg-transparent py-5"
+            : "top-0 md:top-[56px] bg-white py-4 border-b border-neutral-100"
         }`}
       >
         <div className="container mx-auto px-6 sm:px-8 flex items-center justify-between">
           {/* Logo */}
-          <Link href="/" className="flex items-center space-x-3 group flex-shrink-0">
-            <div className="relative w-10 h-10 transition-transform group-hover:scale-105">
-              <Image src="/logos/emblem.png" alt="Concierge Bank" fill className="object-contain" priority />
-            </div>
+          <Link href="/" className="flex items-center space-x-2.5 group flex-shrink-0">
+            {/* Geometric navy logomark (pyramid/peak) */}
+            <svg viewBox="0 0 40 40" className="w-9 h-9 transition-transform group-hover:scale-105" aria-hidden>
+              <path d="M20 4 L36 32 L28 32 L20 18 L12 32 L4 32 Z" fill="#2C3E5A" />
+              <path d="M20 18 L28 32 L12 32 Z" fill="#354A68" />
+            </svg>
             <div className="flex flex-col leading-tight">
-              <span className={`font-work-sans text-xl font-extrabold tracking-tight transition-colors duration-300 ${scrolled ? "text-neutral-900" : "text-neutral-900"}`}>
-                Concierge<span className="text-gold-600">Bank</span>
+              <span className={`font-work-sans text-xl font-extrabold tracking-tight text-neutral-900`}>
+                Inv<span className="text-navy-700">Bank</span>
               </span>
-              <span className="text-[9px] tracking-[0.18em] uppercase text-gold-600 font-work-sans font-semibold hidden sm:block">
-                A Richemont SA Company
+              <span className="text-[9px] tracking-[0.18em] uppercase text-navy-600 font-work-sans font-semibold hidden sm:block">
+                FDIC-Insured · Member FDIC
               </span>
             </div>
           </Link>
@@ -82,8 +86,8 @@ export default function Navbar() {
               <Link
                 key={link.href}
                 href={link.href}
-                className={`px-4 py-2 text-sm font-work-sans font-semibold rounded-lg transition-all duration-200 hover:text-gold-600 hover:bg-gold-50 ${
-                  pathname === link.href ? "text-gold-600" : "text-neutral-700"
+                className={`px-4 py-2 text-sm font-work-sans font-semibold rounded-lg transition-all duration-200 hover:text-navy-700 hover:bg-navy-50 ${
+                  pathname === link.href ? "text-navy-700" : "text-neutral-700"
                 }`}
               >
                 {link.label}
@@ -95,16 +99,9 @@ export default function Navbar() {
           <div className="hidden lg:flex items-center space-x-3">
             <Link
               href="/login"
-              className="px-5 py-2 text-sm font-work-sans font-semibold text-neutral-700 hover:text-gold-700 border border-neutral-200 hover:border-gold-300 rounded-lg transition-all duration-200 hover:bg-gold-50"
+              className="px-6 py-2 bg-navy-700 hover:bg-navy-800 text-white text-sm font-work-sans font-bold rounded-full transition-all duration-200 shadow-sm hover:shadow-md"
             >
               Sign In
-            </Link>
-            <Link
-              href="/register"
-              className="px-5 py-2 bg-gradient-to-r from-gold-600 to-gold-700 hover:from-gold-500 hover:to-gold-600 text-white text-sm font-work-sans font-bold rounded-lg transition-all duration-200 shadow-md hover:shadow-lg hover:shadow-gold-500/20 flex items-center space-x-1.5"
-            >
-              <span>Open Account</span>
-              <ChevronRight size={14} />
             </Link>
           </div>
 
@@ -134,10 +131,11 @@ export default function Navbar() {
         >
           <div className="flex items-center justify-between px-6 py-5 border-b border-neutral-100">
             <div className="flex items-center space-x-2">
-              <div className="relative w-8 h-8">
-                <Image src="/logos/emblem.png" alt="Concierge Bank" fill className="object-contain" />
-              </div>
-              <span className="font-work-sans font-extrabold text-neutral-900">Concierge<span className="text-gold-600">Bank</span></span>
+              <svg viewBox="0 0 40 40" className="w-8 h-8" aria-hidden>
+                <path d="M20 4 L36 32 L28 32 L20 18 L12 32 L4 32 Z" fill="#2C3E5A" />
+                <path d="M20 18 L28 32 L12 32 Z" fill="#354A68" />
+              </svg>
+              <span className="font-work-sans font-extrabold text-neutral-900">Inv<span className="text-navy-700">Bank</span></span>
             </div>
             <button onClick={() => setMobileOpen(false)} className="p-2 rounded-lg hover:bg-neutral-100 text-neutral-500">
               <X size={20} />
@@ -150,7 +148,7 @@ export default function Navbar() {
                 key={link.href}
                 href={link.href}
                 onClick={() => setMobileOpen(false)}
-                className="flex items-center justify-between px-4 py-3.5 rounded-xl text-sm font-work-sans font-semibold text-neutral-700 hover:text-gold-700 hover:bg-gold-50 transition-all duration-200"
+                className="flex items-center justify-between px-4 py-3.5 rounded-xl text-sm font-work-sans font-semibold text-neutral-700 hover:text-navy-700 hover:bg-navy-50 transition-all duration-200"
               >
                 <span>{link.label}</span>
                 <ChevronRight size={16} className="text-neutral-400" />
@@ -162,20 +160,20 @@ export default function Navbar() {
             <Link
               href="/login"
               onClick={() => setMobileOpen(false)}
-              className="block w-full text-center px-5 py-3 border border-neutral-200 rounded-xl text-sm font-work-sans font-semibold text-neutral-700 hover:border-gold-300 hover:text-gold-700 transition-all duration-200"
+              className="block w-full text-center px-5 py-3 bg-navy-700 text-white rounded-xl text-sm font-work-sans font-bold shadow-md transition-all duration-200"
             >
-              Sign In to My Account
+              Sign In
             </Link>
             <Link
               href="/register"
               onClick={() => setMobileOpen(false)}
-              className="block w-full text-center px-5 py-3 bg-gradient-to-r from-gold-600 to-gold-700 text-white rounded-xl text-sm font-work-sans font-bold shadow-lg shadow-gold-500/20 transition-all duration-200"
+              className="block w-full text-center px-5 py-3 border border-navy-300 text-navy-700 rounded-xl text-sm font-work-sans font-bold transition-all duration-200"
             >
               Open an Account
             </Link>
             <p className="text-center text-xs text-neutral-400 pt-1">
               <Phone size={10} className="inline mr-1" />
-              1-800-CONCIERGE
+              1-800-INVBANK
             </p>
           </div>
         </div>

@@ -1,7 +1,17 @@
 /**
- * API service to connect with the Richemont backend
- * Backend location: C:\Users\User\Documents\Projects\sites\richemont\backend
+ * API service. Talks to the InvBank (Quart) backend.
+ *
+ * MOCK MODE:
+ *   If NEXT_PUBLIC_USE_MOCK=1, or localStorage["invbank_mock"]="1",
+ *   all requests are served by an in-browser fake backend (`lib/mockApi.ts`).
+ *   If NEXT_PUBLIC_MOCK_FALLBACK=1 and the real backend is unreachable,
+ *   we automatically switch to mock mode for the rest of the session.
+ *
+ *   Demo creds (mock): demo@invbank.us / password123
+ *                      admin@invbank.us / admin123  (PIN: 000000)
  */
+
+import { handleMock, isMockModeEnabled, enableMockFallback, shouldAutoFallback } from "./mockApi";
 
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000";
 
@@ -12,16 +22,23 @@ interface ApiResponse<T> {
 }
 
 /**
- * Generic fetch wrapper with error handling
+ * Generic fetch wrapper with error handling.
+ * Routes through the mock handler when mock mode is active.
  */
 async function fetchAPI<T>(
   endpoint: string,
   options: RequestInit = {}
 ): Promise<ApiResponse<T>> {
+  const token = typeof window !== "undefined" ? localStorage.getItem("auth_token") : null;
+
+  // ─── Mock mode: short-circuit before hitting the network ────────────────
+  if (isMockModeEnabled()) {
+    const mocked = await handleMock(endpoint, options, token);
+    if (mocked !== null) return mocked as ApiResponse<T>;
+    // Unhandled endpoint in mock mode → fall through to network (might still work)
+  }
+
   try {
-    // Get JWT token from localStorage
-    const token = typeof window !== 'undefined' ? localStorage.getItem('auth_token') : null;
-    
     const response = await fetch(`${API_BASE_URL}${endpoint}`, {
       ...options,
       headers: {
@@ -42,6 +59,19 @@ async function fetchAPI<T>(
     const data = await response.json();
     return { data };
   } catch (error) {
+    // TypeError / "Failed to fetch" ⇒ the backend is unreachable.
+    // If auto-fallback is enabled, switch to mock mode for the rest of the
+    // session and retry the same request through the mock handler.
+    const isNetworkError =
+      error instanceof TypeError ||
+      (error instanceof Error && /fetch|network/i.test(error.message));
+
+    if (isNetworkError && shouldAutoFallback() && !isMockModeEnabled()) {
+      enableMockFallback();
+      const mocked = await handleMock(endpoint, options, token);
+      if (mocked !== null) return mocked as ApiResponse<T>;
+    }
+
     return {
       error: error instanceof Error ? error.message : "Network error",
     };
@@ -260,6 +290,13 @@ export const cardAPI = {
     });
   },
 
+  async updateCardSettings(cardId: string, settings: any): Promise<ApiResponse<Card>> {
+    return fetchAPI<Card>(`/api/cards/${cardId}/settings`, {
+      method: "PUT",
+      body: JSON.stringify({ security_settings: settings }),
+    });
+  },
+
   async reportCardIssue(cardId: string, data: ReportCardIssueData): Promise<ApiResponse<Card>> {
     return fetchAPI<Card>(`/api/cards/${cardId}/report-issue`, {
       method: "POST",
@@ -278,6 +315,14 @@ export interface ConciergeMessage {
   message: string;
   response?: string;
   timestamp: string;
+}
+
+export interface ConciergeRequest {
+  id: string;
+  type: string;
+  details: string;
+  status: string;
+  created_at: string;
 }
 
 export const conciergeAPI = {
@@ -478,6 +523,24 @@ export const settingsAPI = {
 
   async updateSettings(data: Partial<UserSettings>): Promise<ApiResponse<UserSettings>> {
     return fetchAPI<UserSettings>("/api/settings", {
+      method: "PUT",
+      body: JSON.stringify(data),
+    });
+  },
+
+  async updateProfile(data: any): Promise<ApiResponse<any>> {
+    return fetchAPI<any>("/api/settings/profile", {
+      method: "PUT",
+      body: JSON.stringify(data),
+    });
+  },
+
+  async getNotificationPreferences(): Promise<ApiResponse<any>> {
+    return fetchAPI<any>("/api/settings/notifications");
+  },
+
+  async updateNotificationPreferences(data: any): Promise<ApiResponse<any>> {
+    return fetchAPI<any>("/api/settings/notifications", {
       method: "PUT",
       body: JSON.stringify(data),
     });
@@ -684,3 +747,48 @@ export const searchAPI = {
   },
 };
 
+
+// ============================================================================
+// Trade API
+// ============================================================================
+
+export interface TradeOrder {
+  id: string;
+  symbol: string;
+  side: 'BUY' | 'SELL';
+  quantity: number;
+  price: number;
+  status: string;
+  created_at: string;
+}
+
+export interface PortfolioItem {
+  symbol: string;
+  quantity: number;
+  average_price: number;
+  current_price: number;
+  market_value: number;
+  gain_loss: number;
+  gain_loss_percent: number;
+}
+
+export const tradeAPI = {
+  async placeOrder(data: { symbol: string, side: 'BUY' | 'SELL', quantity: number, price: number }): Promise<ApiResponse<TradeOrder>> {
+    return fetchAPI<TradeOrder>("/api/trade/order", {
+      method: "POST",
+      body: JSON.stringify(data),
+    });
+  },
+  async getPortfolio(): Promise<ApiResponse<PortfolioItem[]>> {
+    return fetchAPI<PortfolioItem[]>("/api/trade/portfolio");
+  },
+  async getWatchlist(): Promise<ApiResponse<string[]>> {
+    return fetchAPI<string[]>("/api/trade/watchlist");
+  },
+  async updateWatchlist(symbols: string[]): Promise<ApiResponse<string[]>> {
+    return fetchAPI<string[]>("/api/trade/watchlist", {
+      method: "PUT",
+      body: JSON.stringify({ symbols }),
+    });
+  }
+};

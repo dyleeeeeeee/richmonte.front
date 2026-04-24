@@ -16,14 +16,14 @@ import {
 
 export const metadata: Metadata = {
   title: "Banking Services - Private Banking & Wealth Management",
-  description: "Discover Concierge Bank's comprehensive suite of private banking services: premium accounts, luxury cards, wealth management, and secure transfers. Swiss precision for American excellence.",
+  description: "Discover InvBank's comprehensive suite of private banking services: premium accounts, luxury cards, wealth management, and secure transfers. American precision for American excellence.",
   alternates: {
-    canonical: "https://conciergebank.us/services",
+    canonical: "https://invbank.us/services",
   },
   openGraph: {
-    title: "Banking Services | Concierge Bank",
-    description: "Premium banking services tailored for high net worth individuals. Experience Swiss precision banking in America.",
-    url: "https://conciergebank.us/services",
+    title: "Banking Services | InvBank",
+    description: "Premium banking services tailored for high net worth individuals. Experience modern banking in America.",
+    url: "https://invbank.us/services",
   },
 };
 
@@ -43,7 +43,7 @@ export default function ServicesPage() {
             Unparalleled <span className="text-gold-600">Banking Excellence</span>
           </h1>
           <p className="text-xl text-neutral-600 font-gruppo max-w-3xl mx-auto leading-relaxed">
-            We deliver exceptional financial services with Swiss precision, creating memorable experiences 
+            We deliver exceptional financial services with American precision, creating memorable experiences 
             for today&apos;s sophisticated clients who are at the core of our approach.
           </p>
         </div>
@@ -67,9 +67,9 @@ export default function ServicesPage() {
                   Luxury Concierge Cards
                 </h3>
                 <p className="text-neutral-700 font-gruppo leading-relaxed mb-6">
-                  Experience our exclusive card collection, inspired by Richemont&apos;s finest Maisons. From the 
+                  Experience our exclusive card collection, inspired by our finest . From the 
                   elegant Gold Card to the prestigious Platinum and the ultra-exclusive Black Card—each crafted 
-                  with Swiss precision and American style.
+                  with American precision and American style.
                 </p>
                 <ul className="space-y-3 mb-6">
                   <li className="flex items-start space-x-3">
@@ -178,7 +178,7 @@ export default function ServicesPage() {
                   Wealth Management
                 </h3>
                 <p className="text-neutral-700 font-gruppo leading-relaxed mb-6">
-                  Leverage Richemont&apos;s global expertise to grow and protect your wealth. Our dedicated wealth 
+                  Leverage our global expertise to grow and protect your wealth. Our dedicated wealth 
                   advisors create bespoke portfolios that align with your values, risk tolerance, and long-term 
                   vision.
                 </p>
@@ -215,7 +215,7 @@ export default function ServicesPage() {
             </h2>
             <p className="text-lg text-neutral-600 font-gruppo max-w-2xl mx-auto">
               We set unparalleled standards of service, creating memorable experiences backed by 
-              Richemont&apos;s commitment to excellence.
+              our commitment to excellence.
             </p>
           </div>
 
@@ -226,7 +226,7 @@ export default function ServicesPage() {
               </div>
               <h3 className="text-xl font-work-sans font-bold text-neutral-900 mb-3">Swiss Security</h3>
               <p className="text-neutral-700 font-gruppo">
-                Bank-grade encryption, two-factor authentication, and discretion that Swiss banking is famous for.
+                Bank-grade encryption, two-factor authentication, and discretion that our bank is built on.
               </p>
             </div>
 
@@ -261,7 +261,7 @@ export default function ServicesPage() {
               Ready to Experience <span className="text-gold-600">Excellence</span>?
             </h2>
             <p className="text-lg text-neutral-600 font-gruppo mb-8 max-w-2xl mx-auto">
-              Join the distinguished circle of Concierge Bank members and discover what Swiss precision 
+              Join the distinguished circle of InvBank members and discover what American precision 
               banking feels like in America.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
@@ -295,8 +295,8 @@ export default function ServicesPage() {
             "serviceType": "Private Banking Services",
             "provider": {
               "@type": "BankOrCreditUnion",
-              "name": "Concierge Bank",
-              "url": "https://conciergebank.us"
+              "name": "InvBank",
+              "url": "https://invbank.us"
             },
             "areaServed": {
               "@type": "Country",
