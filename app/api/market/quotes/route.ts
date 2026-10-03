@@ -18,7 +18,7 @@
 
 import { NextRequest, NextResponse } from "next/server";
 
-export const runtime = "nodejs";
+export const runtime = "edge";
 // Cache at the edge for 15s — enough freshness for a ticker tape.
 export const revalidate = 15;
 
